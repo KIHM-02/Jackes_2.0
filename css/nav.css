@@ -1,0 +1,43 @@
+/*Elementos usados
+    contenedor nav: .nav-bar
+    ul: ul-left y ul-right
+    logo: title que es un elemento a dentro de un li
+
+*/
+
+.nav-bar{
+    width: 100%;
+    font-size: var(--text-items);
+    line-height: 50px;
+    background-color: var(--formal-dark);
+    box-shadow: 0 2px 5px 3px var(--formal-blue-dark);
+}
+
+.nav-bar, .ul-left, .ul-right{
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.ul-left{
+    width: 50%;
+    justify-content: flex-start;
+}
+
+.ul-right{
+    width: 50%;
+    justify-content: flex-end;
+}
+
+.ul-left li, .ul-right li{
+    list-style: none;
+    margin: 0 10px;
+}
+
+.ul-left li a, .ul-right li a{
+    color: var(--formal-white);
+    text-decoration: none;
+}
+
+.title{
+    font-size: var(--text-title);
+}
