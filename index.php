@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/init-border.css">
     <link rel="stylesheet" href="css/color.css">
     <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/header.css">
 </head>
 <body>
     <nav class="nav-bar">
@@ -23,7 +24,7 @@
         </ul>
     </nav>
 
-    <header>
+    <header class="header-content">
         <div>
             <h1>Jackes</h1>
             <p>Las mejores maquinas para pasar el tiempo</p>
