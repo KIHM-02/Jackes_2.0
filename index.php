@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio</title>
-    <link rel="stylesheet" href="css/init-border.css">
     <link rel="stylesheet" href="css/color.css">
+    <link rel="stylesheet" href="css/init-border.css">
     <link rel="stylesheet" href="css/nav.css">
     <link rel="stylesheet" href="css/header.css">
 </head>
-<body>
+<body id ="back-color">
     <nav class="nav-bar">
         <ul class="ul-left">
             <li>
                 <label hidden for="menu-hamb">Menu</label>
                 <input type="checkbox" hidden id="menu-hamb">
             </li>
-            <li><a class="title" href="index.php">Jackes</a></li>
+            <li><a class="title-nav" href="index.php">Jackes</a></li>
             <li><a href="#">Contacto</a></li>
         </ul>
         <ul class="ul-right">
@@ -26,9 +26,9 @@
 
     <header class="header-content">
         <div>
-            <h1>Jackes</h1>
+            <h1 class = "title-hero">Jackes</h1>
             <p>Las mejores maquinas para pasar el tiempo</p>
-            <button>Iniciar sesión</button>
+            <button class="btn-white">Iniciar sesión</button>
         </div>
     </header>
 

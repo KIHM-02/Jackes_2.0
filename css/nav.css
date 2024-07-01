@@ -8,7 +8,7 @@
 .nav-bar{
     width: 100%;
     font-size: var(--text-items);
-    line-height: 50px;
+    line-height: 10vh;
     background-color: var(--formal-dark);
     box-shadow: 0 2px 5px 3px var(--formal-blue-dark);
 }
@@ -36,8 +36,4 @@
 .ul-left li a, .ul-right li a{
     color: var(--formal-white);
     text-decoration: none;
-}
-
-.title{
-    font-size: var(--text-title);
 }

@@ -6,3 +6,29 @@
     box-sizing: border-box;
     font-family: "Nunito", sans-serif;
 }
+
+#back-color{
+    background-image: linear-gradient(to bottom, #06141b, #4a5c6a);
+}
+
+/*Textos */
+
+.title-hero{
+    font-size: var(--text-title-hero);
+    color: var(--formal-mid-grey);
+    text-shadow: 0 3px 3px var(--formal-dark);
+}
+
+.title-nav{
+    font-size: var(--text-title);
+}
+
+/*Botones*/
+
+.btn-white{
+    margin-top: 30px;
+    border-radius: var(--btn-radius);
+    background-color: var(--formal-white);
+    padding: 10px;
+    font-size: var(--text-title);
+}

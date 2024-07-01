@@ -12,7 +12,10 @@
     --formal-blue-dark: #11212D;
     --formal-dark:#06141b;
 
+    --text-title-hero: 5em;
     --text-title: 1.5em;
     --text-items: 1.2em;
     --text-normal: 1em;
+
+    --btn-radius: 15px;
 }
