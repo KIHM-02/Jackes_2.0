@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="css/color.css">
     <link rel="stylesheet" href="css/init-border.css">
     <link rel="stylesheet" href="css/nav.css">
-    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/body-content.css">
 </head>
 <body id ="back-color">
     <nav class="nav-bar">
@@ -32,7 +32,7 @@
         </div>
     </header>
 
-    <section>
+    <section class = "main">
         <div>
             <h2>Misión</h2>
             <p>Nuestra misión es hacer que todas las tiendas puedan tener
