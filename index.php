@@ -45,11 +45,16 @@
                  y obteniendo premios</p>
         </div>
     </section>
-    <section>
-        <h2>Contacto</h2>
-        <p>Numero de celular: 33123456789</p>
-        <p>Correo electronico: correo@dominio.ext</p>
-    </section>
 
+    <footer>
+        <div>
+            <h2>Contacto</h2>
+        </div>
+
+        <div>
+            <p>Numero de celular: 33123456789</p>
+            <p>Correo electronico: correo@dominio.ext</p>
+        </div>
+    </footer>
 </body>
 </html>
