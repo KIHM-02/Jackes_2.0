@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="css/nav.css">
     <link rel="stylesheet" href="css/body-content.css">
 </head>
-<body id ="back-color">
+<body class ="back-color">
     <nav class="nav-bar">
         <ul class="ul-left">
             <li>

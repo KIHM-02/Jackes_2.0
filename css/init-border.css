@@ -7,7 +7,7 @@
     font-family: "Nunito", sans-serif;
 }
 
-#back-color{
+.back-color{
     background-image: linear-gradient(to bottom, #06141b, #4a5c6a);
 }
 
