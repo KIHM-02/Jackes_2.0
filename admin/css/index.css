@@ -51,3 +51,13 @@
     font-size: var(--text-normal);
     border-radius: var(--box-small-radius);
 }
+
+.btn{
+    background-color: var(--formal-mid-grey);
+    box-shadow: 0 0 5px 5px var(--formal-white);
+    border: none;
+}
+
+.btn:hover{
+    cursor: pointer;
+}
