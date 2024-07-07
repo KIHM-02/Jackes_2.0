@@ -46,3 +46,8 @@
     margin-bottom: 5px;
 }
 
+.inputs{
+    padding: 5px;
+    font-size: var(--text-normal);
+    border-radius: var(--box-small-radius);
+}
