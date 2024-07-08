@@ -1,0 +1,40 @@
+.nav-bar{
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    padding: 3vh;
+
+    background-color: var(--blue-strong);
+    box-shadow: 0 3px 5px var(--blue-dark);
+}
+
+.ul-left, .ul-right{
+    width: 50%;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+}
+
+.ul-left{
+    justify-content: flex-start;
+}
+
+.ul-right{
+    justify-content: flex-end;
+}
+
+.list-elements{
+    list-style: none;
+    margin: 0 10px;
+}
+
+.list-elements a, .list-elements a{
+    text-decoration: none;
+    padding: 1vh;
+    font-size: var(--text-items);
+    color: var(--blue-light);
+}
+
+.list-elements a:hover{
+    text-shadow: 0 3px 3px var(--blue-light);
+}

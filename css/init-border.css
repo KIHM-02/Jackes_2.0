@@ -32,3 +32,11 @@
     padding: 10px;
     font-size: var(--text-title);
 }
+
+
+.btn-black{
+    border-radius: var(--btn-radius);
+    background-color: var(--blue-dark);
+    font-size: var(--text-normal);
+    padding: .5vh;
+}
