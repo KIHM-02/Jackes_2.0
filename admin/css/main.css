@@ -1,0 +1,71 @@
+header{
+    width: 75%;
+    margin: auto;
+    margin-top: var(--top-margin);
+    padding: .9em 0;
+    display: flex;
+    flex-flow: row wrap;
+
+    border: 2px solid black;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+
+}
+
+.header-elements{
+    margin-right: var(--right-margin);
+}
+
+
+/*Seccion de formulario de busqueda*/
+
+.form-search{
+    width: 65%;
+    margin: auto;
+    margin-top: var(--top-margin);
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-end;
+}
+
+.div-form-inputs{
+    display: flex;
+    flex-direction: column;
+    margin-right: var(--right-margin);
+}
+
+.div-form-inputs label{
+    font-size: var(--text-items);
+    text-shadow: 0px 1px 1px var(--blue-dark);
+}
+
+.text-inputs{
+    border-radius: var(--box-small-radius);
+    padding: .3em;
+    font-size: var(--text-medium);
+}
+
+/*Seccion de tabla*/
+
+.section-table{
+    width: 75%;
+    margin: auto;
+    margin-top: var(--top-extra-margin);
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.section-table button{
+    margin-right: var(--right-margin);
+}
+
+#chkTable{
+    display: none;
+}
+
+.table{
+    border: 2px solid black;
+    width: 30%;
+    text-align: center;
+}

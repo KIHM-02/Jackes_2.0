@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="../css/color.css">
     <link rel="stylesheet" href="../css/init-border.css">
     <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/main.css">
 
     <title>Adminitrador</title>
 </head>

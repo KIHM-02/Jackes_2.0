@@ -15,13 +15,20 @@
     --warning-message: #c93939;
 
     --text-title-hero: 5em;
+    --text-subtitle: 2em;
     --text-title: 1.5em;
     --text-items: 1.2em;
     --text-normal: 1em;
+    --text-medium: .9em;
     --text-small: .7em;
 
     --btn-radius: 15px;
     --box-small-radius: 10px;
     --box-mid-radius: 20px;
     --box-big-radius: 30px;
+
+    --top-margin: .8em;
+    --top-extra-margin: 2em;
+    --right-margin: 3em;
+
 }

@@ -19,6 +19,12 @@
     text-shadow: 0 3px 3px var(--formal-dark);
 }
 
+.subtitle{
+    font-size: var(--text-subtitle);
+    color: var(--blue-dark);
+    text-shadow: 0 1px 3px var(--blue-strong);
+}
+
 .title-nav{
     font-size: var(--text-title);
 }
@@ -39,4 +45,12 @@
     background-color: var(--blue-dark);
     font-size: var(--text-normal);
     padding: .5vh;
+}
+
+.btn-black-header{
+    border-radius: var(--btn-radius);
+    background-color: var(--blue-dark);
+    font-size: var(--text-items);
+    padding: .5vh 4vh;
+    color: white;
 }
