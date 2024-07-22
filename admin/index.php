@@ -12,6 +12,8 @@
 <body>
 
     <?php
+        session_start();
+
         $userFound = true;
 
         if($_POST)
@@ -30,6 +32,9 @@
                 $userData = $query->fetch(PDO::FETCH_LAZY);
 
                 if($userData){
+                    $_SESSION['userId'] = $userData['idUsr'];
+                    $_SESSION['userName'] = $userData['nombreUsr'];
+                    
                     header("Location:inicio.php");
                 }
                 else
