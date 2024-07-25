@@ -17,43 +17,105 @@
         </div>
 
         <div class ="div-form-inputs">
+            <label for="txtIdRol">Id rol de usuario</label>
+            <input class="text-inputs" type="text" name="txtIdRol" id="txtIdRol">
+        </div>
+
+        <div class ="div-form-inputs">
             <input class ="btn-black-header" type="submit" value="Buscar">
         </div>
     </form>
 
     <section class = "section-table">
-        <div>
-            <button class = "btn-black-header">
-                <label for = "chkTable">Desplegar</label>
-                <input type="checkbox" name="chkTable" id="chkTable">
-            </button>
+        <button class ="btn-black-header">Agregar Rol</button>
+            
+        <label for = "chkTable" class ="btn-black-header">Desplegar</label>
+        <input type="checkbox" name="chkTable" id="chkTable" class ="chkTable">
 
-            <button class ="btn-black-header">Agregar Rol</button>
+        <div class ="border-table">
+            <table class = "table">
+                <thead>
+                    <tr>
+                        <th>ID rol</th>
+                        <th>Tipo rol</th>
+                        <th>Modificar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         
-        <table class = "table">
-            <thead>
-                <tr>
-                    <th>ID rol</th>
-                    <th>Tipo rol</th>
-                    <th>Modificar</th>
-                    <th>Eliminar</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                </tr>
-            </tbody>
-        </table>
     </section>
 
-    <section>
-        <article>
+    <section class = "section-title">
+        <h2 class ="subtitle">Datos</h2>
+    </section>
+
+    <section class ="info-container">
+        <article class ="card">
+            <p>Id Usuario</p>
+            <p>Nombre</p>
+            <p>Direccion</p>
+            <p>Telefono</p>
+            <p>Rol</p>
+        </article>
+        <article class ="card">
+            <p>Id Usuario</p>
+            <p>Nombre</p>
+            <p>Direccion</p>
+            <p>Telefono</p>
+            <p>Rol</p>
+        </article>
+        <article class ="card">
+            <p>Id Usuario</p>
+            <p>Nombre</p>
+            <p>Direccion</p>
+            <p>Telefono</p>
+            <p>Rol</p>
+        </article>
+        <article class ="card">
+            <p>Id Usuario</p>
+            <p>Nombre</p>
+            <p>Direccion</p>
+            <p>Telefono</p>
+            <p>Rol</p>
+        </article>
+        <article class ="card">
+            <p>Id Usuario</p>
+            <p>Nombre</p>
+            <p>Direccion</p>
+            <p>Telefono</p>
+            <p>Rol</p>
+        </article>
+        <article class ="card">
+            <p>Id Usuario</p>
+            <p>Nombre</p>
+            <p>Direccion</p>
+            <p>Telefono</p>
+            <p>Rol</p>
+        </article>
+        <article class ="card">
             <p>Id Usuario</p>
             <p>Nombre</p>
             <p>Direccion</p>

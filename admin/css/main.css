@@ -54,18 +54,70 @@ header{
     margin-top: var(--top-extra-margin);
     display: flex;
     flex-flow: row wrap;
+    align-items: flex-start;
 }
 
-.section-table button{
+.section-table button, .section-table label{
     margin-right: var(--right-margin);
+    border: none;
 }
 
 #chkTable{
     display: none;
 }
 
-.table{
+.border-table{
+    display: none;
     border: 2px solid black;
-    width: 30%;
+    border-radius: var(--box-small-radius);
+    overflow: hidden;
+}
+
+.table{
+    width: 100%;
     text-align: center;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.table thead{
+    background-color: var(--blue-dark);
+
+}
+
+.table thead tr th{
+    color: white;
+    padding: .5em;
+    margin: 0 var;
+}
+
+#chkTable:checked ~ .border-table{
+    display: block;
+}
+
+/*Seccion de despliegue de informacion*/
+
+.section-title{
+    width: 75%;
+    margin: auto;
+    margin-top: var(--top-margin);
+    text-align: left;
+}
+
+.info-container{
+    width: 75%;
+    margin: auto;
+    margin-top: var(--top-margin);
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+}
+
+.card{
+    width: 20%;
+    border: 1px solid var(--blue-dark);
+    border-radius: var(--box-small-radius);
+    padding: 0.5em;
+    box-shadow: 0 2px 2px var(--blue-strong);
+    margin: var(--top-margin);
 }
