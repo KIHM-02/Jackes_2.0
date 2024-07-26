@@ -26,6 +26,9 @@
             <li class ="list-elements"><a href="config/close_session.php">Salir</a></li>
         </ul>
 
+        <label id = "label-chk-menu" for="chk-ul-right">Menu</label>
+        <input type="checkbox" name="chk-ul-right" id="chk-ul-right">
+
         <ul class ="ul-right">
             <li class ="list-elements"><a href="corte.php">Cortes</a></li>
             <li class ="list-elements"><a href="usuario.php">Usuarios</a></li>

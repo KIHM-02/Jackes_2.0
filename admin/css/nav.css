@@ -8,6 +8,10 @@
     box-shadow: 0 3px 5px var(--blue-dark);
 }
 
+#chk-ul-right, #label-chk-menu{
+    display: none;
+}
+
 .ul-left, .ul-right{
     width: 50%;
     display: flex;
@@ -37,4 +41,54 @@
 
 .list-elements a:hover{
     text-shadow: 0 3px 3px var(--blue-light);
+}
+
+
+/*Responsive*/
+
+
+@media only screen and (min-width: 905px) and (max-width: 1160px)
+{
+    .ul-left{
+        width: 35%;
+    }
+
+    .ul-right{
+        width: 65%;
+    }
+}
+
+@media screen and (max-width: 905px) 
+{
+    .nav-bar{
+        padding: 1vh;
+        line-height: 80px;
+        justify-content: space-evenly;
+    }
+    
+    .ul-left{
+        width: 75%;
+    }
+    
+    .ul-right{
+        width: 100%;
+        position: fixed;
+        top: 80px;
+        right: -110%;
+        line-height: calc(19vh);
+        flex-flow: column wrap;
+        background-color: var(--blue-strong);
+        transition: all 0.5s;
+    }
+
+    #label-chk-menu{
+        display: block;
+        color: white;
+        align-self: center;
+    }
+
+    #chk-ul-right:checked ~ .ul-right{
+        right: 0;
+        font-size: var(--text-items);
+    }
 }
