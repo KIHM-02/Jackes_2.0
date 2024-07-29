@@ -46,6 +46,7 @@ header{
     font-size: var(--text-medium);
 }
 
+
 /*Seccion de tabla*/
 
 .section-table{
@@ -124,7 +125,7 @@ header{
 
 /*Responsive*/
 
-@media screen and (max-width: 420px)
+@media screen and (max-width: 530px) /*Mobile*/
 {
     header{
         width: 90%;
@@ -135,8 +136,9 @@ header{
         width: 100%;
         display: flex;
         margin-top: var(--top-margin);
-        flex-flow: row wrap;
+        flex-flow: column wrap;
         justify-content: space-evenly;
+        text-align: center;
     }
 
     .header-elements{
@@ -153,13 +155,55 @@ header{
         margin-bottom: var(--bottom-margin);
     }
 
+    .info-container{
+        width: 90%;
+        justify-content: center;
+    }
+    
+    .card{
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 531px) and (max-width: 780px) /*Tablet*/
+{
+    header div{
+        width: 100%;
+        display: flex;
+        margin-top: var(--top-margin);
+        flex-flow: row wrap;
+        justify-content: space-evenly;
+        text-align: center;
+    }
+
+    .header-elements{
+        margin-right: unset;
+    }
+
+    .form-search{
+        width: 80%;
+        justify-content: space-evenly;
+    }
+
+    .div-form-inputs{
+        margin: 5px;
+    }
+
+    .card{
+        width: 40%;
+    }
+}
+
+/*Estilo de formato tabla, se comparte para ambos responsivos*/
+@media screen and (max-width: 780px) 
+{
     .section-table{
         width: 90%;
         flex-direction: column;
         justify-content: space-evenly;
     }
 
-    .table-buttons{
+    .table-buttons, .header-buttons{
         width: 90%;
         text-align: center;
         margin: auto;
@@ -168,14 +212,14 @@ header{
 
     .border-table{
         margin: auto;
-    }
+    }    
+}
 
-    .info-container{
-        width: 90%;
-        justify-content: center;
-    }
-    
+/*Usada para indicar un tamaño adecuado a las tarjetas de informacion*/
+
+@media screen and (780px <= width <= 1100px) 
+{
     .card{
-        width: 100%;
+        width: 28%;
     }
 }

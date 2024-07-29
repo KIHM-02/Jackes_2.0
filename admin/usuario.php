@@ -3,8 +3,8 @@
         <h2 class="subtitle header-elements">Panel Usuarios</h2>
 
         <div>
-            <a class ="header-elements" href="#"><button class="btn-black-header">Agregar</button></a>
-            <a class ="header-elements" href="#"><button class="btn-black-header">Modificar</button></a>
+            <a class ="header-elements" href="#"><button class="btn-black-header header-buttons">Agregar</button></a>
+            <a class ="header-elements" href="#"><button class="btn-black-header header-buttons">Modificar</button></a>
         </div>
     </header>
 
@@ -24,7 +24,7 @@
             <input class="text-inputs" type="text" name="txtIdRol" id="txtIdRol">
         </div>
 
-        <div class ="div-form-inputs">
+        <div class ="div-form-inputs space-top">
             <input class ="btn-black-header" type="submit" value="Buscar">
         </div>
     </form>
@@ -35,7 +35,7 @@
         <label for = "chkTable" class ="btn-black-header table-buttons">Desplegar</label>
         <input type="checkbox" name="chkTable" id="chkTable" class ="chkTable table-buttons">
 
-        <div class ="border-table">
+        <div class ="border-table space-top">
             <table class = "table">
                 <thead>
                     <tr>

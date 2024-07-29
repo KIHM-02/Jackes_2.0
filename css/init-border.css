@@ -55,3 +55,8 @@
     color: white;
 }
 
+/*Espacios de top extras para evitar elementos pegados con flex*/
+
+.space-top{
+    margin-top: var(--top-margin);
+}
