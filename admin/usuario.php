@@ -1,8 +1,11 @@
 <?php include("template/header.php") ?>
     <header>
         <h2 class="subtitle header-elements">Panel Usuarios</h2>
-        <a class ="header-elements" href="#"><button class="btn-black-header">Agregar</button></a>
-        <a class ="header-elements" href="#"><button class="btn-black-header">Modificar</button></a>
+
+        <div>
+            <a class ="header-elements" href="#"><button class="btn-black-header">Agregar</button></a>
+            <a class ="header-elements" href="#"><button class="btn-black-header">Modificar</button></a>
+        </div>
     </header>
 
     <form method="POST" class="form-search">
@@ -27,10 +30,10 @@
     </form>
 
     <section class = "section-table">
-        <button class ="btn-black-header">Agregar Rol</button>
+        <button class ="btn-black-header table-buttons">Agregar Rol</button>
             
-        <label for = "chkTable" class ="btn-black-header">Desplegar</label>
-        <input type="checkbox" name="chkTable" id="chkTable" class ="chkTable">
+        <label for = "chkTable" class ="btn-black-header table-buttons">Desplegar</label>
+        <input type="checkbox" name="chkTable" id="chkTable" class ="chkTable table-buttons">
 
         <div class ="border-table">
             <table class = "table">

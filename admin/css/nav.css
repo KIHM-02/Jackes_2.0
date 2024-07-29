@@ -47,14 +47,19 @@
 /*Responsive*/
 
 
-@media only screen and (min-width: 905px) and (max-width: 1160px)
+@media only screen and (min-width: 905px) and (max-width: 1295px)
 {
+    .nav-bar{
+        padding: 2vh;
+    }
+    
     .ul-left{
         width: 35%;
     }
 
     .ul-right{
         width: 65%;
+        flex-wrap: nowrap;
     }
 }
 

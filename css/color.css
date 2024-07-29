@@ -31,5 +31,7 @@
     --top-margin: .8em;
     --top-extra-margin: 2em;
     --right-margin: 3em;
+    --right-small-margin: 1em;
+    --bottom-margin: 1em;
 
 }

@@ -57,7 +57,7 @@ header{
     align-items: flex-start;
 }
 
-.section-table button, .section-table label{
+.table-buttons{
     margin-right: var(--right-margin);
     border: none;
 }
@@ -123,3 +123,50 @@ header{
 }
 
 /*Responsive*/
+
+@media screen and (max-width: 420px)
+{
+    header{
+        width: 90%;
+        flex-direction: column;
+    }
+
+    header div{
+        width: 100%;
+        display: flex;
+        margin-top: var(--top-margin);
+        flex-flow: row wrap;
+        justify-content: space-evenly;
+    }
+
+    .header-elements{
+        margin-right: var(--right-small-margin) ;
+    }
+
+    .form-search{
+        width: 90%;
+    }
+
+    .div-form-inputs{
+        width: 90%;
+        margin: auto;
+        margin-bottom: var(--bottom-margin);
+    }
+
+    .section-table{
+        width: 90%;
+        flex-direction: column;
+        justify-content: space-evenly;
+    }
+
+    .table-buttons{
+        width: 90%;
+        text-align: center;
+        margin: auto;
+        margin-bottom: var(--bottom-margin);
+    }
+
+    .border-table{
+        margin: auto;
+    }
+}
