@@ -60,3 +60,8 @@
 .space-top{
     margin-top: var(--top-margin);
 }
+
+.aligner-center{
+    text-align: center;
+    margin-bottom: var(--bottom-margin);
+}
