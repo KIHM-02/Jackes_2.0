@@ -1,4 +1,4 @@
-<?php include("template/header_registro.php"); ?>
+<?php include("../template/header_registro.php"); ?>
     <header>
         <h2 class ="subtitle">Agregar usuarios</h2>
     </header>
@@ -70,4 +70,4 @@
 
     </form>
 
-<?php include("template/footer.php") ?>
+<?php include("../template/footer.php") ?>
