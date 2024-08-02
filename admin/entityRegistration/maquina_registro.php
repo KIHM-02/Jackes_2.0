@@ -1,11 +1,5 @@
+<?php include("../template/header_registro.php"); ?>
 
-
-<?php include("../template/header_registro.php"); 
-
-/**Revisar la base de datos, observa si necesitas una tabla para guardar los modelos de las maquinas y 
- * termina la vista de cliente */
-
-?>
     <header>
         <h2 class ="subtitle">Agregar Maquina</h2>
     </header>

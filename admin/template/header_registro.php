@@ -34,7 +34,7 @@
             <li class ="list-elements"><a href="../usuario.php">Usuarios</a></li>
             <li class ="list-elements"><a href="../vehiculo.php">Vehiculos</a></li>
             <li class ="list-elements"><a href="../maquina.php">Maquinas</a></li>
-            <li class ="list-elements"><a href="#">Clientes</a></li>
+            <li class ="list-elements"><a href="../cliente.php">Clientes</a></li>
         </ul>
     </nav>
 
