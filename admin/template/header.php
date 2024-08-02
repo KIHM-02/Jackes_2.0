@@ -32,7 +32,7 @@
         <ul class ="ul-right">
             <li class ="list-elements"><a href="corte.php">Cortes</a></li>
             <li class ="list-elements"><a href="usuario.php">Usuarios</a></li>
-            <li class ="list-elements"><a href="#">Vehiculos</a></li>
+            <li class ="list-elements"><a href="vehiculo.php">Vehiculos</a></li>
             <li class ="list-elements"><a href="#">Maquinas</a></li>
             <li class ="list-elements"><a href="#">Clientes</a></li>
         </ul>
