@@ -61,3 +61,11 @@
 .btn:hover{
     cursor: pointer;
 }
+
+/*Responsive*/
+
+@media screen and (max-width: 800px) {
+    .main{
+        width: 80%;
+    }
+}
