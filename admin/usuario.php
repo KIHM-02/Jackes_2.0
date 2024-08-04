@@ -72,68 +72,11 @@
 
     <section class = "section-title">
         <h2 class ="subtitle">Datos</h2>
-        
-        <form method ="post" class ="date-container">
-            <article>
-                <label class="" for="firstDate">Fecha inicio</label>
-                <input type="date" name="firstDate" id="firstDate">
-            </article>
-
-            <article>
-                <label for="firstDate">Fecha final</label>
-                <input type="date" name="firstDate" id="firstDate">
-            </article>
-
-            <article class ="table-buttons">
-                <input type="submit" value="Buscar" class ="btn-black-header header-buttons">
-            </article>
-        </form>
-
     </section>
 
     <section class ="info-container">
-        <article class ="card">
-            <p>Id Usuario</p>
-            <p>Nombre</p>
-            <p>Direccion</p>
-            <p>Telefono</p>
-            <p>Rol</p>
-        </article>
-        <article class ="card">
-            <p>Id Usuario</p>
-            <p>Nombre</p>
-            <p>Direccion</p>
-            <p>Telefono</p>
-            <p>Rol</p>
-        </article>
-        <article class ="card">
-            <p>Id Usuario</p>
-            <p>Nombre</p>
-            <p>Direccion</p>
-            <p>Telefono</p>
-            <p>Rol</p>
-        </article>
-        <article class ="card">
-            <p>Id Usuario</p>
-            <p>Nombre</p>
-            <p>Direccion</p>
-            <p>Telefono</p>
-            <p>Rol</p>
-        </article>
-        <article class ="card">
-            <p>Id Usuario</p>
-            <p>Nombre</p>
-            <p>Direccion</p>
-            <p>Telefono</p>
-            <p>Rol</p>
-        </article>
-        <article class ="card">
-            <p>Id Usuario</p>
-            <p>Nombre</p>
-            <p>Direccion</p>
-            <p>Telefono</p>
-            <p>Rol</p>
-        </article>
+
+
         <article class ="card">
             <p>Id Usuario</p>
             <p>Nombre</p>
