@@ -18,30 +18,17 @@
 
         if($_POST)
         {
-            include("config/conexion.php");
-
-            try{
+            require_once("config/conexion.php");
+            
+            try
+            {
                 $idUser = $_POST['txtID'];
                 $pwdUser = $_POST['txtPwd'];
 
-                $query = $conection->prepare("SELECT * FROM trabajador WHERE idUsr = :id AND contraUsr = :pass");
-                $query->bindParam(":id", $idUser);
-                $query->bindParam(":pass", $pwdUser);
-                $query->execute();
-
-                $userData = $query->fetch(PDO::FETCH_LAZY);
-
-                if($userData){
-                    $_SESSION['userId'] = $userData['idUsr'];
-                    $_SESSION['userName'] = $userData['nombreUsr'];
-                    
-                    header("Location:inicio.php");
-                }
-                else
-                {
-                    $userFound = false;
-                }
-            }catch(Exception $er)
+                $conection = new Conexion();            
+                $userFound = $conection->verifyUserExistence($idUser, $pwdUser);
+            }
+            catch(Exception $er)
             {
                 echo $er->getMessage();
             }
