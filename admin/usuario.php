@@ -1,4 +1,12 @@
 <?php include("template/header.php") ?>
+
+    <?php
+        require_once("config/usuario_crud.php");
+
+        $accion = ($_POST)? $_POST['accion']: "";
+        $usuario; //var para instanciar clase usuario
+    ?>
+
     <header>
         <h2 class="subtitle header-elements">Panel Usuarios</h2>
 
@@ -24,7 +32,7 @@
         </div>
 
         <div class ="div-form-inputs space-top">
-            <input class ="btn-black-header" type="submit" value="Buscar">
+            <input class ="btn-black-header" type="submit" value="Filtrar" name ="accion">
         </div>
     </form>
 
@@ -76,14 +84,31 @@
 
     <section class ="info-container">
 
+        <?php
+        $usuario = new Usuario();
+        
+        if(empty($accion))
+        {
+            $userData = $usuario->getUserData();
 
-        <article class ="card">
-            <p>Id Usuario</p>
-            <p>Nombre</p>
-            <p>Direccion</p>
-            <p>Telefono</p>
-            <p>Rol</p>
-        </article>
+            foreach($userData as $data)
+            {
+                ?>
+                    <article class ="card">
+                        <p>Id Usuario: <?php echo htmlspecialchars($data['idUsr']);?></p>
+                        <p>Nombre: <?php echo htmlspecialchars($data['nombreUsr']);?></p>
+                        <p>Direccion: <?php echo htmlspecialchars($data['direccionUsr']);?></p>
+                        <p>Telefono: <?php echo htmlspecialchars($data['telefonoUsr']);?></p>
+                        <p>Rol: <?php echo htmlspecialchars($data['idRol']); ?></p>
+                    </article>
+                <?php
+            }
+        }
+        else
+        {
+            echo "hola XD";
+        }
+    ?>
     </section>
 
 <?php include("template/footer.php") ?>

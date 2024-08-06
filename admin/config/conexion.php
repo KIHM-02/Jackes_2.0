@@ -8,7 +8,12 @@
             $this->conection = $this->connect("localhost", "jackes", "root", "");
         }
 
-        public function connect($host, $db, $usr, $pass)
+        public function getConection()
+        {
+            return $this->conection;
+        }
+
+        private function connect($host, $db, $usr, $pass)
         {
             try
             {
