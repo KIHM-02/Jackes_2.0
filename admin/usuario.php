@@ -1,10 +1,16 @@
 <?php include("template/header.php") ?>
 
     <?php
-        require_once("config/usuario_crud.php");
+        require_once("config/conexion.php");
 
         $accion = ($_POST)? $_POST['accion']: "";
-        $usuario; //var para instanciar clase usuario
+
+        $idUsr  = ($_POST) && !empty($_POST['txtId'])? $_POST['txtId']: null;
+        $name   = ($_POST) && !empty($_POST['txtName'])? $_POST['txtName']: null; 
+        $rol    = ($_POST) && !empty($_POST['txtIdRol'])? $_POST['txtIdRol']: null;
+
+        $conection = new Conexion(); //var para instanciar clase usuario
+        $arrayFilters = [];
     ?>
 
     <header>
@@ -85,28 +91,50 @@
     <section class ="info-container">
 
         <?php
-        $usuario = new Usuario();
-        
-        if(empty($accion))
+    
+        switch($accion)
         {
-            $userData = $usuario->getUserData();
+            case "":
+                $arrayFilters = ["idUsr" => null]; //Arreglo de filtros en null para que se ejecute una consulta select sin condiciones
+                $userData = $conection->getData("trabajador", $arrayFilters);
 
-            foreach($userData as $data)
-            {
-                ?>
+                foreach($userData as $data)
+                {   ?>
                     <article class ="card">
                         <p>Id Usuario: <?php echo htmlspecialchars($data['idUsr']);?></p>
-                        <p>Nombre: <?php echo htmlspecialchars($data['nombreUsr']);?></p>
+                        <p>Nombre: <?php echo htmlspecialchars($data['nombreUsr']. " ".$data['apePatUsr']." ".$data['apeMatUsr']);?></p>
                         <p>Direccion: <?php echo htmlspecialchars($data['direccionUsr']);?></p>
                         <p>Telefono: <?php echo htmlspecialchars($data['telefonoUsr']);?></p>
                         <p>Rol: <?php echo htmlspecialchars($data['idRol']); ?></p>
                     </article>
-                <?php
-            }
-        }
-        else
-        {
-            echo "hola XD";
+                     <?php
+                }
+
+                break;
+            
+            case "Filtrar":
+
+                $arrayFilters = [
+                    "idUsr" => $idUsr,
+                    "nombreUsr" => $name,
+                    "idRol" => $rol
+                ];
+
+                $userData = $conection->getData("trabajador", $arrayFilters);
+
+                foreach($userData as $data)
+                {   ?>
+                    <article class ="card">
+                        <p>Id Usuario: <?php echo htmlspecialchars($data['idUsr']);?></p>
+                        <p>Nombre: <?php echo htmlspecialchars($data['nombreUsr']. " ".$data['apePatUsr']." ".$data['apeMatUsr']);?></p>
+                        <p>Direccion: <?php echo htmlspecialchars($data['direccionUsr']);?></p>
+                        <p>Telefono: <?php echo htmlspecialchars($data['telefonoUsr']);?></p>
+                        <p>Rol: <?php echo htmlspecialchars($data['idRol']); ?></p>
+                    </article>
+                     <?php
+                }
+
+                break;
         }
     ?>
     </section>

@@ -7,12 +7,7 @@
         {
             $this->conection = $this->connect("localhost", "jackes", "root", "");
         }
-
-        public function getConection()
-        {
-            return $this->conection;
-        }
-
+        
         private function connect($host, $db, $usr, $pass)
         {
             try
@@ -23,7 +18,7 @@
             {
                 echo $er->getMessage();
             }
-
+            
             return $con;
         }
 
@@ -61,6 +56,48 @@
             }
             
             return $userFound;
+        }
+
+        /** CRUD SELECT */
+
+        private function select($statement)
+        {
+            $rows = "";
+
+            try
+            {
+                $select = $this->conection->prepare($statement);
+                $select->execute();
+                $rows = $select->fetchAll(PDO::FETCH_ASSOC);
+            }
+            catch(Exception $er)
+            {
+                echo $er->getMessage();
+            }
+
+            return $rows;
+        }
+
+        private function selectFiltered($table, $arrayFilters)
+        {    
+            $sql = "SELECT * FROM ".$table." WHERE 1=1";
+
+            foreach($arrayFilters as $key => $value)
+            {
+                if($value !== null)
+                {
+                    $sql.= " AND ".$key." = '".$value."'";
+                }
+            }
+
+            return $sql;
+        }
+
+        public function getData($table, $arrayFilters)
+        {
+            $statement = $this->selectFiltered($table, $arrayFilters);
+            $rows = $this->select($statement);
+            return $rows;
         }
     }
 ?>
