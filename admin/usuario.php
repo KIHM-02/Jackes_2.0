@@ -5,9 +5,9 @@
 
         $accion = ($_POST)? $_POST['accion']: "";
 
-        $idUsr  = ($_POST) && !empty($_POST['txtId'])? $_POST['txtId']: null;
-        $name   = ($_POST) && !empty($_POST['txtName'])? $_POST['txtName']: null; 
-        $rol    = ($_POST) && !empty($_POST['txtIdRol'])? $_POST['txtIdRol']: null;
+        $idUsr  = ($_POST) && !empty($_POST['txtId'])? intval($_POST['txtId']): null;
+        $name   = ($_POST) && !empty($_POST['txtName'])? $_POST['txtName']: null;
+        $rol    = ($_POST) && !empty($_POST['txtIdRol'])? intval($_POST['txtIdRol']): null;
 
         $conection = new Conexion(); //var para instanciar clase usuario
         $arrayFilters = [];
@@ -24,7 +24,7 @@
     <form method="POST" class="form-search">
         <div class ="div-form-inputs">
             <label for="inputId">Id de usuario</label>
-            <input class ="text-inputs" type="text" name="txtId" id="inputId">
+            <input class ="text-inputs" type="number" name="txtId" id="inputId">
         </div>
 
         <div class ="div-form-inputs">
@@ -44,7 +44,7 @@
 
     <section class = "section-table">
         <button class ="btn-black-header table-buttons">Agregar Rol</button>
-            
+
         <label for = "chkTable" class ="btn-black-header table-buttons">Desplegar</label>
         <input type="checkbox" name="chkTable" id="chkTable" class ="chkTable table-buttons">
 
@@ -81,7 +81,7 @@
                 </tbody>
             </table>
         </div>
-        
+
     </section>
 
     <section class = "section-title">
@@ -91,7 +91,7 @@
     <section class ="info-container">
 
         <?php
-    
+
         switch($accion)
         {
             case "":
@@ -111,7 +111,7 @@
                 }
 
                 break;
-            
+
             case "Filtrar":
 
                 $arrayFilters = [

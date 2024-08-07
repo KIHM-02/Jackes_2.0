@@ -86,7 +86,14 @@
             {
                 if($value !== null)
                 {
-                    $sql.= " AND ".$key." = '".$value."'";
+                    if(is_int($value))
+                    {
+                        $sql.= " AND ".$key." = '".$value."'";
+                    }
+                    else
+                    {
+                        $sql.= " AND ".$key." LIKE '%".$value."%'";
+                    }
                 }
             }
 
