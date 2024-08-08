@@ -192,6 +192,7 @@
 
                         <form action="entityModification/usuario_modificar.php" method="post">
                             <input type="hidden" name="txtIdUsr" value ="<?php echo htmlspecialchars($data['idUsr']);?>">
+                            <input type="hidden" name="accion" value ="envio">
                             <button type="submit" class ="btn-black-width">Modificar</button>
                         </form>
 
