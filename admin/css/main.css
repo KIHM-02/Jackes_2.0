@@ -163,6 +163,10 @@ header{
     text-align: center;
 }
 
+.negritas{
+    font-weight: bolder;
+}
+
 /*Responsive*/
 
 @media screen and (max-width: 530px) /*Mobile*/

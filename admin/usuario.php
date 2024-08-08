@@ -140,11 +140,11 @@
                 foreach($userData as $data)
                 {   ?>
                     <article class ="card">
-                        <p>Id Usuario: <?php echo htmlspecialchars($data['idUsr']);?></p>
-                        <p>Nombre: <?php echo htmlspecialchars($data['nombreUsr']. " ".$data['apePatUsr']." ".$data['apeMatUsr']);?></p>
-                        <p>Direccion: <?php echo htmlspecialchars($data['direccionUsr']);?></p>
-                        <p>Telefono: <?php echo htmlspecialchars($data['telefonoUsr']);?></p>
-                        <p>Rol: <?php echo htmlspecialchars($data['idRol']); ?></p>
+                        <p><span class="negritas">Id Usuario: </span><?php echo htmlspecialchars($data['idUsr']);?></p>
+                        <p><span class="negritas">Nombre: </span><?php echo htmlspecialchars($data['nombreUsr']. " ".$data['apePatUsr']." ".$data['apeMatUsr']);?></p>
+                        <p><span class="negritas">Direccion: </span><?php echo htmlspecialchars($data['direccionUsr']);?></p>
+                        <p><span class="negritas">telefono: </span><?php echo htmlspecialchars($data['telefonoUsr']);?></p>
+                        <p><span class="negritas">Rol: </span><?php echo htmlspecialchars($data['idRol']); ?></p>
 
                         <div>
                             <form method="post">
@@ -178,11 +178,12 @@
                 foreach($userData as $data)
                 {   ?>
                     <article class ="card">
-                        <p>Id Usuario: <?php echo htmlspecialchars($data['idUsr']);?></p>
-                        <p>Nombre: <?php echo htmlspecialchars($data['nombreUsr']. " ".$data['apePatUsr']." ".$data['apeMatUsr']);?></p>
-                        <p>Direccion: <?php echo htmlspecialchars($data['direccionUsr']);?></p>
-                        <p>Telefono: <?php echo htmlspecialchars($data['telefonoUsr']);?></p>
-                        <p>Rol: <?php echo htmlspecialchars($data['idRol']); ?></p>
+                    <p><span class="negritas">Id Usuario: </span><?php echo htmlspecialchars($data['idUsr']);?></p>
+                        <p><span class="negritas">Nombre: </span><?php echo htmlspecialchars($data['nombreUsr']. " ".$data['apePatUsr']." ".$data['apeMatUsr']);?></p>
+                        <p><span class="negritas">Direccion: </span><?php echo htmlspecialchars($data['direccionUsr']);?></p>
+                        <p><span class="negritas">telefono: </span><?php echo htmlspecialchars($data['telefonoUsr']);?></p>
+                        <p><span class="negritas">Rol: </span><?php echo htmlspecialchars($data['idRol']); ?></p>
+
                         
                         <form method="post">
                             <input type="hidden" name="txtId" value ="<?php echo htmlspecialchars($data['idUsr']);?>">
