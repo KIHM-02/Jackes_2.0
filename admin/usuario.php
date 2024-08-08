@@ -90,7 +90,7 @@
                         <td>
                             <form method="POST">
                                 <input type="hidden" name="txtIdRol" value = "<?php echo htmlspecialchars ($roles['idRol']); ?>">
-                                <button type ="submit" class ="btn-black-header" name = "accion" value ="delete_rol">Eliminar</button>
+                                <button type ="submit" name = "accion" value ="delete_rol">Eliminar</button>
                             </form>
                         </td>
                     </tr>
@@ -130,6 +130,7 @@
 
                         <form action="entityModification/usuario_modificar.php" method="post">
                             <input type="hidden" class ="btn-black-header" name="txtIdUsr" value ="<?php echo htmlspecialchars($data['idUsr']);?>">
+                            <input type="hidden" class ="btn-black-header" name="accion" value ="envio">
                             <button type="submit" class ="btn-black-header">Modificar</button>
                         </form>
 

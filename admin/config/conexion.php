@@ -158,5 +158,31 @@
         {
             $this->insert($table, $arrayColumn);
         }
+
+        private function update($table, $identifier, $arrayColumn)
+        {
+            $columns = array_keys($arrayColumn);
+            $values = array_values($arrayColumn);
+
+            $columnsPart = implode(" = ?, ", $columns)." = ?";
+
+            $sql = "UPDATE $table SET $columnsPart WHERE ".array_key_first($identifier)." = ?";
+
+            try 
+            {
+                $stmt = $this->conection->prepare($sql);
+                $values[] = reset($identifier); //Agrega el ultimo valor para saber identificar la clausula WHERE
+                
+                $stmt->execute($values);
+
+            } catch (Exception $er) {
+                echo $er->getMessage();
+            }    
+        }
+
+        public function useUpdate($table, $identifier, $arrayColumn)
+        {
+            $this->update($table, $identifier, $arrayColumn);
+        }
     }
 ?>
