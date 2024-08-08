@@ -154,7 +154,6 @@
             }
         }
 
-
         public function useInsert($table, $arrayColumn)
         {
             $this->insert($table, $arrayColumn);

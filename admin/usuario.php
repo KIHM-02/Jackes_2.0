@@ -20,6 +20,12 @@
                     $conection->useDelete("rol", $arrayRol);
                     $accion = "all"; //reseteamos la variable accion para mostrar los registros usuario
                 break;
+
+            case "delete_user":
+                    $arrayFilters = ["idUsr" => $idUsr];
+                    $conection->useDelete("trabajador", $arrayFilters);
+                    $accion = "all"; //reseteamos la variable accion para mostrar los registros usuario
+                break;
         }
         
     ?>
@@ -84,7 +90,7 @@
                         <td>
                             <form method="POST">
                                 <input type="hidden" name="txtIdRol" value = "<?php echo htmlspecialchars ($roles['idRol']); ?>">
-                                <button type ="submit" name = "accion" value ="delete_rol">Eliminar</button>
+                                <button type ="submit" class ="btn-black-header" name = "accion" value ="delete_rol">Eliminar</button>
                             </form>
                         </td>
                     </tr>
@@ -116,6 +122,17 @@
                         <p>Direccion: <?php echo htmlspecialchars($data['direccionUsr']);?></p>
                         <p>Telefono: <?php echo htmlspecialchars($data['telefonoUsr']);?></p>
                         <p>Rol: <?php echo htmlspecialchars($data['idRol']); ?></p>
+
+                        <form method="post">
+                            <input type="hidden" name="txtId" value ="<?php echo htmlspecialchars($data['idUsr']);?>">
+                            <button type="submit" class ="btn-black-header" name = "accion" value ="delete_user">Eliminar</button>
+                        </form>
+
+                        <form action="entityModification/usuario_modificar.php" method="post">
+                            <input type="hidden" class ="btn-black-header" name="txtIdUsr" value ="<?php echo htmlspecialchars($data['idUsr']);?>">
+                            <button type="submit" class ="btn-black-header">Modificar</button>
+                        </form>
+
                     </article>
                      <?php
                 }
@@ -140,6 +157,17 @@
                         <p>Direccion: <?php echo htmlspecialchars($data['direccionUsr']);?></p>
                         <p>Telefono: <?php echo htmlspecialchars($data['telefonoUsr']);?></p>
                         <p>Rol: <?php echo htmlspecialchars($data['idRol']); ?></p>
+                        
+                        <form method="post">
+                            <input type="hidden" name="txtId" value ="<?php echo htmlspecialchars($data['idUsr']);?>">
+                            <button type="submit" class ="btn-black-header" name = "accion" value ="delete_user">Eliminar</button>
+                        </form>
+
+                        <form action="entityModification/usuario_modificar.php" method="post">
+                            <input type="hidden" name="txtIdUsr" value ="<?php echo htmlspecialchars($data['idUsr']);?>">
+                            <button type="submit" class ="btn-black-header">Modificar</button>
+                        </form>
+
                     </article>
                      <?php
                 }
