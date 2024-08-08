@@ -40,11 +40,23 @@
 }
 
 
-.btn-black{
-    border-radius: var(--btn-radius);
-    background-color: var(--blue-dark);
+.btn-black, .btn-black-width{
     font-size: var(--text-normal);
     padding: .5vh;
+    color: white;
+}
+
+.btn-black{
+    background-color: var(--blue-dark);
+    border-radius: var(--btn-radius);
+    
+}
+
+.btn-black-width{
+    width: 100%;
+    margin-bottom: var(--bottom-small-margin);
+    border-radius: var(--box-small-radius);
+    background-color: var(--blue-mid);
 }
 
 .btn-black-header{

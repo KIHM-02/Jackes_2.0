@@ -56,6 +56,7 @@ header{
     display: flex;
     flex-flow: row wrap;
     align-items: flex-start;
+    gap: var(--right-margin);
 }
 
 .table-buttons{
@@ -63,11 +64,11 @@ header{
     border: none;
 }
 
-#chkTable{
+.chkTable{
     display: none;
 }
 
-.border-table{
+.hide-component{
     display: none;
     border: 2px solid black;
     border-radius: var(--box-small-radius);
@@ -92,8 +93,18 @@ header{
     margin: 0 var;
 }
 
-#chkTable:checked ~ .border-table{
+.form-table{
+    display: none;
+    flex-flow: column wrap;
+    gap: var(--right-small-margin);
+}
+
+.chkTable:checked ~ .hide-component{
     display: block;
+}
+
+.chkTable:checked ~ .form-table{
+    display: flex;
 }
 
 /*Seccion de despliegue de informacion*/
@@ -144,6 +155,12 @@ header{
     padding: 0.5em;
     box-shadow: 0 2px 2px var(--blue-strong);
     margin: var(--top-margin);
+}
+
+.card div{
+    width: 80%;
+    margin: auto;
+    text-align: center;
 }
 
 /*Responsive*/
@@ -224,6 +241,8 @@ header{
         width: 90%;
         flex-direction: column;
         justify-content: space-evenly;
+        align-items: center;
+        gap: 0;
     }
 
     .table-buttons, .header-buttons{

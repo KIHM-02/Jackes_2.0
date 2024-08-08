@@ -13,6 +13,8 @@
         $arrayFilters = [];
         $arrayRol = [];
 
+        $voidCamp = false;
+
         switch($accion)
         {
             case "delete_rol":
@@ -24,6 +26,20 @@
             case "delete_user":
                     $arrayFilters = ["idUsr" => $idUsr];
                     $conection->useDelete("trabajador", $arrayFilters);
+                    $accion = "all"; //reseteamos la variable accion para mostrar los registros usuario
+                break;
+
+            case "add_rol":
+                    $tipo = (!empty($_POST['txtTipoRol']))? trim($_POST['txtTipoRol']): null;
+                    if($tipo === null)
+                    {
+                        $voidCamp = true;
+                    }
+                    else
+                    {
+                        $arrayRol = ["tipoRol" => $tipo];
+                        $conection->useInsert("rol", $arrayRol);
+                    }
                     $accion = "all"; //reseteamos la variable accion para mostrar los registros usuario
                 break;
         }
@@ -60,12 +76,10 @@
     </form>
 
     <section class = "section-table">
-        <button class ="btn-black-header table-buttons">Agregar Rol</button>
-
         <label for = "chkTable" class ="btn-black-header table-buttons">Desplegar</label>
         <input type="checkbox" name="chkTable" id="chkTable" class ="chkTable table-buttons">
 
-        <div class ="border-table space-top">
+        <div class ="hide-component space-top">
             <table class = "table">
                 <thead>
                     <tr>
@@ -99,6 +113,15 @@
             </table>
         </div>
 
+        <form method ="POST" class ="space-top form-table">
+            <div class ="div-form-inputs">
+                <label for="txtTipoRol">Tipo de rol: </label>
+                <input type="text" class="text-inputs" name="txtTipoRol" id="txtTipoRol" <?php $msg = ($voidCamp=== true)? "No se ingreso ningun rol": ""; echo $msg;?> >
+            </div>
+
+            <button type="submit" class="btn-black" name ="accion" value ="add_rol">Agregar rol</button>
+        </form>
+
     </section>
 
     <section class = "section-title">
@@ -123,16 +146,18 @@
                         <p>Telefono: <?php echo htmlspecialchars($data['telefonoUsr']);?></p>
                         <p>Rol: <?php echo htmlspecialchars($data['idRol']); ?></p>
 
-                        <form method="post">
-                            <input type="hidden" name="txtId" value ="<?php echo htmlspecialchars($data['idUsr']);?>">
-                            <button type="submit" class ="btn-black-header" name = "accion" value ="delete_user">Eliminar</button>
-                        </form>
-
-                        <form action="entityModification/usuario_modificar.php" method="post">
-                            <input type="hidden" class ="btn-black-header" name="txtIdUsr" value ="<?php echo htmlspecialchars($data['idUsr']);?>">
-                            <input type="hidden" class ="btn-black-header" name="accion" value ="envio">
-                            <button type="submit" class ="btn-black-header">Modificar</button>
-                        </form>
+                        <div>
+                            <form method="post">
+                                <input type="hidden" name="txtId" value ="<?php echo htmlspecialchars($data['idUsr']);?>">
+                                <button type="submit" class ="btn-black-width" name = "accion" value ="delete_user">Eliminar</button>
+                            </form>
+    
+                            <form action="entityModification/usuario_modificar.php" method="post">
+                                <input type="hidden" class ="btn-black-header" name="txtIdUsr" value ="<?php echo htmlspecialchars($data['idUsr']);?>">
+                                <input type="hidden" name="accion" value ="envio">
+                                <button type="submit" class ="btn-black-width">Modificar</button>
+                            </form>
+                        </div>
 
                     </article>
                      <?php
@@ -161,12 +186,12 @@
                         
                         <form method="post">
                             <input type="hidden" name="txtId" value ="<?php echo htmlspecialchars($data['idUsr']);?>">
-                            <button type="submit" class ="btn-black-header" name = "accion" value ="delete_user">Eliminar</button>
+                            <button type="submit" class ="btn-black-width" name = "accion" value ="delete_user">Eliminar</button>
                         </form>
 
                         <form action="entityModification/usuario_modificar.php" method="post">
                             <input type="hidden" name="txtIdUsr" value ="<?php echo htmlspecialchars($data['idUsr']);?>">
-                            <button type="submit" class ="btn-black-header">Modificar</button>
+                            <button type="submit" class ="btn-black-width">Modificar</button>
                         </form>
 
                     </article>
