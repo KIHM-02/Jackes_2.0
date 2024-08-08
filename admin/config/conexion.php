@@ -106,5 +106,35 @@
             $rows = $this->select($statement);
             return $rows;
         }
+
+        private function delete($table, $arrayColumn)
+        {
+            $statement = "DELETE FROM ".$table;
+
+            try
+            {
+                foreach($arrayColumn as $column => $value)
+                {
+                    $statement .= " WHERE ".$column." = ".$value;      
+                }
+
+                $query = $this->conection->prepare($statement);
+                $query->execute();
+            }
+            catch(Exception $er)
+            {
+                echo $er->getMessage();
+            }
+        }
+
+        public function useDelete($table, $arrayColumn)
+        {
+            $this->delete($table, $arrayColumn);
+        }
+
+        private function insert()
+        {
+            
+        }
     }
 ?>

@@ -3,14 +3,25 @@
     <?php
         require_once("config/conexion.php");
 
-        $accion = ($_POST)? $_POST['accion']: "";
+        $conection = new Conexion(); //var para instanciar clase usuario
+        $accion = ($_POST)? $_POST['accion']: "all";
 
         $idUsr  = ($_POST) && !empty($_POST['txtId'])? intval($_POST['txtId']): null;
         $name   = ($_POST) && !empty($_POST['txtName'])? $_POST['txtName']: null;
         $rol    = ($_POST) && !empty($_POST['txtIdRol'])? intval($_POST['txtIdRol']): null;
 
-        $conection = new Conexion(); //var para instanciar clase usuario
         $arrayFilters = [];
+        $arrayRol = [];
+
+        switch($accion)
+        {
+            case "delete_rol":
+                    $arrayRol = ["idRol" => $rol];
+                    $conection->useDelete("rol", $arrayRol);
+                    $accion = "all"; //reseteamos la variable accion para mostrar los registros usuario
+                break;
+        }
+        
     ?>
 
     <header>
@@ -38,7 +49,7 @@
         </div>
 
         <div class ="div-form-inputs space-top">
-            <input class ="btn-black-header" type="submit" value="Filtrar" name ="accion">
+            <button class ="btn-black-header" type="submit" value="filtrar" name ="accion">Filtrar</button>
         </div>
     </form>
 
@@ -54,30 +65,30 @@
                     <tr>
                         <th>ID rol</th>
                         <th>Tipo rol</th>
-                        <th>Modificar</th>
                         <th>Eliminar</th>
                     </tr>
                 </thead>
 
                 <tbody>
+
+                <?php 
+                    $arrayRol = ["idRol" => null];
+                    $rolesData = $conection->getData("rol", $arrayRol);
+
+                    foreach($rolesData as $roles)
+                    {
+                ?>
                     <tr>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>4</td>
+                        <td><?php echo htmlspecialchars ($roles['idRol']); ?></td>
+                        <td><?php echo htmlspecialchars ($roles['tipoRol']); ?></td>
+                        <td>
+                            <form method="POST">
+                                <input type="hidden" name="txtIdRol" value = "<?php echo htmlspecialchars ($roles['idRol']); ?>">
+                                <button type ="submit" name = "accion" value ="delete_rol">Eliminar</button>
+                            </form>
+                        </td>
                     </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>4</td>
-                    </tr>
+                <?php } ?>
                 </tbody>
             </table>
         </div>
@@ -91,10 +102,9 @@
     <section class ="info-container">
 
         <?php
-
         switch($accion)
         {
-            case "":
+            case "all":
                 $arrayFilters = ["idUsr" => null]; //Arreglo de filtros en null para que se ejecute una consulta select sin condiciones
                 $userData = $conection->getData("trabajador", $arrayFilters);
 
@@ -112,7 +122,7 @@
 
                 break;
 
-            case "Filtrar":
+            case "filtrar":
 
                 $arrayFilters = [
                     "idUsr" => $idUsr,
