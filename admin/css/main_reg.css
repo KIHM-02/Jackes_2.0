@@ -13,6 +13,16 @@ header{
 
 }
 
+.warning-box{
+    width: 50%;
+    margin: 10px auto;
+    padding: 5px;
+    font-size: var(--text-normal);
+    text-align: center;
+    color: var(--formal-white);
+    background-color: var(--warning-message);
+    border-radius: var(--box-small-radius);
+}
 /* Formulario de entradas*/
 
 .form-register{
@@ -72,6 +82,12 @@ section.divider{
     }
 
     .section-title, .section-inputs{
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 530px) {
+    .inputs{
         width: 100%;
     }
 }

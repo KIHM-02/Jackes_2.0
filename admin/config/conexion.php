@@ -132,9 +132,32 @@
             $this->delete($table, $arrayColumn);
         }
 
-        private function insert()
+        private function insert($table, $arrayColumn)
         {
-            
+            $columns = array_keys($arrayColumn);
+            $values = array_values($arrayColumn);
+
+            // Crear las partes de las columnas y valores de la consulta SQL
+            $columnsPart = implode(", ", $columns);
+            $placeholdersPart = implode(", ", array_fill(0, count($values), '?'));
+            //array_fill crea un arreglo del mismo tamaño que values (los valores)
+            //El ? es para indicar que seran puros ? los cuales sustituiremos al ejecutar la consulta
+
+            $sql = "INSERT INTO " . $table . " ($columnsPart) VALUES ($placeholdersPart)";
+
+            try {
+                $stmt = $this->conection->prepare($sql);
+                $stmt->execute($values);
+
+            } catch (Exception $er) {
+                echo $er->getMessage();
+            }
+        }
+
+
+        public function useInsert($table, $arrayColumn)
+        {
+            $this->insert($table, $arrayColumn);
         }
     }
 ?>
