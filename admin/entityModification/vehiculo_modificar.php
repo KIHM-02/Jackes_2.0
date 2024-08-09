@@ -79,14 +79,14 @@
     ?>
 
     <header>
-        <h2 class ="subtitle">Agregar vehiculo</h2>
+        <h2 class ="subtitle">Modificar recorrido</h2>
     </header>
 
     <?php  //Mostrar advertencia de campos vacios
         if($voidValues)
         { ?>
             <div class ="warning-box">
-                <p>Hay campos de informacion vacios, no se pudo procesar la peticion</p>
+                <p>Hay campos de informacion vacios, no se pudo procesar la petición</p>
             </div>
     <?php 
         } 
@@ -161,7 +161,7 @@
         </section>
         <section>
             <div class ="aligner-center">
-            <button type="submit" class = "btn-black-header space-top" name ="accion" value ="modificar">Modificar</button>
+                <button type="submit" class = "btn-black-header space-top" name ="accion" value ="modificar">Modificar</button>
             </div>
         </section>
     <?php 

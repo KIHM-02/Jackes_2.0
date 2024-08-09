@@ -184,20 +184,21 @@
                         <p><span class="negritas">telefono: </span><?php echo htmlspecialchars($data['telefonoUsr']);?></p>
                         <p><span class="negritas">Rol: </span><?php echo htmlspecialchars($data['idRol']); ?></p>
 
-                        
-                        <form method="post">
-                            <input type="hidden" name="txtId" value ="<?php echo htmlspecialchars($data['idUsr']);?>">
-                            <button type="submit" class ="btn-black-width" name = "accion" value ="delete_user">Eliminar</button>
-                        </form>
+                        <div>
+                            <form method="post">
+                                <input type="hidden" name="txtId" value ="<?php echo htmlspecialchars($data['idUsr']);?>">
+                                <button type="submit" class ="btn-black-width" name = "accion" value ="delete_user">Eliminar</button>
+                            </form>
 
-                        <form action="entityModification/usuario_modificar.php" method="post">
-                            <input type="hidden" name="txtIdUsr" value ="<?php echo htmlspecialchars($data['idUsr']);?>">
-                            <input type="hidden" name="accion" value ="envio">
-                            <button type="submit" class ="btn-black-width">Modificar</button>
-                        </form>
+                            <form action="entityModification/usuario_modificar.php" method="post">
+                                <input type="hidden" name="txtIdUsr" value ="<?php echo htmlspecialchars($data['idUsr']);?>">
+                                <input type="hidden" name="accion" value ="envio">
+                                <button type="submit" class ="btn-black-width">Modificar</button>
+                            </form>
+                        </div>
 
                     </article>
-                     <?php
+                    <?php
                 }
 
                 break;

@@ -23,9 +23,9 @@
                     $accion = "all"; //reseteamos la variable accion para mostrar los registros usuario
                 break;
 
-            case "delete_user":
-                    $arrayFilters = ["idUsr" => $idUsr];
-                    $conection->useDelete("trabajador", $arrayFilters);
+            case "delete_cliente":
+                    $arrayFilters = ["idClie" => $idClie];
+                    $conection->useDelete("cliente", $arrayFilters);
                     $accion = "all"; //reseteamos la variable accion para mostrar los registros usuario
                 break;
 
@@ -149,6 +149,20 @@
                         <p><span class = "negritas">Num interior: </span> <?php echo htmlspecialchars($data['numInteriorClie']); ?></p>
                         <p><span class = "negritas">Num exterior: </span> <?php echo htmlspecialchars($data['numExteriorClie']); ?></p>
                         <p><span class = "negritas">Id municipio: </span> <?php echo htmlspecialchars($data['idMunicipio']); ?></p>
+
+                        <div>
+                            <form method="post">
+                                <input type="hidden" name="txtClientId" value ="<?php echo htmlspecialchars($data['idClie']); ?>">
+                                <button type="submit" class ="btn-black-width" name = "accion" value ="delete_cliente">Eliminar</button>
+                            </form>
+
+                            <form action="entityModification/cliente_modificar.php" method="post">
+                                <input type="hidden" name="txtClientId" value ="<?php echo htmlspecialchars($data['idClie']);?>">
+                                <input type="hidden" name="accion" value ="envio">
+                                <button type="submit" class ="btn-black-width">Modificar</button>
+                            </form>
+                        </div>
+                                                
                     </article>
                     <?php
 
@@ -176,6 +190,19 @@
                             <p><span class = "negritas">Num interior: </span> <?php echo htmlspecialchars($data['numInteriorClie']); ?></p>
                             <p><span class = "negritas">Num exterior: </span> <?php echo htmlspecialchars($data['numExteriorClie']); ?></p>
                             <p><span class = "negritas">Id municipio: </span> <?php echo htmlspecialchars($data['idMunicipio']); ?></p>
+
+                            <div>
+                                <form method="post">
+                                    <input type="hidden" name="txtClientId" value ="<?php echo htmlspecialchars($data['idClie']);?>">
+                                    <button type="submit" class ="btn-black-width" name = "accion" value ="delete_cliente">Eliminar</button>
+                                </form>
+
+                                <form action="entityModification/cliente_modificar.php" method="post">
+                                    <input type="hidden" name="txtClientId" value ="<?php echo htmlspecialchars($data['idClie']);?>">
+                                    <input type="hidden" name="accion" value ="envio">
+                                    <button type="submit" class ="btn-black-width">Modificar</button>
+                                </form>
+                            </div>                        
                         </article>
                         <?php
     
