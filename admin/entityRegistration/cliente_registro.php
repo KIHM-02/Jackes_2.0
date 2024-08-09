@@ -4,7 +4,7 @@
         require_once("../config/conexion.php");
 
         $conection = new Conexion(); //var para instanciar clase usuario
-        $arrayRol = [];
+        $arrayMuni = [];
         $arrayValues = [];
         $incorrectPwd = false;
         $voidValues = false;
