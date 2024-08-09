@@ -6,7 +6,7 @@
         $conection = new Conexion(); //var para instanciar clase usuario
         $accion = ($_POST)? $_POST['accion']: "all";
 
-        $idUsr  = ($_POST) && !empty($_POST['txtId'])? intval($_POST['txtId']): null;
+        $idClie  = ($_POST) && !empty($_POST['txtClientId'])? intval($_POST['txtClientId']): null;
         $name      = ($_POST) && !empty($_POST['txtName'])? $_POST['txtName']: null;
         $municipio = ($_POST) && !empty($_POST['txtIdMuni'])? intval($_POST['txtIdMuni']): null;
 
@@ -30,14 +30,14 @@
                 break;
 
             case "add_municipio":
-                    $tipo = (!empty($_POST['txtTipoMuni']))? trim($_POST['txtTipolmuni']): null;
+                    $tipo = (!empty($_POST['txtTipoMuni']))? trim($_POST['txtTipoMuni']): null;
                     if($tipo === null)
                     {
                         $voidCamp = true;
                     }
                     else
                     {
-                        $arraymunicipio = ["tipomuni" => $tipo];
+                        $arrayMunicipio = ["municipio" => $tipo];
                         $conection->useInsert("municipio", $arrayMunicipio);
                     }
                     $accion = "all"; //reseteamos la variable accion para mostrar los registros usuario
@@ -66,18 +66,16 @@
         </div>
 
         <div class ="div-form-inputs">
-            <label for="inputMunicipio">Municipio</label>
-            <input class ="text-inputs" type="text" name="txtMunicipio" id="inputMunicipio">
+            <label for="inputMunicipio">Id de municipio</label>
+            <input class ="text-inputs" type="text" name="txtIdMuni" id="inputMunicipio">
         </div>
 
         <div class ="div-form-inputs space-top">
-            <input class ="btn-black-header" type="submit" value="Buscar">
+            <button type="submit" class ="btn-black-header" name="accion" value="filtrar">Filtrar</button>
         </div>
     </form>
 
-    <section class = "section-table">
-        <button class ="btn-black-header table-buttons">Agregar municipio</button>
-            
+    <section class = "section-table">            
         <label for = "chkTable" class ="btn-black-header table-buttons">Desplegar</label>
         <input type="checkbox" name="chkTable" id="chkTable" class ="chkTable table-buttons">
 
@@ -117,12 +115,14 @@
             </table>
         </div>
 
-        <form method="post"> class ="space-top form-table">
-            <div class ="div=form=inputs">
+        <form method="post" class ="space-top form-table">
+            <div class ="div-form-inputs">
+                <label for="txtTipoMuni">Tipo de municipio: </label>
+                <input type="text" class="text-inputs" name="txtTipoMuni" id="txtTipoMuni">
+            <div>
 
+            <button type="submit" class="btn-black" name ="accion" value ="add_municipio">Agregar municipio</button>            
         </form>
-
-
 
     </section>
 
@@ -131,50 +131,61 @@
     </section>
 
     <section class ="info-container">
-        <article class ="card">
-            <p>Id Cliente</p>
-            <p>Nombres</p>
-            <p>Apellidos</p>
-            <p>Colonia</p>
-            <p>Dirección</p>
-            <p>Telefono</p>
-            <p>Num interior</p>
-            <p>Num exterior</p>
-            <p>Id Municipio</p>
-        </article>
-        <article class ="card">
-            <p>Id Cliente</p>
-            <p>Nombres</p>
-            <p>Apellidos</p>
-            <p>Colonia</p>
-            <p>Dirección</p>
-            <p>Telefono</p>
-            <p>Num interior</p>
-            <p>Num exterior</p>
-            <p>Id Municipio</p>
-        </article>
-        <article class ="card">
-            <p>Id Cliente</p>
-            <p>Nombres</p>
-            <p>Apellidos</p>
-            <p>Colonia</p>
-            <p>Dirección</p>
-            <p>Telefono</p>
-            <p>Num interior</p>
-            <p>Num exterior</p>
-            <p>Id Municipio</p>
-        </article>
-        <article class ="card">
-            <p>Id Cliente</p>
-            <p>Nombres</p>
-            <p>Apellidos</p>
-            <p>Colonia</p>
-            <p>Dirección</p>
-            <p>Telefono</p>
-            <p>Num interior</p>
-            <p>Num exterior</p>
-            <p>Id Municipio</p>
-        </article>
+        <?php 
+        switch($accion)
+        {
+            case "all":
+                $arrayFilters = ["idClie" => null]; //Arreglo de filtros en null para que se arregle una consulta select sin condiciones
+                $clieData = $conection->getData("cliente", $arrayFilters);
+
+                foreach($clieData as $data)
+                {   ?>
+                    <article class ="card">
+                        <p><span class="negritas">Id Cliente: </span> <?php echo htmlspecialchars($data['idClie']); ?></p>
+                        <p><span class = "negritas">Nombres: </span> <?php echo htmlspecialchars($data['nombreClie']." ".$data['apePatClie']." ".$data['apeMatClie']); ?></p>
+                        <p><span class = "negritas">Colonia: </span> <?php echo htmlspecialchars($data['coloniaClie']); ?></p>
+                        <p><span class = "negritas">Dirección: </span> <?php echo htmlspecialchars($data['direccionClie']); ?></p>
+                        <p><span class = "negritas">Telefono: </span> <?php echo htmlspecialchars($data['telefonoClie']); ?></p>
+                        <p><span class = "negritas">Num interior: </span> <?php echo htmlspecialchars($data['numInteriorClie']); ?></p>
+                        <p><span class = "negritas">Num exterior: </span> <?php echo htmlspecialchars($data['numExteriorClie']); ?></p>
+                        <p><span class = "negritas">Id municipio: </span> <?php echo htmlspecialchars($data['idMunicipio']); ?></p>
+                    </article>
+                    <?php
+
+                }
+
+                break;
+
+            case "filtrar":
+                    $arrayFilters = [
+                        "idClie" => $idClie,
+                        "nombreClie" => $name,
+                        "idMunicipio" => $municipio
+                    ];
+
+                    $clieData = $conection->getData("cliente", $arrayFilters);
+
+                    foreach($clieData as $data)
+                    {   ?>
+                        <article class ="card">
+                            <p><span class="negritas">Id Cliente: </span> <?php echo htmlspecialchars($data['idClie']); ?></p>
+                            <p><span class = "negritas">Nombres: </span> <?php echo htmlspecialchars($data['nombreClie']." ".$data['apePatClie']." ".$data['apeMatClie']); ?></p>
+                            <p><span class = "negritas">Colonia: </span> <?php echo htmlspecialchars($data['coloniaClie']); ?></p>
+                            <p><span class = "negritas">Dirección: </span> <?php echo htmlspecialchars($data['direccionClie']); ?></p>
+                            <p><span class = "negritas">Telefono: </span> <?php echo htmlspecialchars($data['telefonoClie']); ?></p>
+                            <p><span class = "negritas">Num interior: </span> <?php echo htmlspecialchars($data['numInteriorClie']); ?></p>
+                            <p><span class = "negritas">Num exterior: </span> <?php echo htmlspecialchars($data['numExteriorClie']); ?></p>
+                            <p><span class = "negritas">Id municipio: </span> <?php echo htmlspecialchars($data['idMunicipio']); ?></p>
+                        </article>
+                        <?php
+    
+                    }
+    
+                    break;
+        }
+        
+        ?>
+
     </section>
 
 <?php include("template/footer.php") ?>
