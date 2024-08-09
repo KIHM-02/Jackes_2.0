@@ -195,8 +195,8 @@
                                 <button type="submit" class ="btn-black-width" name = "accion" value ="delete_cond">Eliminar</button>
                             </form>
 
-                            <form action="entityModification/usuario_modificar.php" method="post">
-                                <input type="hidden" name="txtIdUsr" value ="<?php echo htmlspecialchars($conduce['idCond']);?>">
+                            <form action="entityModification/vehiculo_modificar.php" method="post">
+                                <input type="hidden" name="txtIdCond" value ="<?php echo htmlspecialchars($conduce['idCond']);?>">
                                 <input type="hidden" name="accion" value ="envio">
                                 <button type="submit" class ="btn-black-width">Modificar</button>
                             </form>
@@ -237,8 +237,8 @@
                                 <button type="submit" class ="btn-black-width" name = "accion" value ="delete_cond">Eliminar</button>
                             </form>
 
-                            <form action="entityModification/usuario_modificar.php" method="post">
-                                <input type="hidden" name="txtIdUsr" value ="<?php echo htmlspecialchars($conduce['idCond']);?>">
+                            <form action="entityModification/vehiculo_modificar.php" method="post">
+                                <input type="hidden" name="txtIdCond" value ="<?php echo htmlspecialchars($conduce['idCond']);?>">
                                 <input type="hidden" name="accion" value ="envio">
                                 <button type="submit" class ="btn-black-width">Modificar</button>
                             </form>
@@ -294,8 +294,8 @@
                                     <button type="submit" class ="btn-black-width" name = "accion" value ="delete_cond">Eliminar</button>
                                 </form>
     
-                                <form action="entityModification/usuario_modificar.php" method="post">
-                                    <input type="hidden" name="txtIdUsr" value ="<?php echo htmlspecialchars($conduce['idCond']);?>">
+                                <form action="entityModification/vehiculo_modificar.php" method="post">
+                                    <input type="hidden" name="txtIdCond" value ="<?php echo htmlspecialchars($conduce['idCond']);?>">
                                     <input type="hidden" name="accion" value ="envio">
                                     <button type="submit" class ="btn-black-width">Modificar</button>
                                 </form>
