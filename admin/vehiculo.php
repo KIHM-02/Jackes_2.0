@@ -9,6 +9,9 @@
         $idUsr  = ($_POST) && !empty($_POST['txtIdUsr'])? intval($_POST['txtIdUsr']): null;
         $idVehi = ($_POST) && !empty($_POST['txtCarId'])? intval($_POST['txtCarId']): null;
 
+        $firstDate = ($_POST) && !empty($_POST['firstDate'])? $_POST['firstDate']: null;
+        $lastDate = ($_POST) && !empty($_POST['lastDate'])? $_POST['lastDate']: null;
+
         $arrayFilters = [];
         $arrayVehiculo = [];
 
@@ -42,6 +45,7 @@
                     $accion = "all"; //reseteamos la variable accion para mostrar los registros usuario
                 break;
         }
+
     ?>
 
     <header>
@@ -64,7 +68,7 @@
         </div>
 
         <div class ="div-form-inputs space-top">
-            <input class ="btn-black-header" type="submit" value="Buscar">
+            <button type="submit" class ="btn-black-header" name ="accion" value ="filtrar">Filtrar</button>
         </div>
     </form>
 
@@ -126,12 +130,12 @@
             </article>
 
             <article>
-                <label for="LastDate">Fecha final</label>
-                <input type="date" name="LasttDate" id="LastDate">
+                <label for="lastDate">Fecha final</label>
+                <input type="date" name="lastDate" id="lastDate">
             </article>
 
             <article class ="table-buttons">
-                <input type="submit" value="Buscar" class ="btn-black-header header-buttons">
+                <button type="submit" class ="btn-black-header header-buttons" name = "accion" value ="fecha">Filtrar</button>
             </article>
         </form>
 
@@ -154,8 +158,152 @@
                     $diaInicio = (string)$diaInicio;
                     $mesInicio = (string)$mesInicio;
 
-                    ///////////////////////////////
+                    $fechaInicio =[
+                        "dia" => $diaInicio,
+                        "mes" => $mesInicio,
+                        "anio" => $anio
+                    ];
+                
+                    $fechaFin = [
+                        "dia" => $diaFinal,
+                        "mes" => $mesFinal,
+                        "anio" => $anio
+                    ];
+
+                    $conduceData = $conection->getDataInRange("conduce", $fechaInicio, $fechaFin);
+                    
+                    foreach($conduceData as $conduce)
+                    {  
+                        $diaCond  = $conduce['dia'];
+                        $mesCond  = $conduce['mes'];
+                        $anioCond = $conduce['anio'];
+
+                        $fecha_html = sprintf("%04d-%02d-%02d", $anioCond, $mesCond, $diaCond);
+                        ?>
+                        <article class ="card">
+                            <p><span class="negritas">Id Conduccion: </span><?php echo htmlspecialchars($conduce['idCond']);?></p>
+                            <label class="negritas" for="txtFecha">Fecha</label>
+                            <input type="date" name="txtFecha" id="txtFecha" value ="<?php echo $fecha_html; ?>">
+                            <p><span class="negritas">Recorrido: </span><?php echo htmlspecialchars($conduce['distanciaCond']);?></p>
+                            <p><span class="negritas">Id trabajador: </span><?php echo htmlspecialchars($conduce['idUsr']);?></p>
+                            <p><span class="negritas">Id vehiculo: </span><?php echo htmlspecialchars($conduce['idVehi']); ?></p>
+
+                                
+                            <form method="post">
+                                <input type="hidden" name="txtId" value ="<?php echo htmlspecialchars($conduce['idCond']);?>">
+                                <button type="submit" class ="btn-black-width" name = "accion" value ="delete_cond">Eliminar</button>
+                            </form>
+
+                            <form action="entityModification/usuario_modificar.php" method="post">
+                                <input type="hidden" name="txtIdUsr" value ="<?php echo htmlspecialchars($conduce['idCond']);?>">
+                                <input type="hidden" name="accion" value ="envio">
+                                <button type="submit" class ="btn-black-width">Modificar</button>
+                            </form>
+
+                        </article>
+                        <?php
+                    }
+
                 break;
+
+            case "filtrar":
+                    $arrayFilters = [
+                        "idUsr" => $idUsr,
+                        "idVehi" => $idVehi
+                    ];
+
+                    $conduceData = $conection->getData("conduce", $arrayFilters);
+
+                    foreach($conduceData as $conduce)
+                    {  
+                        $diaCond  = $conduce['dia'];
+                        $mesCond  = $conduce['mes'];
+                        $anioCond = $conduce['anio'];
+
+                        $fecha_html = sprintf("%04d-%02d-%02d", $anioCond, $mesCond, $diaCond);
+                        ?>
+                        <article class ="card">
+                            <p><span class="negritas">Id Conduccion: </span><?php echo htmlspecialchars($conduce['idCond']);?></p>
+                            <label class="negritas" for="txtFecha">Fecha</label>
+                            <input type="date" name="txtFecha" id="txtFecha" value ="<?php echo $fecha_html; ?>">
+                            <p><span class="negritas">Recorrido: </span><?php echo htmlspecialchars($conduce['distanciaCond']);?></p>
+                            <p><span class="negritas">Id trabajador: </span><?php echo htmlspecialchars($conduce['idUsr']);?></p>
+                            <p><span class="negritas">Id vehiculo: </span><?php echo htmlspecialchars($conduce['idVehi']); ?></p>
+
+                                
+                            <form method="post">
+                                <input type="hidden" name="txtId" value ="<?php echo htmlspecialchars($conduce['idCond']);?>">
+                                <button type="submit" class ="btn-black-width" name = "accion" value ="delete_cond">Eliminar</button>
+                            </form>
+
+                            <form action="entityModification/usuario_modificar.php" method="post">
+                                <input type="hidden" name="txtIdUsr" value ="<?php echo htmlspecialchars($conduce['idCond']);?>">
+                                <input type="hidden" name="accion" value ="envio">
+                                <button type="submit" class ="btn-black-width">Modificar</button>
+                            </form>
+
+                        </article>
+                        <?php
+                    }
+                break;
+                    
+            case "fecha":
+                    if($firstDate === null || $lastDate === null)
+                    {
+                        echo "Alguna de las fechas no fue indicada, favor de indicar todas las fechas";
+                    }
+                    else
+                    {
+                        list($anioInicio, $mesInicio, $diaInicio) = explode('-', $firstDate);
+                        list($anioFinal, $mesFinal, $diaFinal) = explode('-', $lastDate);
+
+                        $fechaInicio =[
+                            "dia" => $diaInicio,
+                            "mes" => $mesInicio,
+                            "anio" => $anioInicio
+                        ];
+                    
+                        $fechaFin = [
+                            "dia" => $diaFinal,
+                            "mes" => $mesFinal,
+                            "anio" => $anioFinal
+                        ];
+    
+                        $conduceData = $conection->getDataInRange("conduce", $fechaInicio, $fechaFin);
+                    
+                        foreach($conduceData as $conduce)
+                        {  
+                            $diaCond  = $conduce['dia'];
+                            $mesCond  = $conduce['mes'];
+                            $anioCond = $conduce['anio'];
+
+                            $fecha_html = sprintf("%04d-%02d-%02d", $anioCond, $mesCond, $diaCond);
+                            ?>
+                            <article class ="card">
+                                <p><span class="negritas">Id Conduccion: </span><?php echo htmlspecialchars($conduce['idCond']);?></p>
+                                <label class="negritas" for="txtFecha">Fecha</label>
+                                <input type="date" name="txtFecha" id="txtFecha" value ="<?php echo $fecha_html; ?>">
+                                <p><span class="negritas">Recorrido: </span><?php echo htmlspecialchars($conduce['distanciaCond']);?></p>
+                                <p><span class="negritas">Id trabajador: </span><?php echo htmlspecialchars($conduce['idUsr']);?></p>
+                                <p><span class="negritas">Id vehiculo: </span><?php echo htmlspecialchars($conduce['idVehi']); ?></p>
+    
+                                    
+                                <form method="post">
+                                    <input type="hidden" name="txtId" value ="<?php echo htmlspecialchars($conduce['idCond']);?>">
+                                    <button type="submit" class ="btn-black-width" name = "accion" value ="delete_cond">Eliminar</button>
+                                </form>
+    
+                                <form action="entityModification/usuario_modificar.php" method="post">
+                                    <input type="hidden" name="txtIdUsr" value ="<?php echo htmlspecialchars($conduce['idCond']);?>">
+                                    <input type="hidden" name="accion" value ="envio">
+                                    <button type="submit" class ="btn-black-width">Modificar</button>
+                                </form>
+    
+                            </article>
+                            <?php
+                        }
+                    }
+                break;       
         }
         ?>
 

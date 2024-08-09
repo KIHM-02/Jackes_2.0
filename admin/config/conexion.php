@@ -81,8 +81,6 @@
         private function selectFiltered($table, $arrayFilters)
         {    
             $sql = "SELECT * FROM ".$table." WHERE 1=1";
-            //SELECT * FROM `conduce` WHERE mesCond BETWEEN 05 AND 9;
-            //Tienes que hacer un metodo para esta consulta de vehiculo
 
             foreach($arrayFilters as $key => $value)
             {
@@ -102,8 +100,16 @@
             return $sql;
         }
 
-        function generateDateRangeQuery($tabla, $fechaInicio, $fechaFin) 
+        public function getData($table, $arrayFilters)
         {
+            $statement = $this->selectFiltered($table, $arrayFilters);
+            $rows = $this->select($statement);
+            return $rows;
+        }
+
+        private function generateDateRangeQuery($tabla, $fechaInicio, $fechaFin) 
+        {
+
             // Aseguramos que los valores de mes y día tengan siempre dos dígitos
             $diaInicio = str_pad($fechaInicio['dia'], 2, '0', STR_PAD_LEFT);
             $mesInicio = str_pad($fechaInicio['mes'], 2, '0', STR_PAD_LEFT);
@@ -128,14 +134,7 @@
         public function getDataInRange($table, $fechaInicio, $fechaFin)
         {
             $stmt = $this->generateDateRangeQuery($table, $fechaInicio, $fechaFin);
-            $rows = $this->select($statement);
-            return $rows;
-        }
-
-        public function getData($table, $arrayFilters)
-        {
-            $statement = $this->selectFiltered($table, $arrayFilters);
-            $rows = $this->select($statement);
+            $rows = $this->select($stmt);
             return $rows;
         }
 
