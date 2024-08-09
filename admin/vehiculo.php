@@ -138,14 +138,27 @@
     </section>
 
     <section class ="info-container">
-        <article class ="card">
-            <p>Id Conduccion</p>
-            <label for="txtDateView">Fecha</label>
-            <input type="date" name="txtDateView" id="txtDateView">
-            <p>Distancia</p>
-            <p>Id usuario</p>
-            <p>Id vehiculo</p>
-        </article>
+        
+
+        <?php 
+        switch($accion)
+        {
+            case "all":
+                    $diaFinal = date('d');
+                    $mesFinal = date('m');
+                    $anio = date('Y');
+
+                    $diaInicio = intval($diaFinal)-1;
+                    $mesInicio = intval($mesFinal)-1;
+
+                    $diaInicio = (string)$diaInicio;
+                    $mesInicio = (string)$mesInicio;
+
+                    ///////////////////////////////
+                break;
+        }
+        ?>
+
     </section>
 
 <?php include("template/footer.php") ?>

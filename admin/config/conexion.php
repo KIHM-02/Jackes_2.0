@@ -81,6 +81,8 @@
         private function selectFiltered($table, $arrayFilters)
         {    
             $sql = "SELECT * FROM ".$table." WHERE 1=1";
+            //SELECT * FROM `conduce` WHERE mesCond BETWEEN 05 AND 9;
+            //Tienes que hacer un metodo para esta consulta de vehiculo
 
             foreach($arrayFilters as $key => $value)
             {
@@ -98,6 +100,36 @@
             }
 
             return $sql;
+        }
+
+        function generateDateRangeQuery($tabla, $fechaInicio, $fechaFin) 
+        {
+            // Aseguramos que los valores de mes y día tengan siempre dos dígitos
+            $diaInicio = str_pad($fechaInicio['dia'], 2, '0', STR_PAD_LEFT);
+            $mesInicio = str_pad($fechaInicio['mes'], 2, '0', STR_PAD_LEFT);
+            $anioInicio = $fechaInicio['anio'];
+        
+            $diaFin = str_pad($fechaFin['dia'], 2, '0', STR_PAD_LEFT);
+            $mesFin = str_pad($fechaFin['mes'], 2, '0', STR_PAD_LEFT);
+            $anioFin = $fechaFin['anio'];
+        
+            // Concatenamos las partes de la fecha en el formato YYYYMMDD
+            $fechaInicioConcat = "$anioInicio$mesInicio$diaInicio";
+            $fechaFinConcat = "$anioFin$mesFin$diaFin";
+        
+            // Generamos la sentencia SQL
+            $sql = "SELECT * FROM $tabla 
+                    WHERE (CAST(CONCAT(anio, LPAD(mes, 2, '0'), LPAD(dia, 2, '0')) AS UNSIGNED) >= $fechaInicioConcat)
+                    AND (CAST(CONCAT(anio, LPAD(mes, 2, '0'), LPAD(dia, 2, '0')) AS UNSIGNED) <= $fechaFinConcat)";
+        
+            return $sql;
+        }
+        
+        public function getDataInRange($table, $fechaInicio, $fechaFin)
+        {
+            $stmt = $this->generateDateRangeQuery($table, $fechaInicio, $fechaFin);
+            $rows = $this->select($statement);
+            return $rows;
         }
 
         public function getData($table, $arrayFilters)
