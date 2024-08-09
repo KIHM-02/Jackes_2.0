@@ -8,6 +8,7 @@
         $arrayValues = [];
         $voidValues = false;
         $condData = "";
+        $idCond = null;
 
         $accion = isset($_POST['accion'])? $_POST['accion'] : header("Location:../vehiculo.php"); //Evitamos que el usuario acceda a esta zona por url
         
@@ -23,47 +24,52 @@
 
             case "modificar":
                 
-                $voidValues = false;
-                
-                $idCond     = $_POST['txtIdCond'];
-                $name      = (!empty($_POST['txtName']))? trim($_POST['txtName']): null;
-                $apePat    = (!empty($_POST['txtPaterno']))? trim($_POST['txtPaterno']): null;
-                $apeMat    = (!empty($_POST['txtMaterno']))? trim($_POST['txtMaterno']): null;
-                $tel       = (!empty($_POST['txtTel']))? trim($_POST['txtTel']): null;
-                $rol       = (!empty($_POST['txtRol']))? trim($_POST['txtRol']): null;
-                $domicilio = (!empty($_POST['txtUbication']))? trim($_POST['txtUbication']): null;
+                $idCond    = $_POST['txtIdCond'];
+                $fecha     = (!empty($_POST['txtDate']))? trim($_POST['txtDate']): null;
+                $idUsr     = (!empty($_POST['txtWorkerId']))? trim($_POST['txtWorkerId']): null;
+                $idVehi    = (!empty($_POST['txtCarId']))? trim($_POST['txtCarId']): null;
+                $recorrido = (!empty($_POST['txtDistance']))? trim($_POST['txtDistance']): null;
 
-                $arrayValues = [
-                    "nombreUsr" => $name,
-                    "apePatUsr" => $apePat,
-                    "apeMatUsr" => $apeMat,
-                    "direccionUsr" => $domicilio,
-                    "telefonoUsr" => $tel,
-                    "idRol" => $rol
-                ];
-
-                foreach($arrayValues as $camp => $value)
+                if($fecha !== null)
                 {
-                    if($value === null)
+                    list($anio, $mes, $dia) = explode('-', $fecha);
+
+                    $arrayValues = [
+                        "dia" => $dia,
+                        "mes" => $mes,
+                        "anio" => $anio,
+                        "distanciaCond" => $recorrido,
+                        "idUsr" => $idUsr,
+                        "idVehi" => $idVehi
+                    ];
+    
+                    foreach($arrayValues as $camp => $value)
                     {
-                        $voidValues = true;
-                        break;
+                        if($value === null)
+                        {
+                            $voidValues = true;
+                            break;
+                        }
+                    }
+        
+                    if($voidValues === false)
+                    { 
+                        try
+                        {
+                            $identifier = ["idCond" => $idCond];
+                            $conection->useUpdate("conduce", $identifier, $arrayValues);
+    
+                            header("Location:../vehiculo.php");
+                        }
+                        catch(Exception $er)
+                        {
+                            echo $er->getMessage();
+                        }
                     }
                 }
-    
-                if($voidValues === false)
-                { 
-                    try
-                    {
-                        $identifier = ["idCond" => $idCond];
-                        $conection->useUpdate("trabajador", $identifier, $arrayValues);
-
-                        header("Location:../usuario.php");
-                    }
-                    catch(Exception $er)
-                    {
-                        echo $er->getMessage();
-                    }
+                else
+                {
+                    $voidValues = true;
                 }
 
                 break;
@@ -85,10 +91,12 @@
     <?php 
         } 
 
-    if($condData !== null)
+    //var_dump($condData); Sirve para debuguear
+
+    if($condData !== null && !empty($condData))
     {
-        $diaCond = $condData['dia'];
         $mesCond = $condData['mes'];
+        $diaCond = $condData['dia'];
         $anioCond = $condData['anio'];
 
         $fecha_html = sprintf("%04d-%02d-%02d", $anioCond, $mesCond, $diaCond);
@@ -101,6 +109,7 @@
                 <article class ="inputs">
                     <label for="txtDate">Dia / Mes / Año</label>
                     <input type="date" id="txtDate" name = "txtDate" value ="<?php echo $fecha_html; ?>">
+                    <input type="hidden" name="txtIdCond" value ="<?php echo $condData['idCond']; ?>">
                 </article>                
             </div>
         </section>
@@ -150,14 +159,14 @@
                 </article>
             </div>
         </section>
-    <?php 
-    } ?>
         <section>
             <div class ="aligner-center">
             <button type="submit" class = "btn-black-header space-top" name ="accion" value ="modificar">Modificar</button>
             </div>
         </section>
-
+    <?php 
+    } ?>
+    
     </form>
 
 <?php include("../template/footer.php") ?>

@@ -86,7 +86,7 @@
     <?php } ?>
 
 <?php 
-    if($userData !== null)
+    if($userData !== null && !empty($userData))
     {
         ?>
     <form method="post" class="form-register">
@@ -151,14 +151,15 @@
             </div>
         </section>
 
-    <?php } ?>
-
+        
         <section>
             <div class ="aligner-center">
                 <button type="submit" class = "btn-black-header space-top" name ="accion" value ="modificar">Modificar</button>
             </div>
         </section>
-
+        
+    <?php 
+    } ?>
     </form>
 
 <?php include("../template/footer.php") ?>
