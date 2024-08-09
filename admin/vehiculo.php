@@ -25,9 +25,10 @@
                     $accion = "all"; //reseteamos la variable accion para mostrar los registros usuario
                 break;
 
-            case "delete_user":
-                    $arrayFilters = ["idUsr" => $idUsr];
-                    $conection->useDelete("trabajador", $arrayFilters);
+            case "delete_cond":
+                    $idCond = $_POST['txtIdCond'];
+                    $arrayFilters = ["idCond" => $idCond];
+                    $conection->useDelete("conduce", $arrayFilters);
                     $accion = "all"; //reseteamos la variable accion para mostrar los registros usuario
                 break;
 
@@ -190,7 +191,7 @@
 
                                 
                             <form method="post">
-                                <input type="hidden" name="txtId" value ="<?php echo htmlspecialchars($conduce['idCond']);?>">
+                                <input type="hidden" name="txtIdCond" value ="<?php echo htmlspecialchars($conduce['idCond']);?>">
                                 <button type="submit" class ="btn-black-width" name = "accion" value ="delete_cond">Eliminar</button>
                             </form>
 
@@ -232,7 +233,7 @@
 
                                 
                             <form method="post">
-                                <input type="hidden" name="txtId" value ="<?php echo htmlspecialchars($conduce['idCond']);?>">
+                                <input type="hidden" name="txtIdCond" value ="<?php echo htmlspecialchars($conduce['idCond']);?>">
                                 <button type="submit" class ="btn-black-width" name = "accion" value ="delete_cond">Eliminar</button>
                             </form>
 
@@ -289,7 +290,7 @@
     
                                     
                                 <form method="post">
-                                    <input type="hidden" name="txtId" value ="<?php echo htmlspecialchars($conduce['idCond']);?>">
+                                    <input type="hidden" name="txtIdCond" value ="<?php echo htmlspecialchars($conduce['idCond']);?>">
                                     <button type="submit" class ="btn-black-width" name = "accion" value ="delete_cond">Eliminar</button>
                                 </form>
     
