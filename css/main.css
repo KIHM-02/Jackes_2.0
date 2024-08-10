@@ -1,0 +1,271 @@
+header{
+    width: 75%;
+    margin: auto;
+    margin-top: var(--top-margin);
+    padding: .9em 0;
+    display: flex;
+    flex-flow: row wrap;
+
+    border: 2px solid black;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+
+}
+
+.header-elements{
+    margin-right: var(--right-margin);
+}
+
+
+/*Seccion de formulario de busqueda*/
+
+.form-search{
+    width: 65%;
+    margin: auto;
+    margin-top: var(--top-margin);
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-end;
+}
+
+.div-form-inputs{
+    display: flex;
+    flex-direction: column;
+    margin-right: var(--right-margin);
+}
+
+.div-form-inputs label{
+    font-size: var(--text-items);
+    text-shadow: 0px 1px 1px var(--blue-dark);
+}
+
+.text-inputs{
+    border-radius: var(--box-small-radius);
+    padding: .3em;
+    font-size: var(--text-medium);
+}
+
+
+/*Seccion de tabla*/
+
+.section-table{
+    width: 75%;
+    margin: auto;
+    margin-top: var(--top-extra-margin);
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    gap: var(--right-margin);
+}
+
+.table-buttons{
+    margin-right: var(--right-margin);
+    border: none;
+}
+
+.chkTable{
+    display: none;
+}
+
+.hide-component{
+    display: none;
+    border: 2px solid black;
+    border-radius: var(--box-small-radius);
+    overflow: hidden;
+}
+
+.table{
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.table thead{
+    background-color: var(--blue-dark);
+
+}
+
+.table thead tr th{
+    color: white;
+    padding: .5em;
+    margin: 0 var;
+}
+
+.form-table{
+    display: none;
+    flex-flow: column wrap;
+    gap: var(--right-small-margin);
+}
+
+.chkTable:checked ~ .hide-component{
+    display: block;
+}
+
+.chkTable:checked ~ .form-table{
+    display: flex;
+}
+
+/*Seccion de despliegue de informacion*/
+
+.section-title{
+    width: 75%;
+    margin: auto;
+    margin-top: var(--top-margin);
+    text-align: left;
+    
+    display: flex;
+    flex-flow: column wrap;
+}
+
+.date-container{
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    gap: var(--right-margin);
+}
+
+.date-container article{
+    display: flex;
+    flex-flow: column wrap;
+    align-items: flex-start;
+}
+
+.date-container article label{
+    margin-bottom: var(--bottom-small-margin);
+    font-size: var(--text-items);
+}
+
+/*Information*/
+
+.info-container{
+    width: 75%;
+    margin: auto;
+    margin-top: var(--top-margin);
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+}
+
+.card{
+    width: 20%;
+    border: 1px solid var(--blue-dark);
+    border-radius: var(--box-small-radius);
+    padding: 0.5em;
+    box-shadow: 0 2px 2px var(--blue-strong);
+    margin: var(--top-margin);
+}
+
+.card div{
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+.negritas{
+    font-weight: bolder;
+}
+
+/*Responsive*/
+
+@media screen and (max-width: 530px) /*Mobile*/
+{
+    header{
+        width: 90%;
+        flex-direction: column;
+    }
+
+    header div{
+        width: 100%;
+        display: flex;
+        margin-top: var(--top-margin);
+        flex-flow: column wrap;
+        justify-content: space-evenly;
+        text-align: center;
+    }
+
+    .header-elements{
+        margin-right: var(--right-small-margin) ;
+    }
+
+    .form-search{
+        width: 90%;
+    }
+
+    .div-form-inputs{
+        width: 90%;
+        margin: auto;
+        margin-bottom: var(--bottom-margin);
+    }
+
+    .info-container{
+        width: 90%;
+        justify-content: center;
+    }
+    
+    .card{
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 531px) and (max-width: 780px) /*Tablet*/
+{
+    header div{
+        width: 100%;
+        display: flex;
+        margin-top: var(--top-margin);
+        flex-flow: row wrap;
+        justify-content: space-evenly;
+        text-align: center;
+    }
+
+    .header-elements{
+        margin-right: unset;
+    }
+
+    .form-search{
+        width: 80%;
+        justify-content: space-evenly;
+    }
+
+    .div-form-inputs{
+        margin: 5px;
+    }
+
+    .card{
+        width: 40%;
+    }
+}
+
+/*Estilo de formato tabla, se comparte para ambos responsivos*/
+@media screen and (max-width: 780px) 
+{
+    .section-table{
+        width: 90%;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        gap: 0;
+    }
+
+    .table-buttons, .header-buttons{
+        width: 90%;
+        text-align: center;
+        margin: auto;
+        margin-bottom: var(--bottom-margin);
+    }
+
+    .border-table{
+        margin: auto;
+    }    
+}
+
+/*Usada para indicar un tamaño adecuado a las tarjetas de informacion*/
+
+@media screen and (780px <= width <= 1100px) 
+{
+    .card{
+        width: 28%;
+    }
+}

@@ -1,7 +1,7 @@
 <?php include("../template/header_registro.php"); ?>
     
     <?php
-        require_once("../config/conexion.php");
+        require_once("../admin/config/conexion.php");
 
         $conection = new Conexion(); //var para instanciar clase usuario
         $arrayModelo = [];

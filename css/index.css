@@ -1,0 +1,72 @@
+.main{
+    width: 35%;
+    margin: auto;
+    margin-top: 80px;
+    padding: 10px;
+    background-color: var(--blue-strong);
+    border-radius: var(--box-mid-radius);
+    box-shadow: 0px 5px 5px var(--formal-white);
+}
+
+.warning-box{
+    width: 90%;
+    margin: 10px auto;
+    padding: 5px;
+    font-size: var(--text-normal);
+    text-align: center;
+    color: var(--formal-white);
+    background-color: var(--warning-message);
+    border-radius: var(--box-small-radius);
+}
+
+.main header h1{
+    text-align: center;
+    font-size: var(--text-title);
+    color: var(--formal-white);
+    margin: 20px 0;
+}
+
+.main form{
+    width: 100%;
+    display: flex;
+    flex-flow: column wrap;
+    padding: 15px;
+}
+
+.main form div{
+    width: 100%;
+    display: flex;
+    flex-flow: column wrap;
+    margin: 20px 0;
+}
+
+.labels{
+    color: var(--formal-white);
+    font-size: var(--text-normal);
+    margin-bottom: 5px;
+}
+
+.inputs{
+    padding: 5px;
+    font-size: var(--text-normal);
+    border-radius: var(--box-small-radius);
+}
+
+.btn{
+    background-color: var(--blue-dark);
+    box-shadow: 0 0 5px 5px var(--formal-white);
+    border: none;
+    color: white;
+}
+
+.btn:hover{
+    cursor: pointer;
+}
+
+/*Responsive*/
+
+@media screen and (max-width: 800px) {
+    .main{
+        width: 80%;
+    }
+}

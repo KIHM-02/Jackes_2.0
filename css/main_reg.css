@@ -1,0 +1,93 @@
+header{
+    width: 75%;
+    margin: auto;
+    margin-top: var(--top-margin);
+    padding: .9em 0;
+    display: flex;
+    flex-flow: row wrap;
+
+    border: 2px solid black;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+
+}
+
+.warning-box{
+    width: 50%;
+    margin: 10px auto;
+    padding: 5px;
+    font-size: var(--text-normal);
+    text-align: center;
+    color: var(--formal-white);
+    background-color: var(--warning-message);
+    border-radius: var(--box-small-radius);
+}
+/* Formulario de entradas*/
+
+.form-register{
+    width: 75%;
+    margin: auto;
+    margin-top: var(--top-margin);
+}
+
+section.divider{
+    width: 100%;
+    display: flex;
+    margin-bottom: var(--bottom-margin);
+    flex-flow: row wrap;
+
+    border: 1px solid black;
+    border-right: none;
+    border-left: none;
+    border-top: none;
+
+}
+
+.section-title, .section-inputs{
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.section-title{
+    width: 40%;
+    align-items: center;
+}
+
+.section-inputs{
+    width: 60%;
+}
+
+/* Articulos de datos*/
+
+.inputs{
+    display: flex;
+    flex-flow: column wrap;
+    gap: 1px;
+    margin: var(--right-small-margin);
+}
+
+.inputs input{
+    border-radius: var(--box-small-radius);
+    padding: var(--inside-padding);
+}
+
+/*Centrador de element, solo usado en el boton*/
+
+@media screen and (max-width: 900px)
+{
+    section.divider{
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .section-title, .section-inputs{
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 530px) {
+    .inputs{
+        width: 100%;
+    }
+}
