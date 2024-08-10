@@ -6,8 +6,8 @@
         $conection = new Conexion(); //var para instanciar clase usuario
         $accion = ($_POST)? $_POST['accion']: "all";
 
-        $idClie  = ($_POST) && !empty($_POST['txtClientId'])? intval($_POST['txtClientId']): null;
-        $name      = ($_POST) && !empty($_POST['txtName'])? $_POST['txtName']: null;
+        $idMaq  = ($_POST) && !empty($_POST['txtIdMaq'])? intval($_POST['txtIdMaq']): null;
+        $idClie = ($_POST) && !empty($_POST['txtClientId'])? intval($_POST['txtClientId']): null;
         $modelo = ($_POST) && !empty($_POST['txtIdModelo'])? intval($_POST['txtIdModelo']): null;
 
         $arrayFilters = [];
@@ -15,6 +15,7 @@
 
         $voidCamp = false;
 
+        //var_dump($idMaq);
         switch($accion)
         {
             case "delete_modelo":
@@ -23,9 +24,9 @@
                     $accion = "all"; //reseteamos la variable accion para mostrar los registros usuario
                 break;
 
-            case "delete_cliente":
-                    $arrayFilters = ["idClie" => $idClie];
-                    $conection->useDelete("cliente", $arrayFilters);
+            case "delete_maquina":
+                    $arrayFilters = ["idMaq" => $idMaq];
+                    $conection->useDelete("maquina", $arrayFilters);
                     $accion = "all"; //reseteamos la variable accion para mostrar los registros usuario
                 break;
 
@@ -57,17 +58,17 @@
 
     <form method="POST" class="form-search">
         <div class ="div-form-inputs">
-            <label for="inputMachineId">Id de maquina</label>
-            <input class ="text-inputs" type="text" name="txtMachineId" id="inputMachineId">
+            <label for="txtClientId">Id de cliente</label>
+            <input class ="text-inputs" type="text" name="txtClientId" id="txtClientId">
         </div>
 
         <div class ="div-form-inputs">
-            <label for="inputModel">Modelo</label>
+            <label for="inputModel">Id de Modelo</label>
             <input class ="text-inputs" type="text" name="txtModel" id="inputModel">
         </div>
 
         <div class ="div-form-inputs space-top">
-            <input class ="btn-black-header" type="submit" value="Buscar">
+            <button type="submit" class ="btn-black-header" name="accion" value="filtrar">Filtrar</button>
         </div>
     </form>
 
@@ -127,13 +128,77 @@
     </section>
 
     <section class ="info-container">
-        <article class ="card">
-            <p><span class="negritas">Id Maquina;</span> <?php echo htmlspecialchars($data['id Maquina']); ?></p>
-            <p><span class="negritas">Id Modelo;</span> <?php echo htmlspecialchars($data[' modelo']); ?></p>
-            <p><span class="negritas">Id Estatus;</span> <?php echo htmlspecialchars($data[' Estatus']); ?></p>
-            <p><span class="negritas">Id Cliente;</span> <?php echo htmlspecialchars($data['Cliente']); ?></p>
-            <p>Aqui va la imagen</p>
-        </article>
+        <?php 
+        switch($accion)
+        {
+            case "all":
+                $arrayFilters = ["idMaq" => null]; //Arreglo de filtros en null para que se arregle una consulta select sin condiciones
+                $maqData = $conection->getData("maquina", $arrayFilters);
+
+                foreach($maqData as $data)
+                {   ?>
+                    <article class ="card">
+                        <p><span class = "negritas">Id Maquina: </span> <?php echo htmlspecialchars($data['idMaq']); ?></p>
+                        <p><span class = "negritas">Estatus: </span> <?php echo htmlspecialchars($data['estatusMaq']); ?></p>
+                        <p><span class = "negritas">Id modelo: </span> <?php echo htmlspecialchars($data['idModelo']); ?></p>
+                        <p><span class = "negritas">Id cliente: </span> <?php echo htmlspecialchars($data['idClie']); ?></p>
+
+                        <div>
+                            <form method="post">
+                                <input type="hidden" name="txtIdMaq" value ="<?php echo htmlspecialchars($data['idMaq']); ?>">
+                                <button type="submit" class ="btn-black-width" name = "accion" value ="delete_maquina">Eliminar</button>
+                            </form>
+
+                            <form action="entityModification/maquina_modificar.php" method="post">
+                                <input type="hidden" name="txtIdMaq" value ="<?php echo htmlspecialchars($data['idMaq']);?>">
+                                <input type="hidden" name="accion" value ="envio">
+                                <button type="submit" class ="btn-black-width">Modificar</button>
+                            </form>
+                        </div>
+                                                
+                    </article>
+                    <?php
+
+                }
+
+                break;
+
+            case "filtrar":
+                    $arrayFilters = [
+                        "idClie" => $idClie,
+                        "idModelo" => $modelo
+                    ];
+
+                    $maqData = $conection->getData("maquina", $arrayFilters);
+
+                    foreach($maqData as $data)
+                    {   ?>
+                        <article class ="card">
+                            <p><span class = "negritas">Id Maquina: </span> <?php echo htmlspecialchars($data['idMaq']); ?></p>
+                            <p><span class = "negritas">Estatus: </span> <?php echo htmlspecialchars($data['estatusMaq']); ?></p>
+                            <p><span class = "negritas">Id modelo: </span> <?php echo htmlspecialchars($data['idModelo']); ?></p>
+                            <p><span class = "negritas">Id cliente: </span> <?php echo htmlspecialchars($data['idClie']); ?></p>
+
+                            <div>
+                                <form method="post">
+                                    <input type="hidden" name="txtIdMaq" value ="<?php echo htmlspecialchars($data['idMaq']); ?>">
+                                    <button type="submit" class ="btn-black-width" name = "accion" value ="delete_maquina">Eliminar</button>
+                                </form>
+
+                                <form action="entityModification/maquina_modificar.php" method="post">
+                                    <input type="hidden" name="txtIdMaq" value ="<?php echo htmlspecialchars($data['idMaq']);?>">
+                                    <input type="hidden" name="accion" value ="envio">
+                                    <button type="submit" class ="btn-black-width">Modificar</button>
+                                </form>
+                            </div>
+                                                    
+                        </article>
+                        <?php
+    
+                    }
+                    break;
+        }
+        ?>
     </section>
 
 <?php include("template/footer.php") ?>

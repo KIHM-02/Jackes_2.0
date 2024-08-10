@@ -11,7 +11,7 @@
         $clieData = "";
         $IdClie = null;
 
-        $accion = isset($_POST['accion'])? $_POST['accion'] : header("Location:../vehiculo.php"); //Evitamos que el usuario acceda a esta zona por url
+        $accion = isset($_POST['accion'])? $_POST['accion'] : header("Location:../cliente.php"); //Evitamos que el usuario acceda a esta zona por url
         
         switch($accion)
         {
