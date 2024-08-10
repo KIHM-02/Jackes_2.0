@@ -34,7 +34,7 @@
                     "apeMatUsr" => $apeMat,
                     "direccionUsr" => $domicilio,
                     "telefonoUsr" => $tel,
-                    "contraUsr" => password_hash($pwd, PASSWORD_BCRYPT),
+                    "contraUsr" => $pwd, //password_hash($pwd, PASSWORD_DEFAULT),
                     "idRol" => $rol
                 ];
 

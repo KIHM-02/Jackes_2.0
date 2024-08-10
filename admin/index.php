@@ -26,7 +26,14 @@
                 $pwdUser = $_POST['txtPwd'];
 
                 $conection = new Conexion();            
-                $userFound = $conection->verifyUserExistence($idUser, $pwdUser);
+                $rol = 1;
+                $userFound = $conection->verifyUserExistence($idUser, $pwdUser, $rol);
+
+                //var_dump($userFound);
+                if($userFound === true)
+                {
+                    header("Location:inicio.php");
+                }
             }
             catch(Exception $er)
             {

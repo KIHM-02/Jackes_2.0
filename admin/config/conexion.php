@@ -22,7 +22,7 @@
             return $con;
         }
 
-        public function verifyUserExistence($idUser, $pwdUser)
+        public function verifyUserExistence($idUser, $pwdUser, $rol)
         {
             $userFound = false;
 
@@ -33,9 +33,9 @@
 
                 if($this->conection)
                 {
-                    $select = $this->conection->prepare("SELECT idUsr, nombreUsr, contraUsr FROM trabajador WHERE idUsr = :id AND contraUsr = :pwd");
+                    $select = $this->conection->prepare("SELECT idUsr, nombreUsr, contraUsr FROM trabajador WHERE idUsr = :id AND contraUsr = :pwd AND idRol = :rol");
 
-                    $select->execute([":id"=>$idUser, ":pwd"=>$pwdUser]);
+                    $select->execute([":id"=>$idUser, ":pwd"=>$pwdUser, ":rol"=>$rol]);
 
                     $userData = $select->fetch(PDO::FETCH_LAZY);
 
@@ -45,7 +45,6 @@
                         
                         $userFound = true;
 
-                        header("Location:inicio.php");
                     }
                 }
                 else{ $userFound = false; }
@@ -57,6 +56,7 @@
             
             return $userFound;
         }
+
 
         /** CRUD SELECT */
 
