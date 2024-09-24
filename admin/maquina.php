@@ -63,8 +63,8 @@
         </div>
 
         <div class ="div-form-inputs">
-            <label for="inputModel">Id de Modelo</label>
-            <input class ="text-inputs" type="text" name="txtModel" id="inputModel">
+            <label for="txtIdModelo">Id de Modelo</label>
+            <input class ="text-inputs" type="text" name="txtIdModelo" id="txtIdModelo">
         </div>
 
         <div class ="div-form-inputs space-top">
