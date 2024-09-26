@@ -83,8 +83,8 @@
                     $mesFinal = date('m');
                     $anio = date('Y');
 
-                    $diaInicio = intval($diaFinal)-1;
-                    $mesInicio = intval($mesFinal)-1;
+                    $diaInicio = ($diaFinal != 1)? intval($diaFinal)-1: 30;
+                    $mesInicio = ($mesFinal != 1)? intval($mesFinal)-1: 12;
 
                     $diaInicio = (string)$diaInicio;
                     $mesInicio = (string)$mesInicio;
