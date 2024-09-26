@@ -32,7 +32,7 @@
                 //var_dump($userFound);
                 if($userFound === true)
                 {
-                    header("Location:inicio.php");
+                    header("Location:corte.php");
                 }
             }
             catch(Exception $er)
