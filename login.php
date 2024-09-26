@@ -32,6 +32,7 @@
                 //var_dump($userFound);
                 if($userFound === true)
                 {
+                    $_SESSION['workerId'] = $idUser;
                     header("Location:inicio.php");
                 }
             }

@@ -22,7 +22,7 @@
 <body>
     <nav class ="nav-bar">
         <ul class ="ul-left">
-            <button class ="list-elements btn-black"><a href="#">Agregar Corte</a></button>
+            <button class ="list-elements btn-black"><a href="entityRegistration/corte_registro.php">Agregar Corte</a></button>
             <li class ="list-elements"><a href="config/close_session.php">Salir</a></li>
         </ul>
 
@@ -30,7 +30,7 @@
         <input type="checkbox" name="chk-ul-right" id="chk-ul-right">
 
         <ul class ="ul-right">
-            <li class ="list-elements"><a href="#">Cortes</a></li>
+            <li class ="list-elements"><a href="entityRegistration/corte_registro.php">Cortes</a></li>
             <li class ="list-elements"><a href="entityRegistration/vehiculo_registro.php">Vehiculos</a></li>
             <li class ="list-elements"><a href="entityRegistration/maquina_registro.php">Maquinas</a></li>
             <li class ="list-elements"><a href="entityRegistration/cliente.php">Clientes</a></li>

@@ -1,6 +1,7 @@
 <?php include("../template/header_registro.php"); ?>
     <?php
-        require_once("../config/conexion.php");
+        require_once("../admin/config/conexion.php");
+
 
         $conection = new Conexion(); //var para instanciar clase usuario
         $arrayMaq = [];
@@ -134,8 +135,8 @@
                         <article class ="inputs">
                             <label for="txtWorkerId">Id trabajador</label>
                             <select name="txtWorkerId" id="txtWorkerId">
-                                <option value="<?php echo htmlspecialchars($usrId); ?>">
-                                    <?php echo htmlspecialchars($usrId);?>
+                                <option value="<?php echo ($_SESSION['workerId']); ?>">
+                                    <?php echo htmlspecialchars($_SESSION['workerId']);?>
                                 </option>
                             </select>
                         </article>
@@ -227,17 +228,9 @@
                         <article class ="inputs">
                             <label for="txtWorkerId">Id trabajador</label>
                             <select name="txtWorkerId" id="txtWorkerId">
-                            <?php 
-                                $arrayWorker = ["idUsr" => null];
-                                $userData = $conection->getData("trabajador", $arrayWorker);
-
-                                foreach($userData as $user)
-                                {
-                            ?>
-                                <option value="<?php echo htmlspecialchars($user['idUsr']); ?>">
-                                    <?php echo htmlspecialchars($user['idUsr']."-".$user['nombreUsr']); ?>
-                                </option>            
-                        <?php   } ?>
+                                <option value="<?php echo ($_SESSION['workerId']); ?>">
+                                        <?php echo htmlspecialchars($_SESSION['workerId']);?>
+                                    </option>
                             </select>
                         </article>
                         
