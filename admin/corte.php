@@ -33,7 +33,7 @@
         <h2 class="subtitle header-elements">Panel Cortes</h2>
 
         <div>
-            <a class ="header-elements" href="#"><button class="btn-black-header header-buttons">Agregar</button></a>
+            <a class ="header-elements" href="entityRegistration/corte_registro.php"><button class="btn-black-header header-buttons">Agregar</button></a>
         </div>
     </header>
 
