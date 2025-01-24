@@ -170,13 +170,6 @@
                                 <input type="hidden" name="txtIdCorte" value ="<?php echo htmlspecialchars($corte['idCorte']);?>">
                                 <button type="submit" class ="btn-black-width" name = "accion" value ="delete_corte">Eliminar</button>
                             </form>
-
-                            <form action="entityModification/vehiculo_modificar.php" method="post">
-                                <input type="hidden" name="txtIdCorte" value ="<?php echo htmlspecialchars($corte['idCorte']);?>">
-                                <input type="hidden" name="accion" value ="envio">
-                                <button type="submit" class ="btn-black-width">Modificar</button>
-                            </form>
-
                         </article>
                         <?php
                     }

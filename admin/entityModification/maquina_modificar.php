@@ -50,7 +50,7 @@
                     {
                         $identifier = ["idMaq" => $idMaq];
                         $conection->useUpdate("maquina", $identifier, $arrayValues);    
-                        header("Location:../cliente.php");
+                        header("Location:../maquina.php");
                     }
                     catch(Exception $er)
                     {
@@ -65,7 +65,7 @@
     ?>
 
     <header>
-        <h2 class ="subtitle">Modificar cliente</h2>
+        <h2 class ="subtitle">Modificar maquina</h2>
     </header>
 
     <?php  //Mostrar advertencia de campos vacios
@@ -87,7 +87,7 @@
         <section class ="divider">
             <div class ="section-title"><h2>Identificadores</h2></div>
             <div class ="section-inputs">
-            <article class ="inputs">
+                <article class ="inputs">
                     <label for="txtIdModelo">Id modelo</label>
                     <input type="hidden" id="txtIdMaq" name = "txtIdMaq" value ="<?php echo htmlspecialchars($maqData['idMaq']); ?>">
                     <select name="txtIdModelo" id="txtIdModelo">
