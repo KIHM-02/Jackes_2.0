@@ -2,48 +2,55 @@
 
     <?php
         require_once("config/conexion.php");
+        require_once("interface/boundary.php");
 
-        $conection = new Conexion(); //var para instanciar clase usuario
+        $conection = new Conexion(); // Var para instanciar clase usuario
+        $boundary = new Boundary();  // Clase usada para separar vista - interface - controller
         $accion = ($_POST)? $_POST['accion']: "all";
 
         $idUsr  = ($_POST) && !empty($_POST['txtId'])? intval($_POST['txtId']): null;
         $name   = ($_POST) && !empty($_POST['txtName'])? $_POST['txtName']: null;
         $rol    = ($_POST) && !empty($_POST['txtIdRol'])? intval($_POST['txtIdRol']): null;
 
-        $arrayFilters = [];
-        $arrayRol = [];
-
         $voidCamp = false;
 
         switch($accion)
         {
             case "delete_rol":
-                    $arrayRol = ["idRol" => $rol];
-                    $conection->useDelete("rol", $arrayRol);
-                    $accion = "all"; //reseteamos la variable accion para mostrar los registros usuario
+                $params = [
+                    'table' => 'rol',
+                    'filter' => ['idRol' => $rol]
+                ];
+                $accion = $boundary->actionHandler($conection, 'delete', $params);
                 break;
-
+            
             case "delete_user":
-                    $arrayFilters = ["idUsr" => $idUsr];
-                    $conection->useDelete("trabajador", $arrayFilters);
-                    $accion = "all"; //reseteamos la variable accion para mostrar los registros usuario
-                break;
+                $params = [
+                    'table' => 'trabajador',
+                    'filter' => ['idUsr' => $idUsr]
+                ];
 
+                $accion = $boundary->actionHandler($conection, 'delete', $params);
+                break;
+            
             case "add_rol":
-                    $tipo = (!empty($_POST['txtTipoRol']))? trim($_POST['txtTipoRol']): null;
-                    if($tipo === null)
-                    {
-                        $voidCamp = true;
-                    }
-                    else
-                    {
-                        $arrayRol = ["tipoRol" => $tipo];
-                        $conection->useInsert("rol", $arrayRol);
-                    }
-                    $accion = "all"; //reseteamos la variable accion para mostrar los registros usuario
+                $tipo = (!empty($_POST['txtTipoRol']))? trim($_POST['txtTipoRol']): null;
+                if($tipo === null)
+                {
+                    $voidCamp = true;
+                    $accion = 'all';
+                }
+                else
+                {
+                    $params = [
+                        'table'=>'rol',
+                        'filter'=>['tipoRol'=>$tipo]
+                    ];
+
+                    $accion = $boundary->actionHandler($conection, 'add', $params);
+                }
                 break;
         }
-        
     ?>
 
     <header>
@@ -91,9 +98,12 @@
 
                 <tbody>
 
-                <?php 
-                    $arrayRol = ["idRol" => null];
-                    $rolesData = $conection->getData("rol", $arrayRol);
+                <?php
+                    $params = [
+                        'table' => 'rol',
+                        'filter'=> ['idRol' => null]
+                    ];
+                    $rolesData = $boundary->searchHandler($conection, $params);
 
                     foreach($rolesData as $roles)
                     {
@@ -116,7 +126,8 @@
         <form method ="POST" class ="space-top form-table">
             <div class ="div-form-inputs">
                 <label for="txtTipoRol">Tipo de rol: </label>
-                <input type="text" class="text-inputs" name="txtTipoRol" id="txtTipoRol" <?php $msg = ($voidCamp=== true)? "No se ingreso ningun rol": ""; echo $msg;?> >
+                <input type="text" class="text-inputs" name="txtTipoRol" id="txtTipoRol">
+                <label><?php $msg = ($voidCamp=== true)? "No se ingreso ningun rol": ""; echo $msg;?></label>
             </div>
 
             <button type="submit" class="btn-black" name ="accion" value ="add_rol">Agregar rol</button>
@@ -129,81 +140,59 @@
     </section>
 
     <section class ="info-container">
-
         <?php
+        
         switch($accion)
         {
-            case "all":
-                $arrayFilters = ["idUsr" => null]; //Arreglo de filtros en null para que se ejecute una consulta select sin condiciones
-                $userData = $conection->getData("trabajador", $arrayFilters);
-
-                foreach($userData as $data)
-                {   ?>
-                    <article class ="card">
-                        <p><span class="negritas">Id Usuario: </span><?php echo htmlspecialchars($data['idUsr']);?></p>
-                        <p><span class="negritas">Nombre: </span><?php echo htmlspecialchars($data['nombreUsr']. " ".$data['apePatUsr']." ".$data['apeMatUsr']);?></p>
-                        <p><span class="negritas">Direccion: </span><?php echo htmlspecialchars($data['direccionUsr']);?></p>
-                        <p><span class="negritas">telefono: </span><?php echo htmlspecialchars($data['telefonoUsr']);?></p>
-                        <p><span class="negritas">Rol: </span><?php echo htmlspecialchars($data['idRol']); ?></p>
-
-                        <div>
-                            <form method="post">
-                                <input type="hidden" name="txtId" value ="<?php echo htmlspecialchars($data['idUsr']);?>">
-                                <button type="submit" class ="btn-black-width" name = "accion" value ="delete_user">Eliminar</button>
-                            </form>
-    
-                            <form action="entityModification/usuario_modificar.php" method="post">
-                                <input type="hidden" class ="btn-black-header" name="txtIdUsr" value ="<?php echo htmlspecialchars($data['idUsr']);?>">
-                                <input type="hidden" name="accion" value ="envio">
-                                <button type="submit" class ="btn-black-width">Modificar</button>
-                            </form>
-                        </div>
-
-                    </article>
-                     <?php
-                }
-
-                break;
-
-            case "filtrar":
-
-                $arrayFilters = [
-                    "idUsr" => $idUsr,
-                    "nombreUsr" => $name,
-                    "idRol" => $rol
+            case 'all':
+                $params = [
+                    'table' => 'trabajador',
+                    'filter'=> ['idUsr' => null] //Arreglo de filtros en null para que se ejecute una consulta select sin condiciones
                 ];
 
-                $userData = $conection->getData("trabajador", $arrayFilters);
+                $userData = $boundary->searchHandler($conection, $params);
+                break;
 
-                foreach($userData as $data)
-                {   ?>
-                    <article class ="card">
-                    <p><span class="negritas">Id Usuario: </span><?php echo htmlspecialchars($data['idUsr']);?></p>
-                        <p><span class="negritas">Nombre: </span><?php echo htmlspecialchars($data['nombreUsr']. " ".$data['apePatUsr']." ".$data['apeMatUsr']);?></p>
-                        <p><span class="negritas">Direccion: </span><?php echo htmlspecialchars($data['direccionUsr']);?></p>
-                        <p><span class="negritas">telefono: </span><?php echo htmlspecialchars($data['telefonoUsr']);?></p>
-                        <p><span class="negritas">Rol: </span><?php echo htmlspecialchars($data['idRol']); ?></p>
+            case 'filtrar':
+                $params = [
+                    'table' => 'trabajador',
+                    'filter'=> [
+                        'idUsr' => $idUsr,
+                        'nombreUsr' => $name,
+                        'idRol' => $rol
+                    ]
+                ];
 
-                        <div>
-                            <form method="post">
-                                <input type="hidden" name="txtId" value ="<?php echo htmlspecialchars($data['idUsr']);?>">
-                                <button type="submit" class ="btn-black-width" name = "accion" value ="delete_user">Eliminar</button>
-                            </form>
-
-                            <form action="entityModification/usuario_modificar.php" method="post">
-                                <input type="hidden" name="txtIdUsr" value ="<?php echo htmlspecialchars($data['idUsr']);?>">
-                                <input type="hidden" name="accion" value ="envio">
-                                <button type="submit" class ="btn-black-width">Modificar</button>
-                            </form>
-                        </div>
-
-                    </article>
-                    <?php
-                }
-
+                $userData = $boundary->searchHandler($conection, $params);
                 break;
         }
-    ?>
+
+        foreach($userData as $data)
+        { 
+            ?>
+                <article class ="card">
+                    <p><span class="negritas">Id Usuario: </span><?php echo htmlspecialchars($data['idUsr']);?></p>
+                    <p><span class="negritas">Nombre: </span><?php echo htmlspecialchars($data['nombreUsr']. " ".$data['apePatUsr']." ".$data['apeMatUsr']);?></p>
+                    <p><span class="negritas">Direccion: </span><?php echo htmlspecialchars($data['direccionUsr']);?></p>
+                    <p><span class="negritas">telefono: </span><?php echo htmlspecialchars($data['telefonoUsr']);?></p>
+                    <p><span class="negritas">Rol: </span><?php echo htmlspecialchars($data['idRol']); ?></p>
+
+                    <div>
+                        <form method="post">
+                            <input type="hidden" name="txtId" value ="<?php echo htmlspecialchars($data['idUsr']);?>">
+                            <button type="submit" class ="btn-black-width" name = "accion" value ="delete_user">Eliminar</button>
+                        </form>
+
+                        <form action="entityModification/usuario_modificar.php" method="post">
+                            <input type="hidden" class ="btn-black-header" name="txtIdUsr" value ="<?php echo htmlspecialchars($data['idUsr']);?>">
+                            <input type="hidden" name="accion" value ="envio">
+                            <button type="submit" class ="btn-black-width">Modificar</button>
+                        </form>
+                    </div>
+                </article>
+        <?php
+        }
+        ?>   
     </section>
 
 <?php include("template/footer.php") ?>

@@ -2,16 +2,15 @@
 
 <?php
         require_once("config/conexion.php");
+        require_once("interface/boundary.php");
 
         $conection = new Conexion(); //var para instanciar clase usuario
+        $boundary = new Boundary();
         $accion = ($_POST)? $_POST['accion']: "all";
 
         $idMaq  = ($_POST) && !empty($_POST['txtIdMaq'])? intval($_POST['txtIdMaq']): null;
         $idClie = ($_POST) && !empty($_POST['txtClientId'])? intval($_POST['txtClientId']): null;
         $modelo = ($_POST) && !empty($_POST['txtIdModelo'])? intval($_POST['txtIdModelo']): null;
-
-        $arrayFilters = [];
-        $arrayModelo = [];
 
         $voidCamp = false;
 
@@ -19,15 +18,19 @@
         switch($accion)
         {
             case "delete_modelo":
-                    $arrayModelo = ["idModelo" => $modelo];
-                    $conection->useDelete("modelo", $arrayModelo);
-                    $accion = "all"; //reseteamos la variable accion para mostrar los registros usuario
+                $params = [
+                    'table' => 'modelo',
+                    'filter'=>['idModelo' =>$modelo]
+                ];
+                $accion = $boundary->actionHandler($conection, 'delete', $params);                    
                 break;
 
             case "delete_maquina":
-                    $arrayFilters = ["idMaq" => $idMaq];
-                    $conection->useDelete("maquina", $arrayFilters);
-                    $accion = "all"; //reseteamos la variable accion para mostrar los registros usuario
+                $params = [
+                    'table' => 'maquina',
+                    'filter'=>['idMaq' =>$idMaq]
+                ];
+                $accion = $boundary->actionHandler($conection, 'delete', $params);
                 break;
 
             case "add_modelo":
@@ -35,13 +38,17 @@
                     if($tipo === null)
                     {
                         $voidCamp = true;
+                        $accion = 'all';
                     }
                     else
                     {
-                        $arrayModelo = ["modelo" => $tipo];
-                        $conection->useInsert("modelo", $arrayModelo);
+                        $params = [
+                            'table' =>'modelo',
+                            'filter'=>['modelo'=>$tipo]
+                        ];
+                        $accion = $boundary->actionHandler($conection, 'add', $params);
                     }
-                    $accion = "all"; //reseteamos la variable accion para mostrar los registros usuario
+
                 break;
         }
         
@@ -115,6 +122,7 @@
             <div class ="div-form-inputs">
                 <label for="txtModelo">Modelo de maquina: </label>
                 <input type="text" class="text-inputs" name="txtModelo" id="txtModelo">
+                <label><?php $msg = ($voidCamp=== true)? "No se ingreso ningun modelo": ""; echo $msg;?></label>
             <div>
 
             <button type="submit" class="btn-black" name ="accion" value ="add_modelo">Agregar municipio</button>            
@@ -128,77 +136,57 @@
     </section>
 
     <section class ="info-container">
-        <?php 
+        <?php
         switch($accion)
         {
             case "all":
-                $arrayFilters = ["idMaq" => null]; //Arreglo de filtros en null para que se arregle una consulta select sin condiciones
-                $maqData = $conection->getData("maquina", $arrayFilters);
-
-                foreach($maqData as $data)
-                {   ?>
-                    <article class ="card">
-                        <p><span class = "negritas">Id Maquina: </span> <?php echo htmlspecialchars($data['idMaq']); ?></p>
-                        <p><span class = "negritas">Estatus: </span> <?php echo htmlspecialchars($data['estatusMaq']); ?></p>
-                        <p><span class = "negritas">Id modelo: </span> <?php echo htmlspecialchars($data['idModelo']); ?></p>
-                        <p><span class = "negritas">Id cliente: </span> <?php echo htmlspecialchars($data['idClie']); ?></p>
-
-                        <div>
-                            <form method="post">
-                                <input type="hidden" name="txtIdMaq" value ="<?php echo htmlspecialchars($data['idMaq']); ?>">
-                                <button type="submit" class ="btn-black-width" name = "accion" value ="delete_maquina">Eliminar</button>
-                            </form>
-
-                            <form action="entityModification/maquina_modificar.php" method="post">
-                                <input type="hidden" name="txtIdMaq" value ="<?php echo htmlspecialchars($data['idMaq']);?>">
-                                <input type="hidden" name="accion" value ="envio">
-                                <button type="submit" class ="btn-black-width">Modificar</button>
-                            </form>
-                        </div>
-                                                
-                    </article>
-                    <?php
-
-                }
-
+                $params = [
+                    'table' =>'maquina',
+                    'filter'=>['idMaq'=>null]
+                ];
+                $maqData = $boundary->searchHandler($conection, $params);
                 break;
 
             case "filtrar":
-                    $arrayFilters = [
-                        "idClie" => $idClie,
-                        "idModelo" => $modelo
-                    ];
+                $params = [
+                    'table' =>'maquina',
+                    'filter'=>[
+                        'idClie'=>$idClie,
+                        'idModelo'=>$modelo
+                    ]
+                ];
 
-                    $maqData = $conection->getData("maquina", $arrayFilters);
+                $maqData = $boundary->searchHandler($conection, $params);
+                break;
 
-                    foreach($maqData as $data)
-                    {   ?>
-                        <article class ="card">
-                            <p><span class = "negritas">Id Maquina: </span> <?php echo htmlspecialchars($data['idMaq']); ?></p>
-                            <p><span class = "negritas">Estatus: </span> <?php echo htmlspecialchars($data['estatusMaq']); ?></p>
-                            <p><span class = "negritas">Id modelo: </span> <?php echo htmlspecialchars($data['idModelo']); ?></p>
-                            <p><span class = "negritas">Id cliente: </span> <?php echo htmlspecialchars($data['idClie']); ?></p>
-
-                            <div>
-                                <form method="post">
-                                    <input type="hidden" name="txtIdMaq" value ="<?php echo htmlspecialchars($data['idMaq']); ?>">
-                                    <button type="submit" class ="btn-black-width" name = "accion" value ="delete_maquina">Eliminar</button>
-                                </form>
-
-                                <form action="entityModification/maquina_modificar.php" method="post">
-                                    <input type="hidden" name="txtIdMaq" value ="<?php echo htmlspecialchars($data['idMaq']);?>">
-                                    <input type="hidden" name="accion" value ="envio">
-                                    <button type="submit" class ="btn-black-width">Modificar</button>
-                                </form>
-                            </div>
-                                                    
-                        </article>
-                        <?php
-    
-                    }
-                    break;
         }
-        ?>
+
+
+        foreach($maqData as $data)
+        {   ?>
+            <article class ="card">
+                <p><span class = "negritas">Id Maquina: </span> <?php echo htmlspecialchars($data['idMaq']); ?></p>
+                <p><span class = "negritas">Estatus: </span> <?php echo htmlspecialchars($data['estatusMaq']); ?></p>
+                <p><span class = "negritas">Id modelo: </span> <?php echo htmlspecialchars($data['idModelo']); ?></p>
+                <p><span class = "negritas">Id cliente: </span> <?php echo htmlspecialchars($data['idClie']); ?></p>
+
+                <div>
+                    <form method="post">
+                        <input type="hidden" name="txtIdMaq" value ="<?php echo htmlspecialchars($data['idMaq']); ?>">
+                        <button type="submit" class ="btn-black-width" name = "accion" value ="delete_maquina">Eliminar</button>
+                    </form>
+
+                    <form action="entityModification/maquina_modificar.php" method="post">
+                        <input type="hidden" name="txtIdMaq" value ="<?php echo htmlspecialchars($data['idMaq']);?>">
+                        <input type="hidden" name="accion" value ="envio">
+                        <button type="submit" class ="btn-black-width">Modificar</button>
+                    </form>
+                </div>
+                                                    
+            </article>
+            <?php
+        }
+            ?>
     </section>
 
 <?php include("template/footer.php") ?>

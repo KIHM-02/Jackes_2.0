@@ -2,8 +2,10 @@
 
     <?php 
         require_once("config/conexion.php");
+        require_once("interface/boundary.php");
 
         $conection = new Conexion(); //var para instanciar clase usuario
+        $boundary = new Boundary();
         $accion = ($_POST)? $_POST['accion']: "all";
 
         $idUsr  = ($_POST) && !empty($_POST['txtIdUsr'])? intval($_POST['txtIdUsr']): null;
@@ -12,41 +14,44 @@
         $firstDate = ($_POST) && !empty($_POST['firstDate'])? $_POST['firstDate']: null;
         $lastDate = ($_POST) && !empty($_POST['lastDate'])? $_POST['lastDate']: null;
 
-        $arrayFilters = [];
-        $arrayVehiculo = [];
-
         $voidCamp = false;
 
         switch($accion)
         {
-            case "delete_model":
-                    $arrayVehiculo = ["idVehi" => $idVehi];
-                    $conection->useDelete("vehiculo", $arrayVehiculo);
-                    $accion = "all"; //reseteamos la variable accion para mostrar los registros usuario
+            case 'delete_model':
+                $params = [
+                    'table' =>'vehiculo',
+                    'filter'=>['idVehi' => $idVehi]
+                ];
+                $accion = $boundary->actionHandler($conection, 'delete', $params);
                 break;
-
-            case "delete_cond":
-                    $idCond = $_POST['txtIdCond'];
-                    $arrayFilters = ["idCond" => $idCond];
-                    $conection->useDelete("conduce", $arrayFilters);
-                    $accion = "all"; //reseteamos la variable accion para mostrar los registros usuario
+            
+            case 'delete_cond':
+                $idCond = $_POST['txtIdCond'];
+                $params = [
+                    'table' =>'conduce',
+                    'filter'=>['idCond'=> $idCond]
+                ];
+                $accion = $boundary->actionHandler($conection, 'delete', $params);
                 break;
-
-            case "add_model":
-                    $model = (!empty($_POST['txtModelo']))? trim($_POST['txtModelo']): null;
-                    if($model === null)
-                    {
-                        $voidCamp = true;
-                    }
-                    else
-                    {
-                        $arrayVehiculo = ["modeloVehi" => $model];
-                        $conection->useInsert("vehiculo", $arrayVehiculo);
-                    }
-                    $accion = "all"; //reseteamos la variable accion para mostrar los registros usuario
+            
+            case 'add_model':
+                $model = (!empty($_POST['txtModelo']))? trim($_POST['txtModelo']): null;
+                if($model === null)
+                {
+                    $voidCamp = true;
+                    $accion = 'all';
+                }
+                else
+                {
+                    $params = [
+                        'table' =>'vehiculo',
+                        'filter'=>['modeloVehi' => $model]
+                    ];
+                    $accion = $boundary->actionHandler($conection, 'add', $params);
+                }
                 break;
         }
-
     ?>
 
     <header>
@@ -89,8 +94,11 @@
 
                 <tbody>
                 <?php 
-                    $arrayVehiculo = ["idVehi" => null];
-                    $vehiculoData = $conection->getData("vehiculo", $arrayVehiculo);
+                    $params = [
+                        'table' =>'vehiculo',
+                        'filter'=>['idVehi' => null]
+                    ];
+                    $vehiculoData = $boundary->searchHandler($conection, $params);
 
                     foreach($vehiculoData as $vehiculo)
                     {
@@ -114,6 +122,7 @@
             <div class ="div-form-inputs">
                 <label for="txtModelo">Modelo: </label>
                 <input type="text" class="text-inputs" name="txtModelo" id="txtModelo">
+                <label><?php $msg = ($voidCamp=== true)? "No se ingreso ningun modelo": ""; echo $msg;?></label>
             </div>
 
             <button type="submit" class="btn-black" name ="accion" value ="add_model">Agregar modelo</button>
@@ -149,165 +158,103 @@
         switch($accion)
         {
             case "all":
-                    $diaFinal = date('d');
-                    $mesFinal = date('m');
-                    $anio = date('Y');
-
-                    $diaInicio = ($diaFinal != 1)? intval($diaFinal)-1: 30;
-                    $mesInicio = ($mesFinal != 1)? intval($mesFinal)-1: 12;
-
-                    $diaInicio = (string)$diaInicio;
-                    $mesInicio = (string)$mesInicio;
-
-                    $fechaInicio =[
-                        "dia" => $diaInicio,
-                        "mes" => $mesInicio,
-                        "anio" => $anio
-                    ];
                 
-                    $fechaFin = [
-                        "dia" => $diaFinal,
-                        "mes" => $mesFinal,
-                        "anio" => $anio
-                    ];
+                $diaFinal = date('d');
+                $mesFinal = date('m');
+                $anio = date('Y');
 
-                    $conduceData = $conection->getDataInRange("conduce", $fechaInicio, $fechaFin);
-                    
-                    foreach($conduceData as $conduce)
-                    {  
-                        $diaCond  = $conduce['dia'];
-                        $mesCond  = $conduce['mes'];
-                        $anioCond = $conduce['anio'];
+                $params = [
+                    'table' => 'conduce',
+                    'fechaFin' => [
+                        'dia'=>$diaFinal,
+                        'mes'=>$mesFinal,
+                        'anio'=>$anio
+                    ]
+                ];
 
-                        $fecha_html = sprintf("%04d-%02d-%02d", $anioCond, $mesCond, $diaCond);
-                        ?>
-                        <article class ="card">
-                            <p><span class="negritas">Id Conduccion: </span><?php echo htmlspecialchars($conduce['idCond']);?></p>
-                            <label class="negritas" for="txtFecha">Fecha</label>
-                            <input type="date" name="txtFecha" id="txtFecha" value ="<?php echo $fecha_html; ?>">
-                            <p><span class="negritas">Recorrido: </span><?php echo htmlspecialchars($conduce['distanciaCond']);?></p>
-                            <p><span class="negritas">Id trabajador: </span><?php echo htmlspecialchars($conduce['idUsr']);?></p>
-                            <p><span class="negritas">Id vehiculo: </span><?php echo htmlspecialchars($conduce['idVehi']); ?></p>
-
-                                
-                            <form method="post">
-                                <input type="hidden" name="txtIdCond" value ="<?php echo htmlspecialchars($conduce['idCond']);?>">
-                                <button type="submit" class ="btn-black-width" name = "accion" value ="delete_cond">Eliminar</button>
-                            </form>
-
-                            <form action="entityModification/vehiculo_modificar.php" method="post">
-                                <input type="hidden" name="txtIdCond" value ="<?php echo htmlspecialchars($conduce['idCond']);?>">
-                                <input type="hidden" name="accion" value ="envio">
-                                <button type="submit" class ="btn-black-width">Modificar</button>
-                            </form>
-
-                        </article>
-                        <?php
-                    }
-
+                $conduceData = $boundary->searchByDate($conection, 'all', $params);
                 break;
 
             case "filtrar":
-                    $arrayFilters = [
-                        "idUsr" => $idUsr,
-                        "idVehi" => $idVehi
-                    ];
 
-                    $conduceData = $conection->getData("conduce", $arrayFilters);
+                $params = [
+                    'table' => 'conduce',
+                    'filter' => [
+                        'idUsr' => $idUsr,
+                        'idVehi' => $idVehi
+                    ]
+                ];
 
-                    foreach($conduceData as $conduce)
-                    {  
-                        $diaCond  = $conduce['dia'];
-                        $mesCond  = $conduce['mes'];
-                        $anioCond = $conduce['anio'];
-
-                        $fecha_html = sprintf("%04d-%02d-%02d", $anioCond, $mesCond, $diaCond);
-                        ?>
-                        <article class ="card">
-                            <p><span class="negritas">Id Conduccion: </span><?php echo htmlspecialchars($conduce['idCond']);?></p>
-                            <label class="negritas" for="txtFecha">Fecha</label>
-                            <input type="date" name="txtFecha" id="txtFecha" value ="<?php echo $fecha_html; ?>">
-                            <p><span class="negritas">Recorrido: </span><?php echo htmlspecialchars($conduce['distanciaCond']);?></p>
-                            <p><span class="negritas">Id trabajador: </span><?php echo htmlspecialchars($conduce['idUsr']);?></p>
-                            <p><span class="negritas">Id vehiculo: </span><?php echo htmlspecialchars($conduce['idVehi']); ?></p>
-
-                                
-                            <form method="post">
-                                <input type="hidden" name="txtIdCond" value ="<?php echo htmlspecialchars($conduce['idCond']);?>">
-                                <button type="submit" class ="btn-black-width" name = "accion" value ="delete_cond">Eliminar</button>
-                            </form>
-
-                            <form action="entityModification/vehiculo_modificar.php" method="post">
-                                <input type="hidden" name="txtIdCond" value ="<?php echo htmlspecialchars($conduce['idCond']);?>">
-                                <input type="hidden" name="accion" value ="envio">
-                                <button type="submit" class ="btn-black-width">Modificar</button>
-                            </form>
-
-                        </article>
-                        <?php
-                    }
+                $conduceData = $boundary->searchHandler($conection, $params);
                 break;
                     
             case "fecha":
-                    if($firstDate === null || $lastDate === null)
-                    {
-                        echo "Alguna de las fechas no fue indicada, favor de indicar todas las fechas";
-                    }
-                    else
-                    {
-                        list($anioInicio, $mesInicio, $diaInicio) = explode('-', $firstDate);
-                        list($anioFinal, $mesFinal, $diaFinal) = explode('-', $lastDate);
+                
+                if($firstDate === null || $lastDate === null)
+                {
+                    echo "Alguna de las fechas no fue indicada, favor de indicar todas las fechas";
+                    $accion = null;
+                }
+                else
+                {
+                    list($anioInicio, $mesInicio, $diaInicio) = explode('-', $firstDate);
+                    list($anioFinal, $mesFinal, $diaFinal) = explode('-', $lastDate);
 
-                        $fechaInicio =[
-                            "dia" => $diaInicio,
-                            "mes" => $mesInicio,
-                            "anio" => $anioInicio
-                        ];
-                    
-                        $fechaFin = [
-                            "dia" => $diaFinal,
-                            "mes" => $mesFinal,
-                            "anio" => $anioFinal
-                        ];
-    
-                        $conduceData = $conection->getDataInRange("conduce", $fechaInicio, $fechaFin);
-                    
-                        foreach($conduceData as $conduce)
-                        {  
-                            $diaCond  = $conduce['dia'];
-                            $mesCond  = $conduce['mes'];
-                            $anioCond = $conduce['anio'];
+                    $params = [
+                    'table' => 'conduce',
+                    'fechaInicio'=> [
+                        'dia'=>$diaInicio,
+                        'mes'=>$mesInicio,
+                        'anio'=>$anioInicio
+                        ],
+                    'fechaFin' => [
+                        'dia'=>$diaFinal,
+                        'mes'=>$mesFinal,
+                        'anio'=>$anioFinal
+                        ]
+                    ];
 
-                            $fecha_html = sprintf("%04d-%02d-%02d", $anioCond, $mesCond, $diaCond);
-                            ?>
-                            <article class ="card">
-                                <p><span class="negritas">Id Conduccion: </span><?php echo htmlspecialchars($conduce['idCond']);?></p>
-                                <label class="negritas" for="txtFecha">Fecha</label>
-                                <input type="date" name="txtFecha" id="txtFecha" value ="<?php echo $fecha_html; ?>">
-                                <p><span class="negritas">Recorrido: </span><?php echo htmlspecialchars($conduce['distanciaCond']);?></p>
-                                <p><span class="negritas">Id trabajador: </span><?php echo htmlspecialchars($conduce['idUsr']);?></p>
-                                <p><span class="negritas">Id vehiculo: </span><?php echo htmlspecialchars($conduce['idVehi']); ?></p>
-    
-                                    
-                                <form method="post">
-                                    <input type="hidden" name="txtIdCond" value ="<?php echo htmlspecialchars($conduce['idCond']);?>">
-                                    <button type="submit" class ="btn-black-width" name = "accion" value ="delete_cond">Eliminar</button>
-                                </form>
-    
-                                <form action="entityModification/vehiculo_modificar.php" method="post">
-                                    <input type="hidden" name="txtIdCond" value ="<?php echo htmlspecialchars($conduce['idCond']);?>">
-                                    <input type="hidden" name="accion" value ="envio">
-                                    <button type="submit" class ="btn-black-width">Modificar</button>
-                                </form>
-    
-                            </article>
-                            <?php
-                        }
-                    }
-                break;       
+                    $conduceData = $boundary->searchByDate($conection, 'none', $params);
+                }
+
+                break;
         }
-        ?>
 
+        if($accion !== null)
+        {
+            foreach($conduceData as $conduce)
+            {  
+                $diaCond  = $conduce['dia'];
+                $mesCond  = $conduce['mes'];
+                $anioCond = $conduce['anio'];
+
+                $fecha_html = sprintf("%04d-%02d-%02d", $anioCond, $mesCond, $diaCond);
+                ?>
+                    <article class ="card">
+                        <p><span class="negritas">Id Conduccion: </span><?php echo htmlspecialchars($conduce['idCond']);?></p>
+                        <label class="negritas" for="txtFecha">Fecha</label>
+                        <input type="date" name="txtFecha" id="txtFecha" value ="<?php echo $fecha_html; ?>">
+                        <p><span class="negritas">Recorrido: </span><?php echo htmlspecialchars($conduce['distanciaCond']);?></p>
+                        <p><span class="negritas">Id trabajador: </span><?php echo htmlspecialchars($conduce['idUsr']);?></p>
+                        <p><span class="negritas">Id vehiculo: </span><?php echo htmlspecialchars($conduce['idVehi']); ?></p>
+        
+                                        
+                        <form method="post">
+                            <input type="hidden" name="txtIdCond" value ="<?php echo htmlspecialchars($conduce['idCond']);?>">
+                            <button type="submit" class ="btn-black-width" name = "accion" value ="delete_cond">Eliminar</button>
+                        </form>
+        
+                        <form action="entityModification/vehiculo_modificar.php" method="post">
+                            <input type="hidden" name="txtIdCond" value ="<?php echo htmlspecialchars($conduce['idCond']);?>">
+                            <input type="hidden" name="accion" value ="envio">
+                            <button type="submit" class ="btn-black-width">Modificar</button>
+                        </form>
+        
+                    </article>
+                <?php
+            }
+        }
+            ?>
     </section>
 
 <?php include("template/footer.php") ?>

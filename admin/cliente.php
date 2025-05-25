@@ -2,11 +2,13 @@
 
 <?php
         require_once("config/conexion.php");
+        require_once("interface/boundary.php");
 
         $conection = new Conexion(); //var para instanciar clase usuario
+        $boundary = new Boundary();
         $accion = ($_POST)? $_POST['accion']: "all";
 
-        $idClie  = ($_POST) && !empty($_POST['txtClientId'])? intval($_POST['txtClientId']): null;
+        $idClie    = ($_POST) && !empty($_POST['txtClientId'])? intval($_POST['txtClientId']): null;
         $name      = ($_POST) && !empty($_POST['txtName'])? $_POST['txtName']: null;
         $municipio = ($_POST) && !empty($_POST['txtIdMuni'])? intval($_POST['txtIdMuni']): null;
 
@@ -18,15 +20,20 @@
         switch($accion)
         {
             case "delete_muni":
-                    $arrayMunicipio = ["idMuni" => $municipio];
-                    $conection->useDelete("municipio", $arrayMunicipio);
-                    $accion = "all"; //reseteamos la variable accion para mostrar los registros usuario
+                $params = [
+                    'table' => 'municipio',
+                    'filter' => ['idMuni' => $municipio]
+                ];
+                $accion = $boundary->actionHandler($conection, 'delete', $params);
                 break;
 
             case "delete_cliente":
-                    $arrayFilters = ["idClie" => $idClie];
-                    $conection->useDelete("cliente", $arrayFilters);
-                    $accion = "all"; //reseteamos la variable accion para mostrar los registros usuario
+                $params = [
+                    'table' => 'cliente',
+                    'filter' => ['idClie' => $idClie]
+                ];
+
+                $accion = $boundary->actionHandler($conection, 'delete', $params);
                 break;
 
             case "add_municipio":
@@ -34,13 +41,17 @@
                     if($tipo === null)
                     {
                         $voidCamp = true;
+                        $accion = 'all';
                     }
                     else
                     {
-                        $arrayMunicipio = ["municipio" => $tipo];
-                        $conection->useInsert("municipio", $arrayMunicipio);
+                        $params = [
+                            'table'=>'municipio',
+                            'filter'=>['municipio'=>$tipo]
+                        ];
+
+                        $accion = $boundary->actionHandler($conection, 'add', $params);
                     }
-                    $accion = "all"; //reseteamos la variable accion para mostrar los registros usuario
                 break;
         }
         
@@ -119,6 +130,7 @@
             <div class ="div-form-inputs">
                 <label for="txtTipoMuni">Tipo de municipio: </label>
                 <input type="text" class="text-inputs" name="txtTipoMuni" id="txtTipoMuni">
+                <label><?php $msg = ($voidCamp=== true)? "No se ingreso ningun municipio": ""; echo $msg;?></label>
             <div>
 
             <button type="submit" class="btn-black" name ="accion" value ="add_municipio">Agregar municipio</button>            
@@ -131,86 +143,62 @@
     </section>
 
     <section class ="info-container">
-        <?php 
+        <?php
+
         switch($accion)
         {
-            case "all":
-                $arrayFilters = ["idClie" => null]; //Arreglo de filtros en null para que se arregle una consulta select sin condiciones
-                $clieData = $conection->getData("cliente", $arrayFilters);
+            case 'all':
+                $params = [
+                    'table' => 'cliente',
+                    'filter'=> ['idClie' => null] //Arreglo de filtros en null para que se ejecute una consulta select sin condiciones
+                ];
 
-                foreach($clieData as $data)
-                {   ?>
-                    <article class ="card">
-                        <p><span class="negritas">Id Cliente: </span> <?php echo htmlspecialchars($data['idClie']); ?></p>
-                        <p><span class = "negritas">Nombres: </span> <?php echo htmlspecialchars($data['nombreClie']." ".$data['apePatClie']." ".$data['apeMatClie']); ?></p>
-                        <p><span class = "negritas">Colonia: </span> <?php echo htmlspecialchars($data['coloniaClie']); ?></p>
-                        <p><span class = "negritas">Dirección: </span> <?php echo htmlspecialchars($data['direccionClie']); ?></p>
-                        <p><span class = "negritas">Telefono: </span> <?php echo htmlspecialchars($data['telefonoClie']); ?></p>
-                        <p><span class = "negritas">Num interior: </span> <?php echo htmlspecialchars($data['numInteriorClie']); ?></p>
-                        <p><span class = "negritas">Num exterior: </span> <?php echo htmlspecialchars($data['numExteriorClie']); ?></p>
-                        <p><span class = "negritas">Id municipio: </span> <?php echo htmlspecialchars($data['idMunicipio']); ?></p>
-
-                        <div>
-                            <form method="post">
-                                <input type="hidden" name="txtClientId" value ="<?php echo htmlspecialchars($data['idClie']); ?>">
-                                <button type="submit" class ="btn-black-width" name = "accion" value ="delete_cliente">Eliminar</button>
-                            </form>
-
-                            <form action="entityModification/cliente_modificar.php" method="post">
-                                <input type="hidden" name="txtClientId" value ="<?php echo htmlspecialchars($data['idClie']);?>">
-                                <input type="hidden" name="accion" value ="envio">
-                                <button type="submit" class ="btn-black-width">Modificar</button>
-                            </form>
-                        </div>
-                                                
-                    </article>
-                    <?php
-
-                }
-
+                $clieData = $boundary->searchHandler($conection, $params);
                 break;
 
-            case "filtrar":
-                    $arrayFilters = [
-                        "idClie" => $idClie,
-                        "nombreClie" => $name,
-                        "idMunicipio" => $municipio
-                    ];
+            case 'filtrar':
+                $params = [
+                    'table' => 'cliente',
+                    'filter'=> [
+                        'idClie' => $idClie,
+                        'nombreClie' => $name,
+                        'idMunicipio' => $municipio
+                    ]
+                ];
 
-                    $clieData = $conection->getData("cliente", $arrayFilters);
-
-                    foreach($clieData as $data)
-                    {   ?>
-                        <article class ="card">
-                            <p><span class="negritas">Id Cliente: </span> <?php echo htmlspecialchars($data['idClie']); ?></p>
-                            <p><span class = "negritas">Nombres: </span> <?php echo htmlspecialchars($data['nombreClie']." ".$data['apePatClie']." ".$data['apeMatClie']); ?></p>
-                            <p><span class = "negritas">Colonia: </span> <?php echo htmlspecialchars($data['coloniaClie']); ?></p>
-                            <p><span class = "negritas">Dirección: </span> <?php echo htmlspecialchars($data['direccionClie']); ?></p>
-                            <p><span class = "negritas">Telefono: </span> <?php echo htmlspecialchars($data['telefonoClie']); ?></p>
-                            <p><span class = "negritas">Num interior: </span> <?php echo htmlspecialchars($data['numInteriorClie']); ?></p>
-                            <p><span class = "negritas">Num exterior: </span> <?php echo htmlspecialchars($data['numExteriorClie']); ?></p>
-                            <p><span class = "negritas">Id municipio: </span> <?php echo htmlspecialchars($data['idMunicipio']); ?></p>
-
-                            <div>
-                                <form method="post">
-                                    <input type="hidden" name="txtClientId" value ="<?php echo htmlspecialchars($data['idClie']);?>">
-                                    <button type="submit" class ="btn-black-width" name = "accion" value ="delete_cliente">Eliminar</button>
-                                </form>
-
-                                <form action="entityModification/cliente_modificar.php" method="post">
-                                    <input type="hidden" name="txtClientId" value ="<?php echo htmlspecialchars($data['idClie']);?>">
-                                    <input type="hidden" name="accion" value ="envio">
-                                    <button type="submit" class ="btn-black-width">Modificar</button>
-                                </form>
-                            </div>                        
-                        </article>
-                        <?php
-    
-                    }
-    
-                    break;
+                $clieData = $boundary->searchHandler($conection, $params);
+                break;
         }
-        
+/// VALIDAR CIERTOS CAMPOS
+// SUBIR LA APP A HOSTINGUER
+
+        foreach($clieData as $data)
+        {   ?>
+            <article class ="card">
+                <p><span class="negritas">Id Cliente: </span> <?php echo htmlspecialchars($data['idClie']); ?></p>
+                <p><span class = "negritas">Nombres: </span> <?php echo htmlspecialchars($data['nombreClie']." ".$data['apePatClie']." ".$data['apeMatClie']); ?></p>
+                <p><span class = "negritas">Colonia: </span> <?php echo htmlspecialchars($data['coloniaClie']); ?></p>
+                <p><span class = "negritas">Dirección: </span> <?php echo htmlspecialchars($data['direccionClie']); ?></p>
+                <p><span class = "negritas">Telefono: </span> <?php echo htmlspecialchars($data['telefonoClie']); ?></p>
+                <p><span class = "negritas">Num interior: </span> <?php echo htmlspecialchars($data['numInteriorClie']); ?></p>
+                <p><span class = "negritas">Num exterior: </span> <?php echo htmlspecialchars($data['numExteriorClie']); ?></p>
+                <p><span class = "negritas">Id municipio: </span> <?php echo htmlspecialchars($data['idMunicipio']); ?></p>
+                <div>
+                    <form method="post">
+                        <input type="hidden" name="txtClientId" value ="<?php echo htmlspecialchars($data['idClie']);?>">
+                        <button type="submit" class ="btn-black-width" name = "accion" value ="delete_cliente">Eliminar</button>
+                    </form>
+                    <form action="entityModification/cliente_modificar.php" method="post">
+                        <input type="hidden" name="txtClientId" value ="<?php echo htmlspecialchars($data['idClie']);?>">
+                        <input type="hidden" name="accion" value ="envio">
+                        <button type="submit" class ="btn-black-width">Modificar</button>
+                    </form>
+                </div>                        
+            </article>
+            
+        <?php
+        }
+
         ?>
 
     </section>

@@ -28,15 +28,14 @@
 
             try
             {
-                $select;   //consulta
-                $userData; //Almacen de fila
-
                 if($this->conection)
                 {
+                    //consulta
                     $select = $this->conection->prepare("SELECT idUsr, nombreUsr, contraUsr FROM trabajador WHERE idUsr = :id AND contraUsr = :pwd AND idRol = :rol");
 
                     $select->execute([":id"=>$idUser, ":pwd"=>$pwdUser, ":rol"=>$rol]);
 
+                    //Almacena la fila
                     $userData = $select->fetch(PDO::FETCH_LAZY);
 
                     if($userData){
