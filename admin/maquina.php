@@ -8,9 +8,10 @@
         $boundary = new Boundary();
         $accion = ($_POST)? $_POST['accion']: "all";
 
-        $idMaq  = ($_POST) && !empty($_POST['txtIdMaq'])? intval($_POST['txtIdMaq']): null;
-        $idClie = ($_POST) && !empty($_POST['txtClientId'])? intval($_POST['txtClientId']): null;
-        $modelo = ($_POST) && !empty($_POST['txtIdModelo'])? intval($_POST['txtIdModelo']): null;
+        $idMaq         = ($_POST) && !empty($_POST['txtIdMaq'])? intval($_POST['txtIdMaq']): null;
+        $idClie        = ($_POST) && !empty($_POST['txtClientId'])? intval($_POST['txtClientId']): null;
+        $modelo        = ($_POST) && !empty($_POST['txtIdModelo'])? intval($_POST['txtIdModelo']): null;
+        $identificador = ($_POST) && !empty($_POST['txtIdentificador'])? trim($_POST['txtIdentificador']): null;
 
         $voidCamp = false;
 
@@ -72,6 +73,11 @@
         <div class ="div-form-inputs">
             <label for="txtIdModelo">Id de Modelo</label>
             <input class ="text-inputs" type="text" name="txtIdModelo" id="txtIdModelo">
+        </div>
+
+        <div class ="div-form-inputs">
+            <label for="txtIdentificador">Identificador</label>
+            <input class ="text-inputs" type="text" name="txtIdentificador" id="txtIdentificador">
         </div>
 
         <div class ="div-form-inputs space-top">
@@ -152,7 +158,8 @@
                     'table' =>'maquina',
                     'filter'=>[
                         'idClie'=>$idClie,
-                        'idModelo'=>$modelo
+                        'idModelo'=>$modelo,
+                        'identificador' => $identificador
                     ]
                 ];
 
