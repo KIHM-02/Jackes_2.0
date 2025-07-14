@@ -166,6 +166,7 @@
         {   ?>
             <article class ="card">
                 <p><span class = "negritas">Id Maquina: </span> <?php echo htmlspecialchars($data['idMaq']); ?></p>
+                <p><span class = "negritas">Identificador: </span> <?php echo htmlspecialchars($data['identificador']);?></p>
                 <p><span class = "negritas">Estatus: </span> <?php echo htmlspecialchars($data['estatusMaq']); ?></p>
                 <p><span class = "negritas">Id modelo: </span> <?php echo htmlspecialchars($data['idModelo']); ?></p>
                 <p><span class = "negritas">Id cliente: </span> <?php echo htmlspecialchars($data['idClie']); ?></p>
