@@ -14,6 +14,7 @@
 
         $arrayFilters = [];
         $arrayVehiculo = [];
+        $corteData = null;
 
         $voidCamp = false;
 
@@ -79,159 +80,96 @@
         switch($accion)
         {
             case "all":
-                    $diaFinal = date('d');
-                    $mesFinal = date('m');
-                    $anio = date('Y');
+                $diaFinal = date('d');
+                $mesFinal = date('m');
+                $anio = date('Y');
 
-                    $diaInicio = ($diaFinal != 1)? intval($diaFinal)-1: 30;
-                    $mesInicio = ($mesFinal != 1)? intval($mesFinal)-1: 12;
+                $diaInicio = ($diaFinal != 1)? intval($diaFinal)-1: 30;
+                $mesInicio = ($mesFinal != 1)? intval($mesFinal)-1: 12;
+                $diaInicio = (string)$diaInicio;
+                $mesInicio = (string)$mesInicio;
 
-                    $diaInicio = (string)$diaInicio;
-                    $mesInicio = (string)$mesInicio;
+                $fechaInicio =[
+                    "dia" => $diaInicio,
+                    "mes" => $mesInicio,
+                    "anio" => $anio
+                ];
+                
+                $fechaFin = [
+                    "dia" => $diaFinal,
+                    "mes" => $mesFinal,
+                    "anio" => $anio
+                ];
+
+                $corteData = $conection->getDataInRange("corte", $fechaInicio, $fechaFin);
+                break;
+
+            case "filtrar":
+                $arrayFilters = [
+                    "idUsr" => $idUsr,
+                    "idMaq" => $idMaq
+                ];
+
+                $corteData = $conection->getData("corte", $arrayFilters);
+                break;
+
+            case "fecha":
+                if($firstDate === null || $lastDate === null)
+                {
+                    echo "Alguna de las fechas no fue indicada, favor de indicar todas las fechas";
+                }
+                else
+                {
+                    list($anioInicio, $mesInicio, $diaInicio) = explode('-', $firstDate);
+                    list($anioFinal, $mesFinal, $diaFinal) = explode('-', $lastDate);
 
                     $fechaInicio =[
                         "dia" => $diaInicio,
                         "mes" => $mesInicio,
-                        "anio" => $anio
+                        "anio" => $anioInicio
                     ];
-                
+                    
                     $fechaFin = [
                         "dia" => $diaFinal,
                         "mes" => $mesFinal,
-                        "anio" => $anio
+                        "anio" => $anioFinal
                     ];
-
-                    $corteData = $conection->getDataInRange("corte", $fechaInicio, $fechaFin);
-                    
-                    foreach($corteData as $corte)
-                    {  
-                        $diaCorte  = $corte['dia'];
-                        $mesCorte  = $corte['mes'];
-                        $anioCorte = $corte['anio'];
-
-                        $fecha_html = sprintf("%04d-%02d-%02d", $anioCorte, $mesCorte, $diaCorte);
-                        ?>
-                        <article class ="card">
-                            <p><span class="negritas">Id maquina: </span><?php echo htmlspecialchars($corte['idMaq']);?></p>
-                            <p><span class="negritas">Id responsable: </span><?php echo htmlspecialchars($corte['idUsr']);?></p>
-                            <label class="negritas" for="txtFecha">Fecha</label>
-                            <input type="date" name="txtFecha" id="txtFecha" value ="<?php echo $fecha_html; ?>">
-                            <p><span class="negritas">Entrada: </span><?php echo htmlspecialchars($corte['entrada']);?></p>
-                            <p><span class="negritas">Salida: </span><?php echo htmlspecialchars($corte['salida']);?></p>
-                            <p><span class="negritas">Resultado: </span><?php echo htmlspecialchars($corte['resultado']); ?></p>
-                            <p><span class="negritas">Fichaje Real: </span><?php echo htmlspecialchars($corte['ficReal']); ?></p>
-                            <p><span class="negritas">Digital: </span><?php echo htmlspecialchars($corte['digital']); ?></p>
-                            <p><span class="negritas">Total Fisico: </span><?php echo htmlspecialchars($corte['totalFisico']); ?></p>
-                            <p><span class="negritas">Coincide: </span><?php echo htmlspecialchars($corte['ficReal']-$corte['totalFisico']); ?></p>
-
-                                
-                            <form method="post">
-                                <input type="hidden" name="txtIdCorte" value ="<?php echo htmlspecialchars($corte['idCorte']);?>">
-                                <button type="submit" class ="btn-black-width" name = "accion" value ="delete_corte">Eliminar</button>
-                            </form>
-
-                        </article>
-                        <?php
-                    }
-
-                break;
-
-            case "filtrar":
-                    $arrayFilters = [
-                        "idUsr" => $idUsr,
-                        "idMaq" => $idMaq
-                    ];
-
-                    $corteData = $conection->getData("corte", $arrayFilters);
-
-                    foreach($corteData as $corte)
-                    {  
-                        $diaCorte  = $corte['dia'];
-                        $mesCorte  = $corte['mes'];
-                        $anioCorte = $corte['anio'];
-
-                        $fecha_html = sprintf("%04d-%02d-%02d", $anioCorte, $mesCorte, $diaCorte);
-                        ?>
-                        <article class ="card">
-                            <p><span class="negritas">Id maquina: </span><?php echo htmlspecialchars($corte['idMaq']);?></p>
-                            <p><span class="negritas">Id responsable: </span><?php echo htmlspecialchars($corte['idUsr']);?></p>
-                            <label class="negritas" for="txtFecha">Fecha</label>
-                            <input type="date" name="txtFecha" id="txtFecha" value ="<?php echo $fecha_html; ?>">
-                            <p><span class="negritas">Entrada: </span><?php echo htmlspecialchars($corte['entrada']);?></p>
-                            <p><span class="negritas">Salida: </span><?php echo htmlspecialchars($corte['salida']);?></p>
-                            <p><span class="negritas">Resultado: </span><?php echo htmlspecialchars($corte['resultado']); ?></p>
-                            <p><span class="negritas">Fichaje Real: </span><?php echo htmlspecialchars($corte['ficReal']); ?></p>
-                            <p><span class="negritas">Digital: </span><?php echo htmlspecialchars($corte['digital']); ?></p>
-                            <p><span class="negritas">Total Fisico: </span><?php echo htmlspecialchars($corte['totalFisico']); ?></p>
-                            <p><span class="negritas">Coincide: </span><?php echo htmlspecialchars($corte['ficReal']-$corte['totalFisico']); ?></p>
-
-                                
-                            <form method="post">
-                                <input type="hidden" name="txtIdCorte" value ="<?php echo htmlspecialchars($corte['idCorte']);?>">
-                                <button type="submit" class ="btn-black-width" name = "accion" value ="delete_corte">Eliminar</button>
-                            </form>
-                        </article>
-                        <?php
-                    }
-                break;
-                    
-            case "fecha":
-                    if($firstDate === null || $lastDate === null)
-                    {
-                        echo "Alguna de las fechas no fue indicada, favor de indicar todas las fechas";
-                    }
-                    else
-                    {
-                        list($anioInicio, $mesInicio, $diaInicio) = explode('-', $firstDate);
-                        list($anioFinal, $mesFinal, $diaFinal) = explode('-', $lastDate);
-
-                        $fechaInicio =[
-                            "dia" => $diaInicio,
-                            "mes" => $mesInicio,
-                            "anio" => $anioInicio
-                        ];
-                    
-                        $fechaFin = [
-                            "dia" => $diaFinal,
-                            "mes" => $mesFinal,
-                            "anio" => $anioFinal
-                        ];
     
-                        $corteData = $conection->getDataInRange("corte", $fechaInicio, $fechaFin);
-                    
-                        foreach($corteData as $corte)
-                        {  
-                            $diaCorte  = $corte['dia'];
-                            $mesCorte  = $corte['mes'];
-                            $anioCorte = $corte['anio'];
-
-                            $fecha_html = sprintf("%04d-%02d-%02d", $anioCorte, $mesCorte, $diaCorte);
-                            ?>
-                            <article class ="card">
-                                <p><span class="negritas">Id maquina: </span><?php echo htmlspecialchars($corte['idMaq']);?></p>
-                                <p><span class="negritas">Id responsable: </span><?php echo htmlspecialchars($corte['idUsr']);?></p>
-                                <label class="negritas" for="txtFecha">Fecha</label>
-                                <input type="date" name="txtFecha" id="txtFecha" value ="<?php echo $fecha_html; ?>">
-                                <p><span class="negritas">Entrada: </span><?php echo htmlspecialchars($corte['entrada']);?></p>
-                                <p><span class="negritas">Salida: </span><?php echo htmlspecialchars($corte['salida']);?></p>
-                                <p><span class="negritas">Resultado: </span><?php echo htmlspecialchars($corte['resultado']); ?></p>
-                                <p><span class="negritas">Fichaje Real: </span><?php echo htmlspecialchars($corte['ficReal']); ?></p>
-                                <p><span class="negritas">Digital: </span><?php echo htmlspecialchars($corte['digital']); ?></p>
-                                <p><span class="negritas">Total Fisico: </span><?php echo htmlspecialchars($corte['totalFisico']); ?></p>
-                                <p><span class="negritas">Coincide: </span><?php echo htmlspecialchars($corte['ficReal']-$corte['totalFisico']); ?></p>
-
-                                    
-                                <form method="post">
-                                    <input type="hidden" name="txtIdCorte" value ="<?php echo htmlspecialchars($corte['idCorte']);?>">
-                                    <button type="submit" class ="btn-black-width" name = "accion" value ="delete_corte">Eliminar</button>
-                                </form>
-
-                            </article>
-                            <?php
-                        }
-                    }
-                break;       
+                    $corteData = $conection->getDataInRange("corte", $fechaInicio, $fechaFin);
+                }
+                break;
         }
+                    
+        foreach($corteData as $corte)
+        {  
+            $diaCorte  = $corte['dia'];
+            $mesCorte  = $corte['mes'];
+            $anioCorte = $corte['anio'];
+
+            $fecha_html = sprintf("%04d-%02d-%02d", $anioCorte, $mesCorte, $diaCorte);
+            ?>
+                <article class ="card">
+                    <p><span class="negritas">Id maquina: </span><?php echo htmlspecialchars($corte['idMaq']);?></p>
+                    <p><span class="negritas">Id responsable: </span><?php echo htmlspecialchars($corte['idUsr']);?></p>
+                    <label class="negritas" for="txtFecha">Fecha</label>
+                    <input type="date" name="txtFecha" id="txtFecha" value ="<?php echo $fecha_html; ?>">
+                    <p><span class="negritas">Entrada: </span><?php echo htmlspecialchars($corte['entrada']);?></p>
+                    <p><span class="negritas">Salida: </span><?php echo htmlspecialchars($corte['salida']);?></p>
+                    <p><span class="negritas">Resultado: </span><?php echo htmlspecialchars($corte['resultado']); ?></p>
+                    <p><span class="negritas">Fichaje Real: </span><?php echo htmlspecialchars($corte['ficReal']); ?></p>
+                    <p><span class="negritas">Digital: </span><?php echo htmlspecialchars($corte['digital']); ?></p>
+                    <p><span class="negritas">Total Fisico: </span><?php echo htmlspecialchars($corte['totalFisico']); ?></p>
+                    <p><span class="negritas">Coincide: </span><?php echo htmlspecialchars($corte['ficReal']-$corte['totalFisico']); ?></p>
+
+                                
+                    <form method="post">
+                        <input type="hidden" name="txtIdCorte" value ="<?php echo htmlspecialchars($corte['idCorte']);?>">
+                        <button type="submit" class ="btn-black-width" name = "accion" value ="delete_corte">Eliminar</button>
+                    </form>
+
+                </article>
+            <?php
+        }     
         ?>
 
     </section>
