@@ -147,13 +147,27 @@
         {
             case "all":
                 $params = [
-                    'table' =>'maquina',
-                    'filter'=>['idMaq'=>null]
+                    'tableBase'   => ['maquina', 'idClie'],
+                    'tableJoiner' => ['cliente', 'idClie'],
+                    'filters'     => ['cliente.idClie', 
+                                        'maquina.idMaq',
+                                        'maquina.identificador',
+                                        'maquina.idModelo',
+                                        'cliente.nombreClie',
+                                        'cliente.apePatClie',
+                                        'cliente.apeMatClie',
+                                        'cliente.coloniaClie',
+                                        'cliente.direccionClie',
+                                        'maquina.estatusMaq'
+                    ],
+                    'conditionals' => null
                 ];
-                $maqData = $boundary->searchHandler($conection, $params);
+                //$maqData = $boundary->searchHandler($conection, $params);
+                $maqData = $boundary->selectInnerJoin($conection, $params);
                 break;
 
             case "filtrar":
+                /*
                 $params = [
                     'table' =>'maquina',
                     'filter'=>[
@@ -162,8 +176,32 @@
                         'identificador' => $identificador
                     ]
                 ];
+                */
 
-                $maqData = $boundary->searchHandler($conection, $params);
+                $params = [
+                    'tableBase'   => ['maquina', 'idClie'],
+                    'tableJoiner' => ['cliente', 'idClie'],
+                    'filters'     => ['cliente.idClie', 
+                                        'maquina.idMaq',
+                                        'maquina.identificador',
+                                        'maquina.idModelo',
+                                        'cliente.nombreClie',
+                                        'cliente.apePatClie',
+                                        'cliente.apeMatClie',
+                                        'cliente.coloniaClie',
+                                        'cliente.direccionClie',
+                                        'maquina.estatusMaq'
+                    ],
+                    'conditionals' => [
+                        'maquina.idClie'=>$idClie,
+                        'maquina.idModelo'=>$modelo,
+                        'maquina.identificador' => $identificador
+                    ]
+                ];
+
+                //$maqData = $boundary->searchHandler($conection, $params);
+                $maqData = $boundary->selectInnerJoin($conection, $params);
+
                 break;
 
         }
@@ -172,11 +210,16 @@
         foreach($maqData as $data)
         {   ?>
             <article class ="card">
+                <p><span class = "negritas">Id cliente: </span> <?php echo htmlspecialchars($data['idClie']); ?></p>
                 <p><span class = "negritas">Id Maquina: </span> <?php echo htmlspecialchars($data['idMaq']); ?></p>
                 <p><span class = "negritas">Identificador: </span> <?php echo htmlspecialchars($data['identificador']);?></p>
-                <p><span class = "negritas">Estatus: </span> <?php echo htmlspecialchars($data['estatusMaq']); ?></p>
                 <p><span class = "negritas">Id modelo: </span> <?php echo htmlspecialchars($data['idModelo']); ?></p>
-                <p><span class = "negritas">Id cliente: </span> <?php echo htmlspecialchars($data['idClie']); ?></p>
+                <p><span class = "negritas">Estatus: </span> <?php echo htmlspecialchars($data['estatusMaq']); ?></p>
+                <p><span class = "negritas">Nombre: </span> <?php echo htmlspecialchars($data['nombreClie']); ?></p>
+                <p><span class = "negritas">Apellido Paterno: </span> <?php echo htmlspecialchars($data['apePatClie']); ?></p>
+                <p><span class = "negritas">Apellido Materno: </span> <?php echo htmlspecialchars($data['apeMatClie']); ?></p>
+                <p><span class = "negritas">Colonia: </span> <?php echo htmlspecialchars($data['coloniaClie']); ?></p>
+                <p><span class = "negritas">Direccion: </span> <?php echo htmlspecialchars($data['direccionClie']); ?></p>
 
                 <div>
                     <form method="post">

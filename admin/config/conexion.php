@@ -137,6 +137,62 @@
             return $rows;
         }
 
+        private function innerJoinData($tableBase, $tableJoiner, $filters, $conditionals)
+        {
+            $sql = "SELECT";
+
+            $values = array_values($filters);
+            $filtersCount = count($values);
+
+            for($iteration = 0; $iteration < $filtersCount; $iteration++)
+            {
+                if($iteration != $filtersCount-1 AND $values[$iteration] !== null)
+                {
+                    $sql.= " ".$values[$iteration].",";
+                }
+                else if($iteration == $filtersCount-1)
+                {
+                    $sql.= " ".$values[$iteration]." ";
+                }
+            }
+
+            $sql.= "FROM $tableBase[0] INNER JOIN $tableJoiner[0] ON $tableBase[0].$tableBase[1] = $tableJoiner[0].$tableJoiner[1]";
+
+            if($conditionals !== null)
+            {
+                $sql.= " WHERE 1=1 ";
+
+                foreach($conditionals as $key=>$value)
+                {
+                    if($value !== null)
+                    {
+                        if(is_int($value))
+                        {
+                            $sql.=" AND ".$key." = ".$value;
+                        }
+                        else
+                        {
+                            $sql.=" AND ".$key." LIKE '%".$value."%' ";
+                        }
+                    }
+                }
+            }
+
+            return $sql;
+        }
+
+        public function getInnerJoin($params)
+        {
+            $tableBase = $params['tableBase'];
+            $tableJoiner = $params['tableJoiner'];
+            $filters = $params['filters'];
+            $conditionals = $params['conditionals'];
+
+            $stmt  = $this->innerJoinData($tableBase, $tableJoiner, $filters, $conditionals);
+            $query = $this->select($stmt);
+            return $query; 
+        }
+
         private function delete($table, $arrayColumn)
         {
             $statement = "DELETE FROM ".$table;

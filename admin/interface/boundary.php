@@ -57,7 +57,11 @@
                                 $params['fechaInicio'],
                                 $params['fechaFin']);
         }
-    
+        
+        public function selectInnerJoin($conection, $params) {
+            return $conection->getInnerJoin($params);
+        }
+
     }
 
 ?>
