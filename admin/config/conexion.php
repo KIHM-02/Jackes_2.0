@@ -137,42 +137,38 @@
             return $rows;
         }
 
-        private function innerJoinData($tableBase, $tableJoiner, $filters, $conditionals)
+        private function innerJoinData($tables, $filters, $conditionals)
         {
-            $sql = "SELECT";
+            $sql = "SELECT ";
 
-            $values = array_values($filters);
-            $filtersCount = count($values);
+            // Filtrado más limpio:
+            $columns = array_filter($filters, fn($f) => $f !== null);
+            $sql .= implode(", ", $columns);
 
-            for($iteration = 0; $iteration < $filtersCount; $iteration++)
-            {
-                if($iteration != $filtersCount-1 AND $values[$iteration] !== null)
-                {
-                    $sql.= " ".$values[$iteration].",";
+            // FROM base table:
+            $baseTable = $tables[0]['name'];
+            $sql .= " FROM $baseTable ";
+
+            // JOINs dinámicos:
+            for ($i = 1; $i < count($tables); $i++) {
+                $joinTable = $tables[$i]['name'];
+                $on = $tables[$i]['on'];
+                if (count($on) != 2) {
+                    throw new Exception("Invalid join condition");
                 }
-                else if($iteration == $filtersCount-1)
-                {
-                    $sql.= " ".$values[$iteration]." ";
-                }
+                $sql .= " INNER JOIN $joinTable ON {$on[0]} = {$on[1]} ";
             }
 
-            $sql.= "FROM $tableBase[0] INNER JOIN $tableJoiner[0] ON $tableBase[0].$tableBase[1] = $tableJoiner[0].$tableJoiner[1]";
-
-            if($conditionals !== null)
-            {
-                $sql.= " WHERE 1=1 ";
-
-                foreach($conditionals as $key=>$value)
-                {
-                    if($value !== null)
-                    {
-                        if(is_int($value))
-                        {
-                            $sql.=" AND ".$key." = ".$value;
-                        }
-                        else
-                        {
-                            $sql.=" AND ".$key." LIKE '%".$value."%' ";
+            // Condicionales:
+            if (!empty($conditionals)) {
+                $sql .= " WHERE 1=1 ";
+                foreach ($conditionals as $key => $value) {
+                    if ($value !== null) {
+                        if (is_int($value)) {
+                            $sql .= " AND $key = $value ";
+                        } else {
+                            $escaped = addslashes($value); // simple protección
+                            $sql .= " AND $key LIKE '%$escaped%' ";
                         }
                     }
                 }
@@ -181,17 +177,18 @@
             return $sql;
         }
 
+
         public function getInnerJoin($params)
         {
-            $tableBase = $params['tableBase'];
-            $tableJoiner = $params['tableJoiner'];
+            $tables = $params['tables'];
             $filters = $params['filters'];
             $conditionals = $params['conditionals'];
 
-            $stmt  = $this->innerJoinData($tableBase, $tableJoiner, $filters, $conditionals);
+            $stmt  = $this->innerJoinData($tables, $filters, $conditionals);
             $query = $this->select($stmt);
             return $query; 
         }
+
 
         private function delete($table, $arrayColumn)
         {

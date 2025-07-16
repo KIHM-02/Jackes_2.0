@@ -147,64 +147,55 @@
         {
             case "all":
                 $params = [
-                    'tableBase'   => ['maquina', 'idClie'],
-                    'tableJoiner' => ['cliente', 'idClie'],
-                    'filters'     => ['cliente.idClie', 
-                                        'maquina.idMaq',
-                                        'maquina.identificador',
-                                        'maquina.idModelo',
-                                        'cliente.nombreClie',
-                                        'cliente.apePatClie',
-                                        'cliente.apeMatClie',
-                                        'cliente.coloniaClie',
-                                        'cliente.direccionClie',
-                                        'maquina.estatusMaq'
+                    'tables' => [
+                        ['name' => 'maquina'],
+                        ['name' => 'cliente', 'on' => ['maquina.idClie', 'cliente.idClie']]
+                    ],
+                    'filters' => [
+                        'cliente.idClie', 
+                        'maquina.idMaq',
+                        'maquina.identificador',
+                        'maquina.idModelo',
+                        'cliente.nombreClie',
+                        'cliente.apePatClie',
+                        'cliente.apeMatClie',
+                        'cliente.coloniaClie',
+                        'cliente.direccionClie',
+                        'maquina.estatusMaq'
                     ],
                     'conditionals' => null
                 ];
-                //$maqData = $boundary->searchHandler($conection, $params);
                 $maqData = $boundary->selectInnerJoin($conection, $params);
                 break;
 
             case "filtrar":
-                /*
                 $params = [
-                    'table' =>'maquina',
-                    'filter'=>[
-                        'idClie'=>$idClie,
-                        'idModelo'=>$modelo,
-                        'identificador' => $identificador
-                    ]
-                ];
-                */
-
-                $params = [
-                    'tableBase'   => ['maquina', 'idClie'],
-                    'tableJoiner' => ['cliente', 'idClie'],
-                    'filters'     => ['cliente.idClie', 
-                                        'maquina.idMaq',
-                                        'maquina.identificador',
-                                        'maquina.idModelo',
-                                        'cliente.nombreClie',
-                                        'cliente.apePatClie',
-                                        'cliente.apeMatClie',
-                                        'cliente.coloniaClie',
-                                        'cliente.direccionClie',
-                                        'maquina.estatusMaq'
+                    'tables' => [
+                        ['name' => 'maquina'],
+                        ['name' => 'cliente', 'on' => ['maquina.idClie', 'cliente.idClie']]
+                    ],
+                    'filters' => [
+                        'cliente.idClie', 
+                        'maquina.idMaq',
+                        'maquina.identificador',
+                        'maquina.idModelo',
+                        'cliente.nombreClie',
+                        'cliente.apePatClie',
+                        'cliente.apeMatClie',
+                        'cliente.coloniaClie',
+                        'cliente.direccionClie',
+                        'maquina.estatusMaq'
                     ],
                     'conditionals' => [
-                        'maquina.idClie'=>$idClie,
-                        'maquina.idModelo'=>$modelo,
+                        'maquina.idClie' => $idClie,
+                        'maquina.idModelo' => $modelo,
                         'maquina.identificador' => $identificador
                     ]
                 ];
-
-                //$maqData = $boundary->searchHandler($conection, $params);
                 $maqData = $boundary->selectInnerJoin($conection, $params);
-
                 break;
-
         }
+
 
 
         foreach($maqData as $data)
