@@ -162,11 +162,7 @@
 
                         <article class ="inputs">
                             <label for="txtWorkerId">Id trabajador</label>
-                            <select name="txtWorkerId" id="txtWorkerId">
-                                <option value="<?php echo htmlspecialchars($usrId); ?>">
-                                    <?php echo htmlspecialchars($usrId);?>
-                                </option>
-                            </select>
+                            <input type="text" name="txtworkerId" id="txtWorkerId" value="<?php echo htmlspecialchars($_SESSION['workerId']); ?>" readonly>
                         </article>
                         
                         <article class ="inputs">
@@ -245,19 +241,7 @@
 
                         <article class ="inputs">
                             <label for="txtWorkerId">Id trabajador</label>
-                            <select name="txtWorkerId" id="txtWorkerId">
-                            <?php 
-                                $arrayWorker = ["idUsr" => null];
-                                $userData = $conection->getData("trabajador", $arrayWorker);
-
-                                foreach($userData as $user)
-                                {
-                            ?>
-                                <option value="<?php echo htmlspecialchars($user['idUsr']); ?>">
-                                    <?php echo htmlspecialchars($user['idUsr']."-".$user['nombreUsr']); ?>
-                                </option>            
-                        <?php   } ?>
-                            </select>
+                            <input type="text" name="txtworkerId" id="txtWorkerId" value="<?php echo htmlspecialchars($_SESSION['workerId']); ?>" readonly>
                         </article>
                         
                         <article class ="inputs">
