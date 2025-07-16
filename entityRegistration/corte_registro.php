@@ -7,27 +7,38 @@
         $arrayMaq = [];
         $arrayWorker =[];
         $arrayValues = [];
-        $voidValues = false;
-        $valuesVerified = false;
+        $voidValues = null;
+        $valuesVerified = null;
+        $identifierVerified = null;
         $accion = $_POST ? $_POST['accion']: null;
         $resultadoActual = 0;
 
-        $maqId     = (!empty($_POST['txtMaqId']))? trim($_POST['txtMaqId']): null;
-        $usrId     = (!empty($_POST['txtWorkerId']))? trim($_POST['txtWorkerId']): null;
-        $fecha     = (!empty($_POST['txtDate']))? trim($_POST['txtDate']): null;
-        $entrada   = (!empty($_POST['txtEntrada']))? trim($_POST['txtEntrada']): null;
-        $resultado = (!empty($_POST['txtResultado']))? trim($_POST['txtResultado']): null;
-        $real      = (!empty($_POST['txtReal']))? trim($_POST['txtReal']): null;
-        $salida    = (!empty($_POST['txtSalida']))? trim($_POST['txtSalida']): null;
-        $digital   = (!empty($_POST['txtDigital'])) ?trim($_POST['txtDigital']): null;
-        $fisico    = (!empty($_POST['txtTotalFisico'])) ?trim($_POST['txtTotalFisico']): null;
+        $identifierMaq = (!empty($_POST['txtIdentifierMaq']))? trim($_POST['txtIdentifierMaq']): null;
+        $usrId         = (!empty($_POST['txtWorkerId']))? trim($_POST['txtWorkerId']): null;
+        $fecha         = (!empty($_POST['txtDate']))? trim($_POST['txtDate']): null;
+        $entrada       = (!empty($_POST['txtEntrada']))? trim($_POST['txtEntrada']): null;
+        $resultado     = (!empty($_POST['txtResultado']))? trim($_POST['txtResultado']): null;
+        $real          = (!empty($_POST['txtReal']))? trim($_POST['txtReal']): null;
+        $salida        = (!empty($_POST['txtSalida']))? trim($_POST['txtSalida']): null;
+        $digital       = (!empty($_POST['txtDigital'])) ?trim($_POST['txtDigital']): null;
+        $fisico        = (!empty($_POST['txtTotalFisico'])) ?trim($_POST['txtTotalFisico']): null;
             
-        if($fecha !== null)
-        {
+        if($identifierMaq === null 
+        OR $usrId === null
+        OR $fecha === null
+        OR $entrada === null 
+        OR $salida === null 
+        OR $digital === null 
+        OR $fisico === null
+        ){
+            $voidValues = true;
+        }
+        else{
+            $voidValues = false;
             list($anio, $mes, $dia) = explode('-', $fecha);
         }
 
-        if($_POST)
+        if($_POST and $voidValues === false)
         {
             switch($accion)
             {
@@ -35,7 +46,7 @@
                     $valuesVerified = true;
                     $corteValues = [
                         "idCorte" => 0,
-                        "idMaq" => $maqId,
+                        "idMaq" => null,
                         "idUsr" => $usrId,
                         "dia" => $dia,
                         "mes" => $mes,
@@ -49,38 +60,54 @@
                     ];
 
                     $arrayFilters = [
-                        "idMaq" => $maqId
+                        "identificador" => $identifierMaq
                     ];
-                    
-                    //Array asociativo de los datos arrojados por el SELECT. NO DEBE SER MAYOR A 5 ELEMENTOS
-                    $cortesData = $conection->getData('corte', $arrayFilters);
-                    
-                    if(!empty($cortesData))
+
+                    $maqId = $conection->getData('maquina', $arrayFilters);
+
+                    if(!empty($maqId))
                     {
-                        $cortesLength = count($cortesData)-1;
+                        $identifierVerified = true;
+                        $arrayFilters = null; //Limpiamos el arreglo para evitar conflictos y volver a usarlo
+                        $arrayFilters = [
+                            "idMaq" => $maqId[0]['idMaq']
+                        ];
 
-                        if($cortesLength == 4)
+                        //Array asociativo de los datos arrojados por el SELECT. NO DEBE SER MAYOR A 5 ELEMENTOS
+                        $cortesData = $conection->getData('corte', $arrayFilters);
+                        
+                        if(!empty($cortesData))
                         {
-                            $_SESSION['firstCorte'] = $cortesData[0]['idCorte'];
+                            $cortesLength = count($cortesData)-1;
+    
+                            if($cortesLength == 4)
+                            {
+                                $_SESSION['firstCorte'] = $cortesData[0]['idCorte'];
+                            }
+    
+                            $resultadoActual = $entrada - $salida;
+                            $resultAnterior = $cortesData[$cortesLength]['resultado'];
+    
+                            $real = $resultadoActual - $resultAnterior;
                         }
-
-                        $resultadoActual = $entrada - $salida;
-                        $resultAnterior = $cortesData[$cortesLength]['resultado'];
-
-                        $real = $resultadoActual - $resultAnterior;
+                        else
+                        {
+                            $real = 0;
+                            $resultadoActual = $entrada - $salida;
+                        }
+    
+                        $corteValues['idMaq'] = $maqId[0]['idMaq'];
+                        $corteValues['resultado'] = $resultadoActual;
+                        $corteValues['ficReal'] = $real;
+    
+                        //print_r($corteValues);
+                        $_SESSION['cortesValues'] = $corteValues;
                     }
                     else
                     {
-                        $real = 0;
-                        $resultadoActual = $entrada - $salida;
+                        $valuesVerified = false;
+                        $identifierVerified = false;
                     }
-
-                    $corteValues['resultado'] = $resultadoActual;
-                    $corteValues['ficReal'] = $real;
-
-                    //print_r($corteValues);
-                    $_SESSION['cortesValues'] = $corteValues;
-
                     break;
                 
                 case "Registrar":
@@ -105,15 +132,20 @@
     </header>
 
     <?php  //Mostrar advertencia de campos vacios
-        if($voidValues)
+        if($voidValues === true)
         { ?>
             <div class ="warning-box">
-                <p>Hay campos de informacion vacios, no se pudo procesar la peticion</p>
+                <p>Hay campos de informacion vacios. Favor de ingresar la informacion correspondiente.</p>
             </div>
-    <?php } 
-    
-    
-        if($valuesVerified === true)
+    <?php }
+        else if($identifierVerified === false)
+        {?>
+            <div class ="warning-box">
+                <p>Error en identificador de maquina. No existe coincidencia con ninguna maquina.</p>
+            </div>
+    <?php }
+
+        if($valuesVerified === true AND $identifierVerified === true AND $voidValues === false)
         {
             ?>
             <form method="post" class="form-register">
@@ -124,19 +156,15 @@
                     <div class ="section-inputs">
 
                         <article class ="inputs">
-                            <label for="txtMaqId">Id Maquina</label>
-                            <select name="txtMaqId" id="txtMaqId">
-                                <option value="<?php echo htmlspecialchars($maqId);?>">
-                                    <?php echo htmlspecialchars($maqId);?>
-                                </option> 
-                            </select>
+                            <label for="txtIdentifierMaq">Identificador Maquina</label>
+                            <input type="text" name="txtIdentifierMaq" id="txtIdentifierMaq" value="<?php echo htmlspecialchars($identifierMaq); ?>" readonly>
                         </article>
 
                         <article class ="inputs">
                             <label for="txtWorkerId">Id trabajador</label>
                             <select name="txtWorkerId" id="txtWorkerId">
-                                <option value="<?php echo ($_SESSION['workerId']); ?>">
-                                    <?php echo htmlspecialchars($_SESSION['workerId']);?>
+                                <option value="<?php echo htmlspecialchars($usrId); ?>">
+                                    <?php echo htmlspecialchars($usrId);?>
                                 </option>
                             </select>
                         </article>
@@ -174,16 +202,21 @@
                 </section>
 
                 <section class ="divider">
-                    <div class ="section-title"><h2>Datos calculados</h2></div>
+                    <div class ="section-title"><h2>Revisar Datos calculados</h2></div>
                     <div class ="section-inputs">
                         <article class ="inputs">
-                            <label for="txtResultado">Resultado</label>
+                            <label for="txtResultado">Resultado: Entrada - Salida</label>
                             <input type="text" readonly id="txtResultado" name = "txtResultado" value ="<?php echo $resultadoActual; ?>">
                         </article>
 
                         <article class ="inputs">
                             <label for="txtReal">Fichaje Real</label>
                             <input type="text" readonly id="txtReal" name = "txtReal" value ="<?php echo $real ?>">
+                        </article>
+
+                        <article class ="inputs">
+                            <label for="txtCoincide">Coincide: Fisico - Digital</label>
+                            <input type="text" readonly id="txtCoincide" name = "txtCoincide" value ="<?php echo htmlspecialchars($fisico - $digital); ?>">
                         </article>
                     </div>
                 </section>
@@ -206,31 +239,24 @@
                     <div class ="section-inputs">
 
                         <article class ="inputs">
-                            <label for="txtMaqId">Id Maquina</label>
-                            <select name="txtMaqId" id="txtMaqId">
-                                <?php
-                                    $arrayMaq = ["idMaq" => null];
-                                    $maqData = $conection->getData("maquina", $arrayMaq);
-                                    
-                                    foreach($maqData as $maquina)
-                                    {
-                                    ?>
-                                <option value="<?php echo htmlspecialchars($maquina['idMaq']);?>">
-                                    <?php echo htmlspecialchars($maquina['idMaq']);?>
-                                </option>            
-                                
-                                <?php
-                                    }
-                                ?>
-                            </select>
+                            <label for="txtIdentifierMaq">Identificador Maquina</label>
+                            <input type="text" name="txtIdentifierMaq" id="txtIdentifierMaq">
                         </article>
 
                         <article class ="inputs">
                             <label for="txtWorkerId">Id trabajador</label>
                             <select name="txtWorkerId" id="txtWorkerId">
-                                <option value="<?php echo ($_SESSION['workerId']); ?>">
-                                        <?php echo htmlspecialchars($_SESSION['workerId']);?>
-                                    </option>
+                            <?php 
+                                $arrayWorker = ["idUsr" => null];
+                                $userData = $conection->getData("trabajador", $arrayWorker);
+
+                                foreach($userData as $user)
+                                {
+                            ?>
+                                <option value="<?php echo htmlspecialchars($user['idUsr']); ?>">
+                                    <?php echo htmlspecialchars($user['idUsr']."-".$user['nombreUsr']); ?>
+                                </option>            
+                        <?php   } ?>
                             </select>
                         </article>
                         
@@ -274,5 +300,5 @@
             </form>
         <?php
         } ?>
-
+        
 <?php include("../template/footer.php") ?>

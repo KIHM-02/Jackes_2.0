@@ -32,7 +32,7 @@
         <ul class ="ul-right">
             <li class ="list-elements"><a href="entityRegistration/corte_registro.php">Cortes</a></li>
             <li class ="list-elements"><a href="entityRegistration/vehiculo_registro.php">Vehiculos</a></li>
-            <li class ="list-elements"><a href="entityRegistration/maquina_registro.php">Maquinas</a></li>
+            <li class ="list-elements"><a href="maquina.php">Maquinas</a></li>
             <li class ="list-elements"><a href="entityRegistration/cliente.php">Clientes</a></li>
         </ul>
     </nav>

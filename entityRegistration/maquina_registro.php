@@ -13,12 +13,14 @@
             $idModelo      = (!empty($_POST['txtIdModelo']))? trim($_POST['txtIdModelo']): null;
             $idClie        = (!empty($_POST['txtClientId']))? trim($_POST['txtClientId']): null;
             $status        = (!empty($_POST['txtStatus']))? trim($_POST['txtStatus']): null;
+            $identificador = (!empty($_POST['txtIdentificador']))? trim($_POST['txtIdentificador']): null;
             
 
             $arrayValues = [
                 "estatusMaq" => $status,
                 "idClie" => $idClie,
-                "idModelo"=> $idModelo
+                "idModelo"=> $idModelo,
+                "identificador" => $identificador
             ];
 
             foreach($arrayValues as $camp => $value)
@@ -91,10 +93,16 @@
                     </select>
                 </article>
 
+                <article class="inputs">
+                    <label for="txtIdentificador">Identificador</label>
+                    <input type="text" id="txtIdentificador" name="txtIdentificador">
+                </article>
+
                 <article class ="inputs">
                     <label for="txtStatus">Estatus</label>
                     <input type="text" id="txtStatus" name = "txtStatus">
                 </article>
+
             </div>
         </section>
 
