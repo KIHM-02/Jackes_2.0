@@ -159,7 +159,7 @@
                     <p><span class="negritas">Fichaje Real: </span><?php echo htmlspecialchars($corte['ficReal']); ?></p>
                     <p><span class="negritas">Digital: </span><?php echo htmlspecialchars($corte['digital']); ?></p>
                     <p><span class="negritas">Total Fisico: </span><?php echo htmlspecialchars($corte['totalFisico']); ?></p>
-                    <p><span class="negritas">Coincide: </span><?php echo htmlspecialchars($corte['totalFisico']-$corte['digital']); ?></p>
+                    <p><span class="negritas">Coincide (Variacion): </span><?php echo htmlspecialchars($corte['totalFisico']-$corte['digital']); ?></p>
 
                                 
                     <form method="post">
