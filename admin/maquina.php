@@ -65,6 +65,12 @@
     </header>
 
     <form method="POST" class="form-search">
+        
+        <div class ="div-form-inputs">
+            <label for="txtIdMaq">Id de maquina</label>
+            <input class ="text-inputs" type="text" name="txtIdMaq" id="txtIdMaq">
+        </div>
+
         <div class ="div-form-inputs">
             <label for="txtClientId">Id de cliente</label>
             <input class ="text-inputs" type="text" name="txtClientId" id="txtClientId">
@@ -189,7 +195,8 @@
                     'conditionals' => [
                         'maquina.idClie' => $idClie,
                         'maquina.idModelo' => $modelo,
-                        'maquina.identificador' => $identificador
+                        'maquina.identificador' => $identificador,
+                        'maquina.idMaq' => $idMaq
                     ]
                 ];
                 $maqData = $boundary->selectInnerJoin($conection, $params);
