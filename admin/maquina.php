@@ -242,7 +242,8 @@
                         'cliente.apeMatClie',
                         'cliente.coloniaClie',
                         'cliente.direccionClie',
-                        'maquina.estatusMaq'
+                        'maquina.estatusMaq',
+                        'maquina.idEstatus'
                     ],
                     'conditionals' => null
                 ];
@@ -265,7 +266,8 @@
                         'cliente.apeMatClie',
                         'cliente.coloniaClie',
                         'cliente.direccionClie',
-                        'maquina.estatusMaq'
+                        'maquina.estatusMaq',
+                        'maquina.idEstatus'
                     ],
                     'conditionals' => [
                         'maquina.idClie' => $idClie,
@@ -288,6 +290,7 @@
                 <p><span class = "negritas">Identificador: </span> <?php echo htmlspecialchars($data['identificador']);?></p>
                 <p><span class = "negritas">Id modelo: </span> <?php echo htmlspecialchars($data['idModelo']); ?></p>
                 <p><span class = "negritas">Estatus: </span> <?php echo htmlspecialchars($data['estatusMaq']); ?></p>
+                <p><span class = "negritas">Id Estatus: </span> <?php echo htmlspecialchars($data['idEstatus']); ?></p>
                 <p><span class = "negritas">Nombre: </span> <?php echo htmlspecialchars($data['nombreClie']); ?></p>
                 <p><span class = "negritas">Apellido Paterno: </span> <?php echo htmlspecialchars($data['apePatClie']); ?></p>
                 <p><span class = "negritas">Apellido Materno: </span> <?php echo htmlspecialchars($data['apeMatClie']); ?></p>
