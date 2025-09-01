@@ -163,7 +163,9 @@
                 $anio = date('Y');
 
                 $params = [
-                    'table' => 'conduce',
+                    'table' => [
+                        [ 'name' => 'conduce']
+                    ],
                     'fechaFin' => [
                         'dia'=>$diaFinal,
                         'mes'=>$mesFinal,
@@ -200,7 +202,9 @@
                     list($anioFinal, $mesFinal, $diaFinal) = explode('-', $lastDate);
 
                     $params = [
-                    'table' => 'conduce',
+                    'table' => [
+                        [ 'name' => 'conduce']
+                    ],
                     'fechaInicio'=> [
                         'dia'=>$diaInicio,
                         'mes'=>$mesInicio,
