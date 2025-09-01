@@ -68,6 +68,10 @@ header{
     display: none;
 }
 
+.chkTableEst{
+    display: none;
+}
+
 .hide-component{
     display: none;
     border: 2px solid black;
@@ -104,6 +108,14 @@ header{
 }
 
 .chkTable:checked ~ .form-table{
+    display: flex;
+}
+
+.chkTableEst:checked ~ .hide-component{
+    display: block;
+}
+
+.chkTableEst:checked ~ .form-table{
     display: flex;
 }
 

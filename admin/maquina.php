@@ -92,7 +92,7 @@
     </form>
 
     <section class = "section-table">    
-        <label for = "chkTable" class ="btn-black-header table-buttons">Desplegar</label>
+        <label for = "chkTable" class ="btn-black-header table-buttons">Modelos</label>
         <input type="checkbox" name="chkTable" id="chkTable" class ="chkTable table-buttons">
 
         <div class ="hide-component space-top">
@@ -139,8 +139,56 @@
 
             <button type="submit" class="btn-black" name ="accion" value ="add_modelo">Agregar municipio</button>            
         </form>
+    </section>
 
+    <section class = "section-table">    
+        <label for = "chkTableEst" class ="btn-black-header table-buttons">Estatus</label>
+        <input type="checkbox" name="chkTableEst" id="chkTableEst" class ="chkTableEst table-buttons">
 
+        <div class ="hide-component space-top">
+            <table class = "table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Estatus Maquina</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                <?php
+                    $arrayModelo = ["idModelo" => null];
+                    $ModeloData = $conection->getdata("modelo", $arrayModelo);
+
+                    foreach($ModeloData as $Modelo)
+                    {
+                 ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($Modelo['idModelo']); ?></td>
+                        <td><?php echo htmlspecialchars($Modelo['modelo']);?></td>
+
+                        <td>
+
+                            <form method="POST">
+                                <input type="hidden" name="txtIdModelo" value = "<?php echo htmlspecialchars ($Modelo ['idModelo']); ?>">
+                                <button type ="submit" name = "accion" value ="delete_modelo">Eliminar</button>
+                            </form>    
+                        </td>
+                    </tr>
+                <?php } ?>
+                </tbody>
+            </table>
+        </div>
+
+        <form method="post" class ="space-top form-table">
+            <div class ="div-form-inputs">
+                <label for="txtModelo">Modelo de maquina: </label>
+                <input type="text" class="text-inputs" name="txtModelo" id="txtModelo">
+                <label><?php $msg = ($voidCamp=== true)? "No se ingreso ningun modelo": ""; echo $msg;?></label>
+            <div>
+
+            <button type="submit" class="btn-black" name ="accion" value ="add_modelo">Agregar municipio</button>            
+        </form>
     </section>
 
     <section class = "section-title">
