@@ -153,7 +153,6 @@
 
     <section class ="info-container">
         
-
         <?php 
         switch($accion)
         {

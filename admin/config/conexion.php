@@ -106,25 +106,39 @@
             return $rows;
         }
 
-        private function generateDateRangeQuery($tabla, $fechaInicio, $fechaFin) 
+        private function generateDateRangeQuery($tables, $fechaInicio, $fechaFin) 
         {
-
             // Aseguramos que los valores de mes y día tengan siempre dos dígitos
             $diaInicio = str_pad($fechaInicio['dia'], 2, '0', STR_PAD_LEFT);
             $mesInicio = str_pad($fechaInicio['mes'], 2, '0', STR_PAD_LEFT);
             $anioInicio = $fechaInicio['anio'];
-        
+            
             $diaFin = str_pad($fechaFin['dia'], 2, '0', STR_PAD_LEFT);
             $mesFin = str_pad($fechaFin['mes'], 2, '0', STR_PAD_LEFT);
             $anioFin = $fechaFin['anio'];
-        
+            
             // Concatenamos las partes de la fecha en el formato YYYYMMDD
             $fechaInicioConcat = "$anioInicio$mesInicio$diaInicio";
             $fechaFinConcat = "$anioFin$mesFin$diaFin";
+
+            $sql = "SELECT * ";
+            
+            // FROM base table:
+            $baseTable = $tables[0]['name'];
+            $sql .= " FROM $baseTable ";
+
+            // JOINs dinámicos:
+            for ($i = 1; $i < count($tables); $i++) {
+                $joinTable = $tables[$i]['name'];
+                $on = $tables[$i]['on'];
+                if (count($on) != 2) {
+                    throw new Exception("Invalid join condition");
+                }
+                $sql .= " INNER JOIN $joinTable ON {$on[0]} = {$on[1]} ";
+            }
         
             // Generamos la sentencia SQL
-            $sql = "SELECT * FROM $tabla 
-                    WHERE (CAST(CONCAT(anio, LPAD(mes, 2, '0'), LPAD(dia, 2, '0')) AS UNSIGNED) >= $fechaInicioConcat)
+            $sql .= " WHERE (CAST(CONCAT(anio, LPAD(mes, 2, '0'), LPAD(dia, 2, '0')) AS UNSIGNED) >= $fechaInicioConcat)
                     AND (CAST(CONCAT(anio, LPAD(mes, 2, '0'), LPAD(dia, 2, '0')) AS UNSIGNED) <= $fechaFinConcat)";
         
             return $sql;

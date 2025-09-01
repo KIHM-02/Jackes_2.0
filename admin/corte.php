@@ -2,12 +2,14 @@
 
     <?php 
         require_once("config/conexion.php");
+        require_once("interface/boundary.php");
 
         $conection = new Conexion(); //var para instanciar clase usuario
+        $boundary = new Boundary();
         $accion = ($_POST)? $_POST['accion']: "all";
 
         $idUsr  = ($_POST) && !empty($_POST['txtIdUsr'])? intval($_POST['txtIdUsr']): null;
-        $idMaq  = ($_POST) && !empty($_POST['txtIdMaq'])? intval($_POST['txtIdMaq']): null;
+        $identificador  = ($_POST) && !empty($_POST['txtIdentif'])? trim($_POST['txtIdentif']): null;
 
         $firstDate = ($_POST) && !empty($_POST['firstDate'])? $_POST['firstDate']: null;
         $lastDate = ($_POST) && !empty($_POST['lastDate'])? $_POST['lastDate']: null;
@@ -45,8 +47,8 @@
         </div>
 
         <div class ="div-form-inputs">
-            <label for="inputMaqId">Id de maquina</label>
-            <input class ="text-inputs" type="text" name="txtIdMaq" id="inputMaqId">
+            <label for="inputMaqId">Identificador de maquina</label>
+            <input class ="text-inputs" type="text" name="txtIdentif" id="inputIdentif">
         </div>
 
         <div class ="div-form-inputs space-top">
@@ -84,33 +86,40 @@
                 $mesFinal = date('m');
                 $anio = date('Y');
 
-                $diaInicio = ($diaFinal != 1)? intval($diaFinal)-1: 30;
-                $mesInicio = ($mesFinal != 1)? intval($mesFinal)-1: 12;
-                $diaInicio = (string)$diaInicio;
-                $mesInicio = (string)$mesInicio;
-
-                $fechaInicio =[
-                    "dia" => $diaInicio,
-                    "mes" => $mesInicio,
-                    "anio" => $anio
+                $params = [
+                    'table' =>[
+                        ['name' => 'corte'],
+                        ['name' => 'maquina',
+                            'on' =>['corte.idMaq', 'maquina.idMaq']]
+                    ],
+                    'fechaFin' => [
+                        'dia'=>$diaFinal,
+                        'mes'=>$mesFinal,
+                        'anio'=>$anio
+                    ]
                 ];
+
+                $corteData = $boundary->searchByDate($conection, 'all', $params);
                 
-                $fechaFin = [
-                    "dia" => $diaFinal,
-                    "mes" => $mesFinal,
-                    "anio" => $anio
-                ];
-
-                $corteData = $conection->getDataInRange("corte", $fechaInicio, $fechaFin);
                 break;
 
             case "filtrar":
-                $arrayFilters = [
-                    "idUsr" => $idUsr,
-                    "idMaq" => $idMaq
+                $params = [
+                    'tables' =>[
+                        ['name' => 'corte'],
+                        ['name' => 'maquina',
+                            'on' =>['corte.idMaq', 'maquina.idMaq']]
+                    ],
+                    'filters' =>[
+                        '*'
+                    ],
+                    'conditionals' =>[
+                        'maquina.identificador' => $identificador,
+                        'corte.idUsr' => $idUsr
+                    ]
                 ];
-
-                $corteData = $conection->getData("corte", $arrayFilters);
+                
+                $corteData = $boundary->selectInnerJoin($conection, $params);
                 break;
 
             case "fecha":
@@ -123,19 +132,25 @@
                     list($anioInicio, $mesInicio, $diaInicio) = explode('-', $firstDate);
                     list($anioFinal, $mesFinal, $diaFinal) = explode('-', $lastDate);
 
-                    $fechaInicio =[
-                        "dia" => $diaInicio,
-                        "mes" => $mesInicio,
-                        "anio" => $anioInicio
+                    $params = [
+                        'table' =>[
+                            ['name' => 'corte'],
+                            ['name' => 'maquina',
+                                'on' =>['corte.idMaq', 'maquina.idMaq']]
+                        ],
+                        'fechaInicio'=> [
+                            'dia'=>$diaInicio,
+                            'mes'=>$mesInicio,
+                            'anio'=>$anioInicio
+                        ],
+                        'fechaFin' => [
+                            'dia'=>$diaFinal,
+                            'mes'=>$mesFinal,
+                            'anio'=>$anioFinal
+                        ]
                     ];
-                    
-                    $fechaFin = [
-                        "dia" => $diaFinal,
-                        "mes" => $mesFinal,
-                        "anio" => $anioFinal
-                    ];
-    
-                    $corteData = $conection->getDataInRange("corte", $fechaInicio, $fechaFin);
+
+                    $corteData = $boundary->searchByDate($conection, 'none', $params);
                 }
                 break;
         }
@@ -149,7 +164,7 @@
             $fecha_html = sprintf("%04d-%02d-%02d", $anioCorte, $mesCorte, $diaCorte);
             ?>
                 <article class ="card">
-                    <p><span class="negritas">Id maquina: </span><?php echo htmlspecialchars($corte['idMaq']);?></p>
+                    <p><span class="negritas">Identificador: </span><?php echo htmlspecialchars($corte['identificador']);?></p>
                     <p><span class="negritas">Id responsable: </span><?php echo htmlspecialchars($corte['idUsr']);?></p>
                     <label class="negritas" for="txtFecha">Fecha</label>
                     <input type="date" name="txtFecha" id="txtFecha" value ="<?php echo $fecha_html; ?>">
