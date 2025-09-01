@@ -11,6 +11,7 @@
         $idMaq         = ($_POST) && !empty($_POST['txtIdMaq'])? intval($_POST['txtIdMaq']): null;
         $idClie        = ($_POST) && !empty($_POST['txtClientId'])? intval($_POST['txtClientId']): null;
         $modelo        = ($_POST) && !empty($_POST['txtIdModelo'])? intval($_POST['txtIdModelo']): null;
+        $estatus       = ($_POST) && !empty($_POST['txtIdEstatus'])? intval($_POST['txtIdEstatus']): null;
         $identificador = ($_POST) && !empty($_POST['txtIdentificador'])? trim($_POST['txtIdentificador']): null;
 
         $voidCamp = false;
@@ -51,6 +52,32 @@
                     }
 
                 break;
+
+            case "add_estatus":
+                    $tipo = (!empty($_POST['txtEstatus']))? trim($_POST['txtEstatus']): null;
+                    if($tipo === null)
+                    {
+                        $voidCamp = true;
+                        $accion = 'all';
+                    }
+                    else
+                    {
+                        $params = [
+                            'table' =>'estatus',
+                            'filter'=>['descripcion'=>$tipo]
+                        ];
+                        $accion = $boundary->actionHandler($conection, 'add', $params);
+                    }
+
+                break;
+            
+            case "delete_estatus":
+                $params = [
+                    'table' => 'estatus',
+                    'filter'=>['idEstatus' =>$estatus]
+                ];
+                $accion = $boundary->actionHandler($conection, 'delete', $params);                    
+            break;
         }
         
     ?>
@@ -137,7 +164,7 @@
                 <label><?php $msg = ($voidCamp=== true)? "No se ingreso ningun modelo": ""; echo $msg;?></label>
             <div>
 
-            <button type="submit" class="btn-black" name ="accion" value ="add_modelo">Agregar municipio</button>            
+            <button type="submit" class="btn-black" name ="accion" value ="add_modelo">Agregar modelo</button>            
         </form>
     </section>
 
@@ -157,21 +184,21 @@
 
                 <tbody>
                 <?php
-                    $arrayModelo = ["idModelo" => null];
-                    $ModeloData = $conection->getdata("modelo", $arrayModelo);
+                    $arrayEstatus = ["idEstatus" => null];
+                    $estatusData = $conection->getdata("estatus", $arrayEstatus);
 
-                    foreach($ModeloData as $Modelo)
+                    foreach($estatusData as $estatus)
                     {
                  ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($Modelo['idModelo']); ?></td>
-                        <td><?php echo htmlspecialchars($Modelo['modelo']);?></td>
+                        <td><?php echo htmlspecialchars($estatus['idEstatus']); ?></td>
+                        <td><?php echo htmlspecialchars($estatus['descripcion']);?></td>
 
                         <td>
 
                             <form method="POST">
-                                <input type="hidden" name="txtIdModelo" value = "<?php echo htmlspecialchars ($Modelo ['idModelo']); ?>">
-                                <button type ="submit" name = "accion" value ="delete_modelo">Eliminar</button>
+                                <input type="hidden" name="txtIdEstatus" value = "<?php echo htmlspecialchars ($estatus ['idEstatus']); ?>">
+                                <button type ="submit" name = "accion" value ="delete_estatus">Eliminar</button>
                             </form>    
                         </td>
                     </tr>
@@ -182,12 +209,12 @@
 
         <form method="post" class ="space-top form-table">
             <div class ="div-form-inputs">
-                <label for="txtModelo">Modelo de maquina: </label>
-                <input type="text" class="text-inputs" name="txtModelo" id="txtModelo">
-                <label><?php $msg = ($voidCamp=== true)? "No se ingreso ningun modelo": ""; echo $msg;?></label>
+                <label for="txtModelo">Estatus de maquina: </label>
+                <input type="text" class="text-inputs" name="txtEstatus" id="txtEstatus">
+                <label><?php $msg = ($voidCamp=== true)? "No se ingreso ningun estatus": ""; echo $msg;?></label>
             <div>
 
-            <button type="submit" class="btn-black" name ="accion" value ="add_modelo">Agregar municipio</button>            
+            <button type="submit" class="btn-black" name ="accion" value ="add_estatus">Agregar estatus</button>            
         </form>
     </section>
 
