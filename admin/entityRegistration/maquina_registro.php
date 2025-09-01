@@ -12,12 +12,12 @@
         {
             $idModelo      = (!empty($_POST['txtIdModelo']))? trim($_POST['txtIdModelo']): null;
             $idClie        = (!empty($_POST['txtClientId']))? trim($_POST['txtClientId']): null;
-            $status        = (!empty($_POST['txtStatus']))? trim($_POST['txtStatus']): null;
+            $status        = (!empty($_POST['txtIdEstatus']))? trim($_POST['txtIdEstatus']): null;
             $identificador = (!empty($_POST['txtIdentificador']))? trim($_POST['txtIdentificador']): null;
             
 
             $arrayValues = [
-                "estatusMaq" => $status,
+                "idEstatus" => $status,
                 "idClie" => $idClie,
                 "idModelo"=> $idModelo,
                 "identificador" => $identificador
@@ -99,8 +99,22 @@
                 </article>
 
                 <article class ="inputs">
-                    <label for="txtStatus">Estatus</label>
-                    <input type="text" id="txtStatus" name = "txtStatus">
+                    <label for="txtIdEstatus">Id estatus</label>
+                    <select name="txtIdEstatus" id="txtIdEstatus">
+                    <?php 
+                        $arrayEst = ["idEstatus" => null];
+                        $estatusData = $conection->getData("estatus", $arrayEst);
+
+                        foreach($estatusData as $data)
+                        {
+                            $selected = ($data['idEstatus'] === $maqData['idEstatus'])? 'selected':'';
+                    ?>
+                        <option value="<?php echo htmlspecialchars ($data['idEstatus']); ?>" <?php echo $selected; ?>>
+                            <?php echo htmlspecialchars ($data['idEstatus']); ?>-
+                            <?php echo htmlspecialchars ($data['descripcion']); ?>
+                        </option>
+                    <?php } ?>
+                    </select>
                 </article>
 
             </div>
