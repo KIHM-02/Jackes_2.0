@@ -242,7 +242,6 @@
                         'cliente.apeMatClie',
                         'cliente.coloniaClie',
                         'cliente.direccionClie',
-                        'maquina.estatusMaq',
                         'maquina.idEstatus'
                     ],
                     'conditionals' => null
@@ -266,14 +265,13 @@
                         'cliente.apeMatClie',
                         'cliente.coloniaClie',
                         'cliente.direccionClie',
-                        'maquina.estatusMaq',
                         'maquina.idEstatus'
                     ],
                     'conditionals' => [
                         'maquina.idClie' => $idClie,
                         'maquina.idModelo' => $modelo,
                         'maquina.identificador' => $identificador,
-                        'maquina.idMaq' => $idMaq
+                        'maquina.idMaq' => $idMaq,
                     ]
                 ];
                 $maqData = $boundary->selectInnerJoin($conection, $params);
@@ -289,7 +287,6 @@
                 <p><span class = "negritas">Id Maquina: </span> <?php echo htmlspecialchars($data['idMaq']); ?></p>
                 <p><span class = "negritas">Identificador: </span> <?php echo htmlspecialchars($data['identificador']);?></p>
                 <p><span class = "negritas">Id modelo: </span> <?php echo htmlspecialchars($data['idModelo']); ?></p>
-                <p><span class = "negritas">Estatus: </span> <?php echo htmlspecialchars($data['estatusMaq']); ?></p>
                 <p><span class = "negritas">Id Estatus: </span> <?php echo htmlspecialchars($data['idEstatus']); ?></p>
                 <p><span class = "negritas">Nombre: </span> <?php echo htmlspecialchars($data['nombreClie']); ?></p>
                 <p><span class = "negritas">Apellido Paterno: </span> <?php echo htmlspecialchars($data['apePatClie']); ?></p>
